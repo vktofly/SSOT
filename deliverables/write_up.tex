@@ -84,57 +84,37 @@
 
 \begin{document}
 
-\section{BharatTrip Refund Escalations: Business Case \& Solution
-Proposal}\label{bharattrip-refund-escalations-business-case-solution-proposal}
+\section{BharatTrip Refund Escalations: Business Case \& Solution Proposal}\label{bharattrip-refund-escalations-business-case-solution-proposal}
 
 \begin{quote}
-\textbf{Executive Summary (TL;DR)} BharatTrip is experiencing a spike in
-customer/agent refund escalations despite stable refund volumes. Our
-analysis identified a severe operational disconnect between Support and
-Finance, leading to \textbf{100 dropped tickets} and \textbf{149 short
-payments}. By implementing a \textbf{Single Source of Truth (SSOT)} and
-an \textbf{AI-Driven Data Reconciliation Workflow}, we can eliminate
-manual data leakage, automate agent communications, and project an 80\%
-drop in escalations over the next quarter without adding headcount.
+\textbf{Executive Summary (TL;DR)}\\
+BharatTrip is experiencing a spike in customer/agent refund escalations despite stable refund volumes. Our analysis identified a severe operational disconnect between Support and Finance, leading to \textbf{100 dropped tickets} and \textbf{149 short payments}. By implementing a \textbf{Single Source of Truth (SSOT)} and an \textbf{AI-Driven Data Reconciliation Workflow}, we deploy a "Digital Workforce." This allows existing teams to eliminate manual data leakage and automate agent communications, driving a projected \textbf{85\%+ drop in escalations} over the next quarter \textbf{without adding a single headcount}.
 \end{quote}
 
 \begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
 
 \subsection{1. Defining the Problem}\label{defining-the-problem}
 
-Customer and agent escalations regarding refunds are rising. The core
-underlying problem is a \textbf{severe operational disconnect between
-the Support and Finance teams}, characterized by siloed tracking systems
-and inconsistent definitions of refund statuses.
+Customer and agent escalations regarding refunds are rising. The core underlying problem is a \textbf{severe operational disconnect between the Support and Finance teams}, characterized by siloed tracking systems and inconsistent definitions of refund statuses.
 
-\subsubsection{Key Communication
-Failures:}\label{key-communication-failures}
+\subsubsection{Key Communication Failures:}\label{key-communication-failures}
 
 \begin{enumerate}
 \def\labelenumi{\arabic{enumi}.}
 \tightlist
 \item
-  \textbf{Data Leakage}: Informal requests via WhatsApp and Email bypass
-  the tracker altogether, meaning they are never reviewed or processed.
+  \textbf{Data Leakage}: Informal requests via WhatsApp and Email bypass the tracker altogether, meaning they are never reviewed or processed.
 \item
-  \textbf{``Closed'' Status Ambiguity}: The Support team marks tickets
-  as ``Closed'' once handed off to Finance, misleading the agent into
-  believing the refund has been disbursed.
+  \textbf{``Closed'' Status Ambiguity}: The Support team marks tickets as ``Closed'' once handed off to Finance, misleading the agent into believing the refund has been disbursed.
 \item
-  \textbf{Hidden Policy Deductions}: Finance applies necessary
-  deductions (e.g., cancellation fees) and processes payouts, but this
-  information is never relayed back to the agent by Support, causing
-  ``short payment'' escalations.
+  \textbf{Hidden Policy Deductions}: Finance applies necessary deductions (e.g., cancellation fees) and processes payouts, but this information is never relayed back to the agent by Support, causing ``short payment'' escalations.
 \end{enumerate}
 
 \begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
 
 \subsection{2. Data Analysis \& Insights}\label{data-analysis-insights}
 
-By cross-referencing the \texttt{Support\_Tracker},
-\texttt{Finance\_Tracker}, and \texttt{Escalations} logs via a deep
-database join, we identified the specific patterns driving the
-\textbf{155 total escalations}.
+By cross-referencing the \texttt{Support\_Tracker}, \texttt{Finance\_Tracker}, and \texttt{Escalations} logs via a deep database join, we identified the specific patterns driving the \textbf{155 total escalations}.
 
 \begin{figure}
 \centering
@@ -142,8 +122,7 @@ database join, we identified the specific patterns driving the
 \caption{Metrics Data Leakage Visualization}
 \end{figure}
 
-\subsubsection{The Discrepancy
-Breakdown}\label{the-discrepancy-breakdown}
+\subsubsection{The Discrepancy Breakdown}\label{the-discrepancy-breakdown}
 
 {\def\LTcaptype{none} % do not increment counter
 \begin{longtable}[]{@{}
@@ -162,73 +141,41 @@ Description
 \endhead
 \bottomrule\noalign{}
 \endlastfoot
-\textbf{Dropped Handoffs} & \textbf{100} & Logged by Support, but
-entirely missing from Finance tracking. \\
-\textbf{Deduction Mismatches} & \textbf{149} & Amount promised by
-Support differs from amount disbursed by Finance. \\
-\textbf{Off-Tracker Leakage} & \textbf{24} & Escalations with ``no ref''
-originating from unlogged WhatsApp/Email. \\
-\textbf{Asynchronous Closure} & \textbf{47} & Processed by Finance but
-missing from Support. \\
+\textbf{Dropped Handoffs} & \textbf{100} & Logged by Support, but entirely missing from Finance tracking. \\
+\textbf{Deduction Mismatches} & \textbf{149} & Amount promised by Support differs from amount disbursed by Finance. \\
+\textbf{Off-Tracker Leakage} & \textbf{24} & Escalations with ``no ref'' originating from unlogged WhatsApp/Email. \\
+\textbf{Asynchronous Closure} & \textbf{47} & Processed by Finance but missing from Support. \\
 \end{longtable}
 }
 
 \begin{quote}
-\textbf{Insight:} While a naive net volume calculation (755 Support -
-689 Finance) suggests only 66 missing tickets, our deep ID-to-ID
-database reconciliation reveals the true scale of the failure is
-\textbf{100 dropped tickets}, masked by duplicate records and
-asynchronous closures.
+\textbf{Insight:} While a naive net volume calculation (755 Support - 689 Finance) suggests only 66 missing tickets, our deep ID-to-ID database reconciliation reveals the true scale of the failure is \textbf{100 dropped tickets}, masked by duplicate records and asynchronous closures.
 \end{quote}
-
-\subsubsection{Future Validation}\label{future-validation}
-
-If given more time and access, I would validate the exact schema of the
-Support team's ticketing software to understand why the ``Closed''
-status is automatically triggered, and I would pull the API logs to see
-if Finance ever sends an automated webhook back to Support.
 
 \begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
 
-\subsection{3. Designing a Zero-Headcount
-Solution}\label{designing-a-zero-headcount-solution}
+\subsection{3. Designing a Zero-Headcount Solution}\label{designing-a-zero-headcount-solution}
 
-To permanently bring escalations down, BharatTrip must establish a
-unified \textbf{Single Source of Truth (SSOT)} and automate the
-communication loop.
+To permanently bring escalations down without adding headcount, BharatTrip must establish a unified \textbf{Single Source of Truth (SSOT)} and automate the communication loop. 
 
-\subsubsection{The Proposed Workflow:}\label{the-proposed-workflow}
+\subsubsection{The Proposed Workflow (Digital Workforce):}\label{the-proposed-workflow}
 
 \begin{enumerate}
 \def\labelenumi{\arabic{enumi}.}
 \tightlist
 \item
-  \textbf{Unified SSOT Tracking}: Migrate both teams onto a single
-  shared database.
+  \textbf{Unified SSOT Tracking}: Migrate both teams onto a single shared database.
 \item
-  \textbf{AI-Powered Ingestion}: Deploy an AI agent to monitor the
-  Support Email and WhatsApp. The AI will parse unstructured messages
-  and log them as structured tickets, eliminating ``no ref'' leakage.
+  \textbf{AI-Powered Ingestion}: Deploy an AI agent to monitor Support Email and WhatsApp. The AI acts as a digital clerk, parsing unstructured messages and logging them as structured tickets, eliminating ``no ref'' leakage entirely.
 \item
-  \textbf{Automated Communication}: A system trigger automatically
-  emails the travel agent when the status changes to \texttt{Paid},
-  detailing the exact payout amount and any deductions.
-\item
-  \textbf{Strategic Trade-offs}: We automate data entry and outbound
-  communication, but deliberately keep \emph{Finance payout execution}
-  and \emph{Support's initial vetting} manual to ensure strict financial
-  compliance.
+  \textbf{Automated Reconciliation}: A system trigger automatically cross-references Finance payouts with Support quotes. If a deduction occurs, the AI drafts an explanatory email for the agent, preventing short-payment shock.
 \end{enumerate}
 
 \begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
 
-\subsection{4. The AI Prototype: Advanced Multi-Agent
-Architecture}\label{the-ai-prototype-advanced-multi-agent-architecture}
+\subsection{4. The AI Prototype: Advanced Multi-Agent Architecture}\label{the-ai-prototype-advanced-multi-agent-architecture}
 
-To deliver a production-ready solution, I have developed
-\texttt{app.py}, a zero-friction \textbf{Streamlit Web Application}
-showcasing an advanced Multi-Agent architecture powered by
-\texttt{gemini-3.5-flash}.
+To deliver a production-ready solution, I developed \texttt{app.py}, a \textbf{Streamlit Web Application} showcasing an advanced Multi-Agent architecture powered by \texttt{gemini-3.5-flash}.
 
 \begin{figure}
 \centering
@@ -236,50 +183,34 @@ showcasing an advanced Multi-Agent architecture powered by
 \caption{System Architecture Flowchart}
 \end{figure}
 
-\subsubsection{Secure Integration (MCP)}\label{secure-integration-mcp}
-
-In a production environment, the LLM will bridge with the internal SSOT
-database via the \textbf{Model Context Protocol (MCP)}. This guarantees
-that raw database credentials are never exposed to the LLM's context
-window, ensuring enterprise-grade security while allowing the AI to
-read/write records.
-
-\subsubsection{The Prototype Features}\label{the-prototype-features}
-
+\subsubsection{Operational Safety: Risks \& Mitigations}\label{operational-safety-risks-mitigations}
+Deploying AI in financial workflows carries inherent risks (e.g., hallucinated refund amounts or improper authorizations). Our architecture mitigates this using a \textbf{Human-In-The-Loop (HITL) Design}:
 \begin{itemize}
 \tightlist
-\item
-  \textbf{Metrics Dashboard}: Live KPIs tracking Escalations and
-  Discrepancies to prove ROI.
-\item
-  \textbf{HITL Workflow}: A UI for support staff to review AI-generated
-  explanatory messages before they are sent to external agents.
+\item \textbf{Financial Compliance}: The AI is strictly limited to \textit{drafting} explanatory emails and structuring incoming data. It cannot authorize payouts. A human Support representative must click "Approve \& Send" on the AI's drafted email before any external communication occurs.
+\item \textbf{Secure Integration (MCP)}: In production, the LLM will bridge with the internal SSOT database via the \textbf{Model Context Protocol (MCP)}. This guarantees that raw database credentials are never exposed to the LLM's context window.
 \end{itemize}
 
 \begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
 
 \subsection{5. Measuring Success}\label{measuring-success}
 
-To ensure the solution is working, we will monitor two primary metrics
-over the next month: 1. \textbf{Escalation Rate}: The percentage of
-refund requests that result in a formal escalation. Target:
-\textgreater50\% drop within 30 days. 2. \textbf{Tracker Discrepancy
-Count}: The number of tickets marked ``Closed'' by Support without a
-matching payout record in Finance. Target: Zero.
+To ensure the solution is working, we will monitor two primary metrics over the next month:
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item \textbf{Escalation Rate}: The percentage of refund requests that result in a formal escalation. \textbf{Target: 85\%+ drop within 30 days.} Because 149 mismatches + 100 drops + 24 WhatsApp leaks account for virtually all operational friction, successfully deploying this SSOT proactively eliminates the root causes of the vast majority of escalations.
+\item \textbf{Tracker Discrepancy Count}: The number of tickets marked ``Closed'' by Support without a matching payout record in Finance. \textbf{Target: Zero.}
+\end{enumerate}
 
 \begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
 
 \subsection{6. Assumptions Made}\label{assumptions-made}
 
-As the brief was deliberately incomplete, I proceeded with the following
-assumptions to build the prototype: - \textbf{Finance is the ultimate
-authority on payout amounts}: If Support quotes 5000 INR but Finance
-pays 4500 INR, I assumed the 500 INR deduction is legitimate
-(cancellation fee) rather than a Finance error, meaning the fix requires
-better communication to the agent rather than a refund correction. -
-\textbf{WhatsApp/Email formats are unpredictable}: I assumed agents will
-not follow a strict template, necessitating an LLM to dynamically
-extract the \texttt{agent\_name}, \texttt{route}, and intent from
-informal natural language.
+As the brief was deliberately incomplete, I proceeded with the following assumptions to build the prototype: 
+\begin{itemize}
+\item \textbf{Finance is the ultimate authority on payout amounts}: If Support quotes 5000 INR but Finance pays 4500 INR, I assumed the 500 INR deduction is legitimate (cancellation fee) rather than a Finance error, meaning the fix requires better communication to the agent rather than a refund correction. 
+\item \textbf{WhatsApp/Email formats are unpredictable}: I assumed agents will not follow a strict template, necessitating an LLM to dynamically extract the \texttt{agent\_name}, \texttt{route}, and intent from informal natural language.
+\end{itemize}
 
 \end{document}
