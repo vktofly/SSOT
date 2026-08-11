@@ -12,7 +12,7 @@ Customer and agent escalations regarding refunds are rising at BharatTrip. Our d
 This repository contains the prototype for a unified **Single Source of Truth (SSOT)** driven by a **Multi-Agent AI Architecture**. It leverages `gemini-3.5-flash` to ingest messy WhatsApp/Email messages, extract structured data, and orchestrate automated communications with external agents via a secure Human-In-The-Loop (HITL) approval process.
 
 ## 🚀 Live Demo
-**👉 [Play with the Live Web App Here](https://vktoflyss.streamlit.app/)**
+**👉 [Play with the Live Web App Here](https://8cunvwdmk9flgvtimrswxr.streamlit.app/)**
 
 > **Note to Reviewers:** The application automatically detects your API key type. You can securely input either an **OpenAI API Key** (`sk-...`) or a **Google Gemini API Key** (`AIzaSy...`) in the app settings, and it will dynamically route to the correct LLM backend.
 
