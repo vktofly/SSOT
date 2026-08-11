@@ -1,29 +1,62 @@
---- Prompt 1: Informal Request Parser ---
-Role: AI Operations extraction agent for a travel company
-Task: Analyze an informal message and return a valid JSON object.
-Keys to extract:
-- "agent_name": The name of the agency if identifiable, else null.
-- "route": The flight/travel route (e.g., BLR-MAA, DEL-DXB), else null.
-- "missing_reference": Boolean, true if they mention missing a ref number or PNR.
-- "urgency": "High", "Medium", or "Low" based on the tone and wait time.
-- "intent": "status_update" or "new_refund"
+==================================================
+PROMPT HISTORY: BHARATTRIP SSOT TASK
+==================================================
 
-Input: "Hi, I cancelled booking for DEL-DXB last week and was told I'd get a refund. I haven't received anything and I don't have any reference number."
+Below is the structured prompt engineering workflow used to architect, analyze, and build the Single Source of Truth (SSOT) prototype.
 
---- Prompt 2: Reconciliation Automated Communication ---
-Role: Customer Support / Operations Assistant
-Task: Write a polite, professional, and concise message (max 3 sentences) to {agent_name} explaining a refund payout.
-Context:
-- They requested a refund for route {route} (Ticket: {ticket_id}).
-- Support originally quoted them {support_amount} INR.
-- Finance actually paid {finance_amount} INR because of a deduction of {deduction} INR.
-- The reason for the deduction/rejection is: {reason}.
-Constraint: Make it sound like it's coming from BharatTrip Operations. Do not include subject lines, just the message body.
+--------------------------------------------------
+USER PROMPT 1: Data Reconciliation & Root Cause Analysis
+--------------------------------------------------
+Context: I have three datasets from a travel company (BharatTrip):
+1. Support_Tracker (Refund requests taken by support).
+2. Finance_Tracker (Payouts executed by finance).
+3. Escalations (Client complaints regarding delayed/incorrect refunds).
+4. Unstructured text (Informal WhatsApp/Email refund requests).
 
-Input Context:
-- Agent Name: Peak Journeys
-- Route: DEL-DXB
-- Support Amount: 26200
-- Finance Amount: 24500
-- Deduction: 1700
-- Reason: Non-refundable fare component
+Task: Perform a strict data reconciliation to find the root cause of the rising refund escalations. Do not just subtract the total rows. 
+Constraints:
+- Use an ID-to-ID Database Join (Left Anti-Join and Inner Join) on the `Booking_ID`.
+- Identify "Dropped Handoffs" (In Support, missing in Finance).
+- Identify "Deduction Mismatches" (Present in both, but Support Refund Amount > Finance Payout Amount).
+- Identify "Off-Tracker Leaks" (Cross-reference Escalations 'No Ref' with unstructured WhatsApp text).
+Output the exact integer counts for each failure point and summarize the operational bottleneck.
+
+--------------------------------------------------
+USER PROMPT 2: Multi-Agent Architecture Design
+--------------------------------------------------
+Context: Based on the data analysis, the operational bottlenecks are WhatsApp leakage and manual sheet-to-sheet handoff drops.
+
+Task: Design a system architecture for a Unified Single Source of Truth (SSOT) driven by LLM Agents.
+Constraints:
+- Must include an "AI Ingestion Agent" to parse messy unstructured text into structured JSON.
+- Must include a "Reconciliation Agent" with a Human-In-The-Loop (HITL) approval UI.
+- Must mitigate financial compliance risks and API key exposure (reference MCP - Model Context Protocol).
+Format the output as a Markdown table mapping the "Operational Failure" to the "AI Engineering Solution".
+
+--------------------------------------------------
+USER PROMPT 3: Streamlit Prototype Development & LLM Routing
+--------------------------------------------------
+Role: You are a Senior AI Operations Engineer.
+Task: Write a production-ready `app.py` using Streamlit to prototype the SSOT architecture we just designed.
+Requirements:
+- Build an Operations Telemetry Dashboard tracking "Active Escalations", "Missing Handoffs", and "Reconciliation Mismatches".
+- Implement the AI Ingestion Agent using `google-genai` (gemini-3.5-flash). 
+- Add hallucination mitigation: If the LLM hallucinates an invalid travel route (e.g. DEL to NYC instead of valid domestic routes), the UI must flag it.
+- **Dynamic API Key Routing**: Build the app so it accepts BOTH an OpenAI API key (`sk-...`) or a Google Gemini API Key (`AIzaSy...`) via the Streamlit sidebar. If OpenAI is provided, fallback to the REST API without requiring the `openai` python package to keep dependencies ultra-lightweight.
+
+--------------------------------------------------
+USER PROMPT 4: Streamlit Cloud Deployment Optimization
+--------------------------------------------------
+Task: Create the necessary deployment files to host this Streamlit app on Streamlit Community Cloud.
+Constraints:
+- Write a `requirements.txt`. Do NOT strictly pin the versions (use `>=`) to prevent Debian C-compiler failures in the cloud environment.
+- Create a `packages.txt` file including `zlib1g-dev` and `libjpeg-dev` to ensure Pillow and Pandas compile correctly if the cloud container defaults to a newer Python version without pre-built wheels.
+- Create an industry-standard Python `.gitignore` that rigorously excludes `.venv`, `.env`, and `__pycache__` to ensure API keys never touch the public repo.
+
+--------------------------------------------------
+USER PROMPT 5: Academic-Grade Visualizations & LaTeX Write-Up
+--------------------------------------------------
+Task: Generate the final business case deliverables.
+1. Write a Python script using `matplotlib` to generate two graphs: a bar chart for "Escalation Root Causes" and a flowchart for the "SSOT Architecture". Use the `seaborn-v0_8-paper` style, `serif` font, and a muted academic color palette (Deep Blue and Grey). Output at 300 DPI.
+2. Write a LaTeX document (`write_up.tex`) adhering to a strict 3-page limit. Use the `geometry` package to set 1-inch margins.
+3. Incorporate the data findings, the Multi-Agent architecture logic, and the "Measuring Success" metrics directly addressing the constraints of the original BharatTrip brief.

@@ -31,7 +31,7 @@ This repository contains the prototype for a unified **Single Source of Truth (S
 
 ## 📊 Data Verification & Methodology
 The business metrics (100 drops, 149 mismatches) were derived via strict programmatic database joins (Anti-Joins & Inner Joins). 
-For a complete breakdown of the data science methodology, please review the **[Data Analysis Methodology](deliverables/data_analysis_methodology.md)**.
+For a complete breakdown of the data science methodology, please review the **[Data Reconciliation Report](deliverables/data_reconciliation_report.md)**.
 
 ## 💻 Local Installation
 

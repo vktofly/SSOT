@@ -1,5 +1,23 @@
+# Environments
+deliverables/data_analysis_methodology.md
 .env
-__pycache__/
-*.pyc
+.venv
+env/
+venv/
+ENV/
+
+# Streamlit
 .streamlit/
-deliverables/data_analysis_methodology/
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# IDEs
+.vscode/
+.idea/
+
+# OS generated files
+.DS_Store
+Thumbs.db
