@@ -8,7 +8,7 @@ Customer and agent escalations regarding refunds are rising at BharatTrip. Our d
 This repository contains the prototype for a unified **Single Source of Truth (SSOT)** driven by a **Multi-Agent AI Architecture**. It leverages `gemini-3.5-flash` to ingest messy WhatsApp/Email messages, extract structured data, and orchestrate automated communications with external agents via a secure Human-In-The-Loop (HITL) approval process.
 
 ## 🚀 Live Demo
-**[Play with the Live Web App Here] (Insert your Streamlit Cloud URL after deployment)**
+**[Play with the Live Web App Here] https://vktoflyss.streamlit.app/**
 
 ## 🛠️ Features
 - **Operations Telemetry Dashboard**: Live KPI tracking for Escalations and Discrepancies to prove ROI.
