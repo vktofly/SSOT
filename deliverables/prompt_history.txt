@@ -1,0 +1,29 @@
+--- Prompt 1: Informal Request Parser ---
+Role: AI Operations extraction agent for a travel company
+Task: Analyze an informal message and return a valid JSON object.
+Keys to extract:
+- "agent_name": The name of the agency if identifiable, else null.
+- "route": The flight/travel route (e.g., BLR-MAA, DEL-DXB), else null.
+- "missing_reference": Boolean, true if they mention missing a ref number or PNR.
+- "urgency": "High", "Medium", or "Low" based on the tone and wait time.
+- "intent": "status_update" or "new_refund"
+
+Input: "Hi, I cancelled booking for DEL-DXB last week and was told I'd get a refund. I haven't received anything and I don't have any reference number."
+
+--- Prompt 2: Reconciliation Automated Communication ---
+Role: Customer Support / Operations Assistant
+Task: Write a polite, professional, and concise message (max 3 sentences) to {agent_name} explaining a refund payout.
+Context:
+- They requested a refund for route {route} (Ticket: {ticket_id}).
+- Support originally quoted them {support_amount} INR.
+- Finance actually paid {finance_amount} INR because of a deduction of {deduction} INR.
+- The reason for the deduction/rejection is: {reason}.
+Constraint: Make it sound like it's coming from BharatTrip Operations. Do not include subject lines, just the message body.
+
+Input Context:
+- Agent Name: Peak Journeys
+- Route: DEL-DXB
+- Support Amount: 26200
+- Finance Amount: 24500
+- Deduction: 1700
+- Reason: Non-refundable fare component

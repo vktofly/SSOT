@@ -1,0 +1,758 @@
+,A,B,C,D,E,F,G,H,I,J
+1,Ticket ID,Agent,Route,Refund Amount (INR),Request Date,Last Updated,Status,Handled By,Channel,Notes
+,,,,,,,,,,
+2,RF-1286,Sunrise Trips,DEL-KTM,10200,25-05-2026,31-05-2026,Closed,Aditi M.,WhatsApp,"refund processed, informed agent"
+3,RF-1757,Wander Agency,COK-DXB,22900,09-06-2026,28-06-2026,Closed,Faizan K.,Phone,"refund processed, informed agent"
+4,RF-1580,Skyline Travels,DEL-KUL,34300,10-02-2026,18-02-2026,Closed,Vikram T.,Email,customer notified
+5,RF-1090,ZipTrip,PNQ-DEL,10300,26-03-2026,05-04-2026,Closed,,Portal,"refund processed, informed agent"
+6,RF-1295,Metro Yatra,BOM-DXB,28800,16-02-2026,19-02-2026,Closed,Aditi M.,Phone,refund given
+7,RF-1148,Skyline Travels,COK-DXB,16500,30/05/26,09-06-2026,Closed,Faizan K.,Portal,closed - agent informed
+8,RF-1570,Skyline Travels,BLR-DXB,23600,18-06-2026,20-06-2026,Closed,Rakesh N.,WhatsApp,customer notified
+9,RF 1750,BlueJet Tours,DEL-CCU,12900,07-02-2026,17-02-2026,Closed,Aditi M.,Phone,amount credited as per process
+10,RF-1018,Voyage Desk,BOM-DXB,14500,10-05-2026,10-05-2026,Closed,Faizan K.,Portal,refund given
+11,RF-1595,Metro Yatra,GOI-BOM,4000,18-03-2026,24-03-2026,Closed,Rakesh N.,Phone,amount credited as per process
+12,RF-1386,TripHub,HYD-DEL,8000,25-04-2026,03-05-2026,Closed,Rakesh N.,Portal,refund given
+13,RF-1252,TripHub,DEL-KUL,21100,18-05-2026,05-06-2026,Closed,Priya S.,Phone,amount credited as per process
+14,RF-1775,Sunrise Trips,DEL-CCU,9400,19/03/26,31-03-2026,Closed,Aditi M.,Portal,done
+15,RF-1725,GoFly Holidays,MAA-CMB,16700,31-03-2026,08-04-2026,Closed,Rakesh N.,Phone,customer notified
+16,RF-1851,Voyage Desk,BLR-DXB,30500,17-04-2026,26-04-2026,Closed,Aditi M.,Email,"refund processed, informed agent"
+17,RF-1365,ZipTrip,BLR-DXB,13900,02-03-2026,11-03-2026,Closed,Vikram T.,Portal,done
+18,RF-1256,Peak Journeys,BOM-DXB,13200,18-04-2026,23-04-2026,Closed,Aditi M.,Email,refund given
+19,RF-1298,GoFly Holidays,MAA-CMB,15400,06-06-2026,13-06-2026,Closed,Sneha R.,Portal,amount credited as per process
+20,RF-1627,Wander Agency,CCU-BOM,8400,14-06-2026,15-06-2026,Closed,Priya S.,Portal,"refund processed, informed agent"
+21,RF-1096,GoFly Holidays,BOM-DXB,24200,13-02-2026,25-02-2026,Closed,Aditi M.,Email,done
+22,RF-1561,Nomad Travel,GOI-BOM,9100,19-04-2026,26-04-2026,Closed,Vikram T.,Phone,amount credited as per process
+23,RF-1351,TripHub,HYD-BKK,31100,08-04-2026,12-04-2026,Closed,Rakesh N.,Phone,done
+24,RF-1405,Global Wings,GOI-BOM,4900,06-02-2026,10-02-2026,Closed,Priya S.,Portal,"refund processed, informed agent"
+25,RF-1706,BlueJet Tours,DEL-SIN,36700,28-02-2026,08-03-2026,Closed,Sneha R.,Portal,"refund processed, informed agent"
+26,RF-1215,Orbit Travels,DEL-BOM,7500,29-03-2026,07/04/26,Closed,Vikram T.,Portal,amount credited as per process
+27,RF-1067,GoFly Holidays,DEL-DXB,16900,07-06-2026,08-06-2026,Closed,Rakesh N.,Portal,customer notified
+28,RF-1199,Nomad Travel,BOM-DXB,24700,13-05-2026,14-05-2026,Closed,Priya S.,Portal,refund given
+29,RF-1486,Peak Journeys,DEL-DXB,31200,17-04-2026,27-04-2026,Closed,Aditi M.,WhatsApp,customer notified
+30,RF-1676,Pinnacle Getaways,COK-DXB,19400,08-02-2026,17-02-2026,Not Eligible,Vikram T.,Email,past cancellation window
+31,RF-1760,Sunrise Trips,DEL-KTM,12000,26-04-2026,03-05-2026,Closed,Vikram T.,Email,done
+32,RF-1545,Coral Voyages,BOM-DXB,19000,24-02-2026,01-03-2026,Closed,Rakesh N.,Portal,done
+33,RF-1232,GoFly Holidays,DEL-KTM,8800,22-04-2026,30-04-2026,Working,Faizan K.,WhatsApp,customer notified
+34,RF-1594,TripHub,DEL-BOM,6800,10-05-2026,18-05-2026,Closed,Rakesh N.,Phone,amount credited as per process
+35,RF-1265,Lotus Travel Co,HYD-DEL,7500,10-05-2026,20/05/26,Closed,Priya S.,Portal,closed - agent informed
+36,RF-1729,TripHub,HYD-DEL,11100,21-04-2026,24-04-2026,Closed,Faizan K.,Phone,done
+37,RF-1665,Himalaya Holidays,DEL-KUL,14000,17-03-2026,23-03-2026,Closed,Priya S.,Portal,customer notified
+38,RF-1606,BlueJet Tours,DEL-KUL,32500,10-03-2026,20-03-2026,Closed,Faizan K.,Portal,"refund processed, informed agent"
+39,RF-1175,Orbit Travels,DEL-KTM,16600,12-05-2026,19-05-2026,Closed,Priya S.,Portal,customer notified
+40,RF-1836,Peak Journeys,COK-DXB,24100,12-03-2026,22-03-2026,Closed,Aditi M.,Phone,"refund processed, informed agent"
+41,RF-1135,Orbit Travels,CCU-BOM,12500,02-03-2026,07-03-2026,Closed,Rakesh N.,Email,closed - agent informed
+42,RF-1495,TripHub,BOM-BKK,28900,22-03-2026,27-03-2026,Closed,Sneha R.,Portal,amount credited as per process
+43,RF-1791,TripHub,BLR-DXB,19100,25-06-2026,30-06-2026,Closed,Sneha R.,Portal,"refund processed, informed agent"
+44,RF-1527,Wander Agency,DEL-CCU,12300,17-04-2026,26-04-2026,Closed,Faizan K.,Phone,informed agent
+45,RF-1786,Peak Journeys,HYD-DEL,7300,15-02-2026,21-02-2026,Closed,Rakesh N.,Phone,refund given
+46,RF-1112,Metro Yatra,MAA-CMB,10100,29-04-2026,05-05-2026,Closed,Aditi M.,Portal,refund given
+47,RF-1160,GoFly Holidays,BLR-DXB,14000,05-05-2026,13-05-2026,Closed,Vikram T.,Email,refund given
+48,RF-1688,Voyage Desk,HYD-DEL,8300,27-03-2026,03-04-2026,Closed,Aditi M.,Portal,done
+49,RF-1164,Sunrise Trips,DEL-BOM,10700,28-02-2026,09-03-2026,Closed,Priya S.,Portal,done
+50,RF-1743,Global Wings,HYD-DEL,11700,27-04-2026,04-05-2026,Closed,Aditi M.,Portal,amount credited as per process
+51,RF-1186,TripHub,DEL-KUL,31800,27-02-2026,07-03-2026,Closed,Vikram T.,WhatsApp,customer notified
+52,RF-1522,Nomad Travel,MAA-CMB,13400,28-02-2026,06-03-2026,Closed,Vikram T.,Email,amount credited as per process
+53,RF-1086,GoFly Holidays,DEL-DXB,28200,11-03-2026,18-03-2026,Closed,Faizan K.,Email,refund given
+54,RF-1127,Voyage Desk,BOM-DXB,16300,09/02/26,15-02-2026,Closed,Sneha R.,Portal,customer notified
+55,RF-1068,Nomad Travel,DEL-SIN,19500,16-05-2026,27-05-2026,Closed,Priya S.,Phone,customer notified
+56,RF-1280,ZipTrip,DEL-BOM,9200,30-06-2026,30-06-2026,Escalated,Vikram T.,Email,pending confirmation
+57,RF-1539,Nomad Travel,BLR-MAA,6100,22-04-2026,30-04-2026,Closed,Priya S.,Portal,refund given
+58,RF-1316,BlueJet Tours,DEL-CCU,7700,04/02/26,12-02-2026,Closed,Priya S.,Portal,closed - agent informed
+59,RF-1472,Sunrise Trips,BLR-DXB,28300,23/03/26,04-04-2026,Closed,Aditi M.,Portal,amount credited as per process
+60,RF-1069,Peak Journeys,BLR-DXB,22200,01-04-2026,11-04-2026,Closed,Vikram T.,Portal,"refund processed, informed agent"
+61,RF-1746,DeccanFly,BLR-DXB,24900,20-05-2026,05-06-2026,Closed,Aditi M.,Email,"refund processed, informed agent"
+62,RF-1802,Orbit Travels,DEL-SIN,40500,11-02-2026,21-02-2026,Closed,Faizan K.,Portal,customer notified
+63,RF-1262,Orbit Travels,DEL-CCU,5900,11-05-2026,20-05-2026,Closed,Rakesh N.,Phone,refund given
+64,RF-1331,Wander Agency,GOI-BOM,,13-04-2026,24-04-2026,Closed,Rakesh N.,Portal,"refund processed, informed agent"
+65,RF-1145,Peak Journeys,DEL-DXB,21300,10-06-2026,14-06-2026,Working,Rakesh N.,Phone,waiting on supplier
+66,RF-1312,ORBIT TRAVELS,PNQ-DEL,5400,26-05-2026,29-05-2026,Closed,Faizan K.,Phone,done
+67,RF-1040,Voyage Desk,DEL-BOM,6400,01-05-2026,04-05-2026,Closed,Rakesh N.,Portal,"refund processed, informed agent"
+68,RF-1129,Global Wings,DEL-KTM,17600,27-06-2026,30-06-2026,Closed,Sneha R.,Phone,"refund processed, informed agent"
+69,RF-1019,GoFly Holidays,DEL-KTM,13500,01-06-2026,10-06-2026,Closed,Rakesh N.,Portal,amount credited as per process
+70,RF-1227,Peak Journeys,DEL-BOM,12300,18/06/26,30-06-2026,Closed,Faizan K.,Portal,"refund processed, informed agent"
+71,RF-1764,Wander Agency,DEL-BOM,13400,29-06-2026,30-06-2026,Closed,Aditi M.,Phone,refund given
+72,RF-1083,Wander Agency,BOM-BKK,33600,21-02-2026,01-03-2026,Closed,Priya S.,Email,refund given
+73,RF-1021,Kaveri Tours,AMD-BOM,7000,02-03-2026,12-03-2026,Closed,Sneha R.,Phone,done
+74,RF-1498,Kaveri Tours,DEL-KTM,14000,05-04-2026,09-04-2026,Closed,Rakesh N.,Portal,done
+75,RF-1353,GoFly Holidays,AMD-BOM,8700,11/02/26,14/02/26,Closed,Priya S.,Portal,refund given
+76,RF-1826,Pinnacle Getaways,DEL-CCU,8000,27-03-2026,31-03-2026,Closed,Rakesh N.,Phone,"refund processed, informed agent"
+77,RF-1414,TripHub,BLR-DXB,28500,16-03-2026,24-03-2026,Closed,Rakesh N.,WhatsApp,closed - agent informed
+78,RF-1426,Peak Journeys,BOM-BKK,13000,25/02/26,05-03-2026,Closed,Rakesh N.,Portal,"refund processed, informed agent"
+79,RF-1668,Peak Journeys,DEL-CCU,5000,11-06-2026,13-06-2026,Closed,Rakesh N.,Portal,customer notified
+80,RF-1356,Skyline Travels,BOM-BKK,25200,18-03-2026,24-03-2026,Closed,Sneha R.,Portal,"refund processed, informed agent"
+81,RF-1045,GoFly Holidays,CCU-BOM,10900,19-02-2026,26-02-2026,Closed,Faizan K.,Phone,"refund processed, informed agent"
+82,RF-1327,Sunrise Trips,BOM-DXB,,26-02-2026,02-03-2026,Closed,Rakesh N.,Phone,customer notified
+83,RF-1124,GoFly Holidays,HYD-DEL,11900,24-03-2026,31-03-2026,Closed,Priya S.,Phone,refund given
+84,RF-1629,BlueJet Tours,DEL-BOM,12500,06-02-2026,12-02-2026,Closed,Faizan K.,,customer notified
+85,RF-1062,DeccanFly,DEL-BOM,,16-05-2026,19-05-2026,Not Eligible,Priya S.,Phone,"no-show, not eligible"
+86,rf-1650,BlueJet Tours,DEL-CCU,4200,06-04-2026,11-04-2026,Closed,Sneha R.,Portal,"refund processed, informed agent"
+87,RF-1156,Peak Journeys,DEL-DXB,26200,12-03-2026,20-03-2026,Closed,Aditi M.,Portal,refund given
+88,RF-1624,Wander Agency,HYD-BKK,13500,28-05-2026,07-06-2026,Closed,Aditi M.,WhatsApp,amount credited as per process
+89,RF-1376,Anand Travels,HYD-DEL,12300,05-03-2026,16-03-2026,Not Eligible,Faizan K.,Portal,"no-show, not eligible"
+90,RF-1514,Lotus Travel Co,DEL-DXB,31000,16-03-2026,23-03-2026,Closed,Sneha R.,Portal,done
+91,RF-1069,Peak Journeys,BLR-DXB,22200,01-04-2026,11-04-2026,Closed,Vikram T.,Portal,"refund processed, informed agent"
+92,RF-1596,Peak Journeys,DEL-BOM,6000,01-03-2026,09-03-2026,Closed,Faizan K.,Portal,done
+93,RF-1850,ORBIT TRAVELS,BOM-BKK,32500,01-04-2026,11-04-2026,Closed,Sneha R.,Portal,closed - agent informed
+94,RF-1555,Global Wings,HYD-DEL,12300,19-05-2026,26-05-2026,Closed,Rakesh N.,Portal,done
+95,RF-1461,Skyline Travels,DEL-BOM,13200,27-06-2026,30-06-2026,Escalated,Aditi M.,Portal,under review
+96,RF-1502,DeccanFly,DEL-DXB,22500,02-03-2026,06-03-2026,Closed,Sneha R.,Phone,amount credited as per process
+97,RF-1616,Skyline Travels,COK-DXB,11700,30-03-2026,08-04-2026,Closed,Rakesh N.,Portal,closed - agent informed
+98,RF-1362,SafarNama Travel,BLR-DXB,31400,05/04/26,13-04-2026,Closed,Faizan K.,Email,customer notified
+99,RF-1500,Wander Agency,HYD-BKK,19900,03-05-2026,16-05-2026,Closed,Priya S.,Phone,closed - agent informed
+100,RF-1126,METRO YATRA,GOI-BOM,3900,24-02-2026,05-03-2026,Closed,Faizan K.,Portal,refund given
+101,RF-1759,Voyage Desk,DEL-CCU,12000,25-02-2026,01-03-2026,Closed,Vikram T.,Portal,customer notified
+102,RF-1194,Metro Yatra,BOM-DXB,18300,07-02-2026,12-02-2026,Closed,Priya S.,,amount credited as per process
+103,RF-1598,Voyage Desk,DEL-KUL,23300,20-05-2026,09-06-2026,Closed,Vikram T.,Portal,refund given
+104,RF-1373,BlueJet Tours,DEL-KUL,13300,09-03-2026,17-03-2026,Not Eligible,Priya S.,Phone,non-refundable fare
+105,RF-1315,Kaveri Tours,BOM-DXB,24600,19-06-2026,30-06-2026,Escalated,Rakesh N.,WhatsApp,pending confirmation
+106,RF-1487,Yatri Junction,COK-DXB,28000,29-04-2026,07-05-2026,Closed,Aditi M.,Portal,refund given
+107,RF-1825,Wander Agency,BLR-MAA,8000,17-02-2026,21-02-2026,Closed,,Portal,closed - agent informed
+108,RF-1449,Voyage Desk,BOM-DXB,14400,02-03-2026,13-03-2026,Closed,Aditi M.,Email,amount credited as per process
+109,RF-1742,BlueJet Tours,DEL-BOM,8600,20-03-2026,28-03-2026,Closed,Faizan K.,Portal,amount credited as per process
+110,RF-1667,Nomad Travel,GOI-BOM,6400,15-05-2026,20-05-2026,Closed,Rakesh N.,Portal,refund given
+111,RF-1384,BlueJet Tours,BLR-DXB,28900,07-02-2026,14-02-2026,Closed,Sneha R.,Portal,"refund processed, informed agent"
+112,RF-1014,Global Wings,BLR-MAA,4100,24-03-2026,31-03-2026,Closed,Aditi M.,Portal,closed - agent informed
+113,RF-1346,Nomad Travel,HYD-DEL,13000,25-03-2026,29-03-2026,Closed,Aditi M.,Email,amount credited as per process
+114,RF-1762,BlueJet Tours,DEL-DXB,23000,19-03-2026,26-03-2026,Not Eligible,Faizan K.,Portal,"no-show, not eligible"
+115,RF-1431,GoFly Holidays,DEL-CCU,12300,25-03-2026,01-04-2026,Closed,Sneha R.,Phone,amount credited as per process
+116,RF-1619,GoFly Holidays,HYD-BKK,26200,06-03-2026,12-03-2026,Closed,Faizan K.,Portal,closed as per policy
+117,RF-1454,Pinnacle Getaways,DEL-KUL,24300,25-02-2026,08-03-2026,Closed,Rakesh N.,Portal,done
+118,RF-1097,TripHub,BLR-DXB,22200,01-04-2026,09-04-2026,Closed,Rakesh N.,Portal,refund given
+119,RF-1181,Pinnacle Getaways,GOI-BOM,8800,05-06-2026,14-06-2026,Closed,Priya S.,Portal,amount credited as per process
+120,RF-1242,BlueJet Tours,DEL-DXB,12900,04-03-2026,10-03-2026,Closed,Faizan K.,Phone,"refund processed, informed agent"
+121,RF-1463,DeccanFly,DEL-BOM,9000,28-06-2026,30-06-2026,Working,Faizan K.,Portal,pending confirmation
+122,RF-1417,Orbit Travels,PNQ-DEL,4100,26/05/26,02-06-2026,Closed,Priya S.,Email,done
+123,RF-1796,Skyline Travels,DEL-BOM,5100,24-05-2026,30-05-2026,Closed,Aditi M.,Email,amount credited as per process
+124,RF-1199,Nomad Travel,BOM-DXB,24700,13-05-2026,14-05-2026,Closed,Priya S.,Portal,refund given
+125,RF-1666,TripHub,DEL-KTM,18700,02-03-2026,10-03-2026,Closed,Rakesh N.,Email,amount credited as per process
+126,RF-1571,Orbit Travels,BLR-MAA,8000,21/04/26,28-04-2026,Closed,Priya S.,Email,refund given
+127,RF-1492,Skyline Travels,BOM-BKK,,16-04-2026,27-04-2026,Closed,Sneha R.,Email,amount credited as per process
+128,RF-1429,Lotus Travel Co,MAA-CMB,12500,29-04-2026,08-05-2026,Closed,Faizan K.,Portal,"refund processed, informed agent"
+129,RF-1707,coral voyages,BLR-DXB,26400,11-05-2026,30-05-2026,Closed,Aditi M.,Portal,closed - agent informed
+130,RF-1843,GoFly Holidays,BOM-DXB,24900,04-05-2026,20-05-2026,Closed,Priya S.,,done
+131,RF-1800,Anand Travels,DEL-KUL,24800,30-03-2026,01-04-2026,Closed,Aditi M.,Portal,customer notified
+132,RF-1711,TripHub,DEL-DXB,13600,14-03-2026,22-03-2026,Closed,Sneha R.,Phone,customer notified
+133,RF-1149,BlueJet Tours,BOM-BKK,23900,03-04-2026,09-04-2026,Closed,Aditi M.,Portal,done
+134,RF-1716,Lotus Travel Co,BOM-DXB,14200,24-05-2026,25-05-2026,Closed,Rakesh N.,Portal,customer notified
+135,RF-1488,Peak Journeys,DEL-CCU,8800,18/05/26,29-05-2026,Closed,Sneha R.,Portal,closed - agent informed
+136,RF-1176,DeccanFly,DEL-SIN,20000,06-03-2026,11-03-2026,Closed,Priya S.,Portal,closed - agent informed
+137,RF-1798,gofly holidays,DEL-BOM,4300,16-05-2026,27-05-2026,Closed,Sneha R.,Email,"refund processed, informed agent"
+138,RF-1044,Pinnacle Getaways,COK-DXB,21400,27-04-2026,05-05-2026,Closed,Sneha R.,Email,refund given
+139,RF-1647,Voyage Desk,HYD-DEL,6300,03-05-2026,12/05/26,Closed,Aditi M.,Portal,done
+140,RF-1202,TripHub,BLR-MAA,7900,15-02-2026,25-02-2026,Closed,Rakesh N.,Portal,"refund processed, informed agent"
+141,RF-1780,Wander Agency,HYD-BKK,12800,17/02/26,23-02-2026,Closed,Aditi M.,WhatsApp,customer notified
+142,RF-1140,Kaveri Tours,COK-DXB,13100,24-02-2026,03-03-2026,Closed,Sneha R.,Email,done
+143,RF-1670,SafarNama Travel,COK-DXB,22000,19-02-2026,25-02-2026,Closed,Rakesh N.,Portal,amount credited as per process
+144,RF-1318,Kaveri Tours,HYD-DEL,11100,07-03-2026,12-03-2026,Closed,Priya S.,Portal,amount credited as per process
+145,RF-1442,DeccanFly,MAA-CMB,14600,01-05-2026,09-05-2026,Closed,Faizan K.,Portal,amount credited as per process
+146,RF-1319,Skyline Travels,GOI-BOM,6300,30-04-2026,08-05-2026,Closed,Aditi M.,Portal,"refund processed, informed agent"
+147,RF-1613,Kaveri Tours,AMD-BOM,7100,24-06-2026,28-06-2026,Working,Sneha R.,Portal,waiting on supplier
+148,RF-1075,Nomad Travel,DEL-BOM,12600,13-05-2026,14-05-2026,Closed,Priya S.,Email,customer notified
+149,RF-1683,Skyline Travels,DEL-SIN,22100,14-02-2026,25-02-2026,Not Eligible,Vikram T.,Portal,past cancellation window
+150,RF-1192,Yatri Junction,AMD-BOM,9600,03-05-2026,08-05-2026,Closed,Aditi M.,Email,customer notified
+151,RF-1477,Orbit Travels,BLR-DXB,20800,22-06-2026,24-06-2026,Closed,Vikram T.,Portal,done
+152,RF-1508,Metro Yatra,DEL-BOM,13700,21-04-2026,23-04-2026,Closed,Rakesh N.,Portal,customer notified
+153,RF-1524,Orbit Travels,HYD-BKK,22900,21-04-2026,27-04-2026,Closed,Aditi M.,Phone,refund given
+154,RF-1549,Peak Journeys,DEL-KTM,15400,07-06-2026,16-06-2026,Closed,Rakesh N.,Portal,"refund processed, informed agent"
+155,RF-1694,Skyline Travels,BLR-MAA,6400,07-05-2026,15-05-2026,Closed,Priya S.,Portal,refund given
+156,RF 1512,Metro Yatra,CCU-BOM,7100,14-04-2026,19-04-2026,Closed,Priya S.,Portal,done
+157,RF-1147,Global Wings,AMD-BOM,3700,21-03-2026,30-03-2026,Closed,Aditi M.,Portal,amount credited as per process
+158,RF-1769,Anand Travels,DEL-DXB,10800,22-02-2026,03-03-2026,Closed,Faizan K.,Portal,refund given
+159,RF-1304,Nomad Travel,DEL-KTM,9700,04-03-2026,11-03-2026,Closed,Rakesh N.,Portal,done
+160,RF-1476,BlueJet Tours,PNQ-DEL,10800,24-05-2026,30-05-2026,Closed,Priya S.,Phone,done
+161,RF-1841,Peak Journeys,BLR-MAA,9000,24-03-2026,29-03-2026,Closed,Priya S.,Portal,closed - agent informed
+162,RF-1226,Orbit Travels,MAA-CMB,17300,31-05-2026,11-06-2026,Closed,Aditi M.,Phone,customer notified
+163,RF-1422,Wander Agency,BOM-DXB,10200,18/05/26,26-05-2026,Closed,Faizan K.,Portal,amount credited as per process
+164,RF-1273,triphub,PNQ-DEL,6500,13-05-2026,13-05-2026,Closed,Rakesh N.,Portal,done
+165,RF-1198,GoFly Holidays,PNQ-DEL,10800,17/06/26,29-06-2026,Closed,Faizan K.,Email,"refund processed, informed agent"
+166,RF-1184,Nomad Travel,COK-DXB,11000,10-03-2026,15-03-2026,Closed,Aditi M.,Portal,refund given
+167,RF-1824,GoFly Holidays,BLR-DXB,16500,01-04-2026,08-04-2026,Closed,Priya S.,WhatsApp,customer notified
+168,RF-1023,Peak Journeys,DEL-DXB,12900,11-05-2026,18-05-2026,Closed,Faizan K.,Email,done
+169,RF-1379,BlueJet Tours,DEL-BOM,12000,04-03-2026,08-03-2026,Closed,Rakesh N.,Portal,customer notified
+170,RF-1111,TripHub,HYD-BKK,30500,19-03-2026,29-03-2026,Closed,Faizan K.,Phone,closed - agent informed
+171,RF-1597,Peak Journeys,DEL-CCU,7700,27-02-2026,27-02-2026,Closed,Priya S.,Email,customer notified
+172,RF-1163,Metro Yatra,HYD-DEL,5100,07-03-2026,10-03-2026,Closed,Sneha R.,WhatsApp,refund given
+173,RF-1397,Lotus Travel Co,DEL-KUL,13200,08-04-2026,17-04-2026,Closed,Rakesh N.,Portal,closed - agent informed
+174,RF-1142,Himalaya  Holidays,BLR-DXB,18000,12-06-2026,23-06-2026,Closed,Vikram T.,WhatsApp,"refund processed, informed agent"
+175,RF-1778,Skyline Travels,DEL-KUL,28700,02-06-2026,15-06-2026,Escalated,Aditi M.,Phone,under review
+176,RF-1073,Peak Journeys,BLR-MAA,7500,10-06-2026,19-06-2026,Closed,Rakesh N.,Portal,customer notified
+177,RF-1659,BlueJet Tours,DEL-KUL,18000,29-03-2026,05-04-2026,Closed,,Phone,refund given
+178,RF-1306,Skyline Travels,HYD-DEL,8600,24-06-2026,30-06-2026,Escalated,Rakesh N.,Portal,pending confirmation
+179,RF-1278,Kaveri Tours,BLR-DXB,10500,09-02-2026,18-02-2026,Closed,Vikram T.,Phone,amount credited as per process
+180,RF-1013,Sunrise Trips,CCU-BOM,4600,21-03-2026,30-03-2026,Closed,Priya S.,Phone,done
+181,RF-1333,Nomad Travel,DEL-SIN,40600,11-04-2026,19-04-2026,Closed,Vikram T.,Portal,customer notified
+182,RF-1268,ZipTrip,DEL-CCU,11800,18-03-2026,26-03-2026,Closed,,Portal,"refund processed, informed agent"
+183,RF-1302,Pinnacle Getaways,DEL-DXB,11300,17-05-2026,26-05-2026,Closed,Sneha R.,Phone,done
+184,RF-1795,Kaveri Tours,DEL-DXB,12800,19-06-2026,30/06/26,Closed,,Portal,refund given
+185,RF-1203,Peak Journeys,HYD-DEL,5500,31-05-2026,13-06-2026,Closed,Sneha R.,WhatsApp,customer notified
+186,RF-1470,Kaveri Tours,DEL-CCU,8300,26-04-2026,03-05-2026,Closed,Rakesh N.,Portal,amount credited as per process
+187,RF-1601,TripHub,DEL-DXB,30400,08-02-2026,15-02-2026,Closed,Priya S.,Portal,closed - agent informed
+188,RF-1727,Anand Travels,BOM-DXB,30000,23-06-2026,25-06-2026,Closed,Rakesh N.,Portal,done
+189,RF-1642,BlueJet Tours,BOM-DXB,16200,08-02-2026,14-02-2026,Closed,Aditi M.,Portal,closed - agent informed
+190,RF-1587,Global Wings,BLR-MAA,10100,06-06-2026,14-06-2026,Closed,Vikram T.,Email,closed - agent informed
+191,RF-1804,TripHub,BOM-DXB,30200,18-04-2026,24-04-2026,Closed,Aditi M.,Email,refund given
+192,RF-1785,GoFly Holidays,BLR-DXB,17900,30-03-2026,09-04-2026,Closed,Rakesh N.,Portal,done
+193,RF-1244,SKYLINE TRAVELS,DEL-CCU,11000,18-04-2026,24-04-2026,Closed,Sneha R.,Phone,closed - agent informed
+194,RF-1714,Yatri Junction,DEL-KUL,22100,24-06-2026,28-06-2026,Working,Priya S.,Email,with finance team
+195,RF-1740,BlueJet Tours,GOI-BOM,5400,24-04-2026,01-05-2026,Closed,Vikram T.,Portal,customer notified
+196,RF-1464,Voyage  Desk,BLR-DXB,29500,02-02-2026,09-02-2026,Not Eligible,Vikram T.,Portal,past cancellation window
+197,RF-1313,SafarNama Travel,HYD-BKK,18700,09-06-2026,18-06-2026,Closed,Faizan K.,Phone,done
+198,RF-1323,Kaveri Tours,HYD-BKK,16100,02-06-2026,08-06-2026,Closed,Faizan K.,Email,done
+199,RF-1006,DeccanFly,GOI-BOM,4500,07-02-2026,16-02-2026,Closed,Aditi M.,Email,refund given
+200,RF-1681,BlueJet Tours,BLR-MAA,9800,25-02-2026,06-03-2026,Closed,Priya S.,,customer notified
+201,RF-1754,Metro Yatra,DEL-CCU,4700,13-03-2026,23-03-2026,Closed,Faizan K.,Portal,customer notified
+202,RF-1718,Nomad Travel,DEL-DXB,24600,02-03-2026,09-03-2026,Closed,Vikram T.,Portal,"refund processed, informed agent"
+203,RF-1196,BlueJet Tours,DEL-DXB,30900,08-04-2026,17-04-2026,Closed,Rakesh N.,Portal,"refund processed, informed agent"
+204,RF-1277,TripHub,DEL-KTM,11600,20-06-2026,28/06/26,Closed,Aditi M.,,"refund processed, informed agent"
+205,RF-1282,Wander Agency,HYD-BKK,12400,05-05-2026,12-05-2026,Closed,Rakesh N.,Phone,amount credited as per process
+206,RF-1657,Voyage Desk,DEL-KTM,11600,26-04-2026,30-04-2026,Closed,Priya S.,Phone,done
+207,RF-1579,Skyline Travels,MAA-CMB,10700,24-04-2026,03-05-2026,Closed,Priya S.,Portal,"refund processed, informed agent"
+208,RF-1767,Wander Agency,DEL-KUL,31800,26/04/26,03-05-2026,Closed,Rakesh N.,Phone,customer notified
+209,RF-1603,Wander Agency,DEL-KUL,24500,04-03-2026,13-03-2026,Closed,Vikram T.,Phone,"refund processed, informed agent"
+210,RF 1653,Himalaya Holidays,DEL-SIN,28300,07-02-2026,16-02-2026,Closed,Vikram T.,Phone,"refund processed, informed agent"
+211,RF-1830,Pinnacle Getaways,DEL-BOM,10300,07-02-2026,16-02-2026,Closed,Aditi M.,Portal,done
+212,RF-1130,GoFly Holidays,BLR-DXB,26100,05-05-2026,19-05-2026,Closed,Sneha R.,Email,done
+213,RF-1856,Yatri Junction,BLR-DXB,28800,04/06/26,14-06-2026,Closed,Vikram T.,Portal,refund given
+214,RF-1070,Lotus Travel Co,CCU-BOM,13700,15-05-2026,21-05-2026,Closed,Priya S.,WhatsApp,refund given
+215,RF-1161,Nomad Travel,DEL-DXB,18700,18-05-2026,31-05-2026,Closed,Faizan K.,Email,refund given
+216,RF-1689,Voyage Desk,BLR-DXB,32100,08-05-2026,03-06-2026,Closed,Sneha R.,Phone,closed - agent informed
+217,RF-1791,TripHub,BLR-DXB,19600,25-06-2026,30-06-2026,Closed,Sneha R.,Portal,"refund processed, informed agent"
+218,RF-1085,ZipTrip,DEL-KTM,16500,19-05-2026,20-05-2026,Closed,,Portal,done
+219,RF-1059,BlueJet Tours,HYD-DEL,7000,28-03-2026,05-04-2026,Closed,Rakesh N.,Portal,closed - agent informed
+220,RF-1581,Yatri Junction,COK-DXB,14300,03-02-2026,08-02-2026,Closed,Priya S.,Portal,amount credited as per process
+221,RF-1640,Peak Journeys,CCU-BOM,11300,28-05-2026,02-06-2026,Closed,Sneha R.,Phone,done
+222,RF-1218,Voyage Desk,DEL-DXB,26700,07-02-2026,19-02-2026,Closed,,Phone,done
+223,RF-1853,Coral Voyages,PNQ-DEL,8400,06-03-2026,13-03-2026,Closed,Priya S.,Portal,"refund processed, informed agent"
+224,RF-1810,BlueJet Tours,MAA-CMB,15100,20-05-2026,23-05-2026,Closed,Sneha R.,Portal,refund given
+225,RF-1576,GoFly Holidays,DEL-BOM,10100,08-06-2026,17-06-2026,Closed,Priya S.,WhatsApp,amount credited as per process
+226,RF-1106,BlueJet Tours,DEL-KTM,19000,22-06-2026,30-06-2026,Closed,Sneha R.,Email,done
+227,RF-1031,GoFly Holidays,BLR-MAA,,11-03-2026,14-03-2026,Closed,Rakesh N.,Portal,refund given
+228,RF-1104,GoFly Holidays,DEL-DXB,12700,24/05/26,04-06-2026,Closed,Priya S.,Portal,done
+229,RF-1425,Yatri Junction,BLR-DXB,32000,24-02-2026,03-03-2026,Closed,Aditi M.,Email,done
+230,RF-1618,Lotus Travel Co,BLR-DXB,16300,17-03-2026,21-03-2026,Closed,Faizan K.,Phone,refund given
+231,RF-1343,Skyline Travels,CCU-BOM,10800,28-03-2026,04-04-2026,Closed,,Email,"refund processed, informed agent"
+232,RF-1809,Metro Yatra,GOI-BOM,5200,10-06-2026,12-06-2026,Closed,Vikram T.,Email,customer notified
+233,RF-1755,GoFly Holidays,DEL-DXB,10700,15-05-2026,20-05-2026,Closed,Vikram T.,Portal,refund given
+234,RF-1248,Peak Journeys,MAA-CMB,13600,25-04-2026,04-05-2026,Closed,Aditi M.,Portal,amount credited as per process
+235,RF-1496,Skyline Travels,BLR-DXB,25600,06-03-2026,11-03-2026,Closed,Priya S.,Phone,customer notified
+236,RF-1180,Kaveri Tours,PNQ-DEL,11800,24-06-2026,30-06-2026,Working,Aditi M.,Portal,with finance team
+237,RF-1617,Anand Travels,HYD-DEL,9300,06-03-2026,09-03-2026,Closed,Faizan K.,Phone,customer notified
+238,RF-1279,Peak Journeys,BOM-DXB,22400,31-03-2026,05-04-2026,Closed,Rakesh N.,Portal,refund given
+239,RF-1054,Kaveri Tours,DEL-DXB,15900,19-06-2026,26-06-2026,Closed,Rakesh N.,Portal,informed agent
+240,RF-1434,Peak Journeys,DEL-KTM,12000,09-04-2026,11-04-2026,Closed,Vikram T.,Portal,"refund processed, informed agent"
+241,RF-1797,GoFly Holidays,BOM-BKK,21100,19-03-2026,26-03-2026,Closed,Sneha R.,Portal,done
+242,RF-1401,Metro Yatra,DEL-KUL,25000,11-06-2026,26-06-2026,Working,Priya S.,Portal,pending confirmation
+243,RF-1237,TripHub,HYD-BKK,19800,06/05/26,17-05-2026,Closed,Sneha R.,Portal,done
+244,RF-1138,GoFly Holidays,BLR-MAA,10500,09-03-2026,21-03-2026,Closed,Rakesh N.,Portal,"refund processed, informed agent"
+245,RF-1116,Yatri Junction,BLR-DXB,24700,07-02-2026,15-02-2026,Closed,Rakesh N.,Portal,customer notified
+246,RF-1133,Himalaya Holidays,DEL-CCU,9300,08-06-2026,13-06-2026,Closed,Faizan K.,Email,"refund processed, informed agent"
+247,RF-1029,Skyline Travels,HYD-BKK,17100,03-03-2026,12-03-2026,Closed,Priya S.,Portal,"refund processed, informed agent"
+248,rf-1276,Skyline Travels,CCU-BOM,11600,18-02-2026,24-02-2026,Closed,Faizan K.,Portal,closed - agent informed
+249,RF-1839,TripHub,DEL-CCU,5800,28-03-2026,01-04-2026,Closed,Priya S.,Email,refund given
+250,RF-1171,Nomad Travel,DEL-KUL,17200,21-04-2026,26-04-2026,Closed,Faizan K.,Portal,refund given
+251,RF-1632,BlueJet Tours,HYD-BKK,27800,19-03-2026,25-03-2026,Closed,Rakesh N.,WhatsApp,closed - agent informed
+252,RF-1849,BlueJet Tours,DEL-KUL,24900,10-02-2026,18-02-2026,Closed,Sneha R.,Portal,done
+253,RF-1305,TripHub,BOM-BKK,28900,18-05-2026,11-06-2026,Closed,Sneha R.,Email,done
+254,RF-1696,Peak Journeys,DEL-SIN,41100,02-06-2026,03-06-2026,Closed,Faizan K.,WhatsApp,"refund processed, informed agent"
+255,RF-1144,SafarNama Travel,DEL-KUL,22900,20-05-2026,20-05-2026,Closed,Vikram T.,Portal,refund given
+256,rf-1314,Nomad Travel,DEL-DXB,18500,29-04-2026,08-05-2026,Working,Priya S.,Portal,closed as per policy
+257,RF-1109,Voyage Desk,BLR-DXB,27700,11-03-2026,16-03-2026,Closed,Sneha R.,Portal,closed - agent informed
+258,RF-1334,GoFly Holidays,DEL-BOM,6500,14/02/26,21/02/26,Closed,Priya S.,Portal,customer notified
+259,RF-1703,Skyline Travels,DEL-BOM,6700,24-02-2026,04-03-2026,Closed,Vikram T.,Email,refund given
+260,RF-1178,Coral Voyages,DEL-KUL,22300,03-03-2026,07-03-2026,Closed,Sneha R.,Portal,refund given
+261,RF-1151,GoFly Holidays,BLR-DXB,27800,27-02-2026,05-03-2026,Closed,Rakesh N.,Portal,done
+262,RF-1847,BlueJet Tours,BOM-DXB,24500,08-04-2026,16-04-2026,Closed,Rakesh N.,Email,customer notified
+263,RF-1519,Pinnacle Getaways,DEL-KUL,29700,28-02-2026,09-03-2026,Closed,Priya S.,Portal,customer notified
+264,RF-1542,TripHub,DEL-CCU,4500,25-06-2026,30-06-2026,Closed,Faizan K.,Portal,"refund processed, informed agent"
+265,RF-1643,SafarNama Travel,DEL-DXB,9500,08-04-2026,15-04-2026,Closed,Vikram T.,Phone,"refund processed, informed agent"
+266,RF-1065,BlueJet Tours,COK-DXB,14300,10/05/26,22-05-2026,Closed,Aditi M.,WhatsApp,refund given
+267,RF-1720,Lotus Travel Co,BOM-BKK,15300,16-05-2026,27-05-2026,Closed,Aditi M.,Phone,done
+268,RF-1645,BlueJet Tours,DEL-DXB,26400,25-04-2026,28-04-2026,Closed,Rakesh N.,Phone,refund given
+269,RF-1325,GoFly Holidays,BLR-MAA,,10-02-2026,15-02-2026,Closed,Rakesh N.,Phone,refund given
+270,RF-1035,Nomad Travel,BLR-DXB,12300,27-05-2026,04-06-2026,Closed,Faizan K.,Phone,refund given
+271,RF-1266,TripHub,COK-DXB,16000,06-05-2026,06-05-2026,Closed,Priya S.,Phone,refund given
+272,RF-1267,TripHub,BLR-MAA,6400,27-05-2026,02-06-2026,Closed,Rakesh N.,Portal,amount credited as per process
+273,RF-1432,Global Wings,PNQ-DEL,10800,26-04-2026,01-05-2026,Closed,Sneha R.,Phone,amount credited as per process
+274,RF-1296,Skyline Travels,BLR-DXB,20900,15-03-2026,26-03-2026,Closed,Faizan K.,WhatsApp,amount credited as per process
+275,RF-1840,GoFly Holidays,DEL-DXB,27600,08-03-2026,18-03-2026,Closed,Rakesh N.,Email,"refund processed, informed agent"
+276,RF-1536,DeccanFly,BOM-BKK,29400,19-05-2026,29-05-2026,Not Eligible,Rakesh N.,Portal,past cancellation window
+277,RF-1410,Sunrise Trips,BLR-MAA,8300,19-05-2026,25-05-2026,Closed,Aditi M.,WhatsApp,refund given
+278,RF-1201,Anand Travels,DEL-BOM,4500,09-06-2026,10-06-2026,Closed,Rakesh N.,Email,"refund processed, informed agent"
+279,RF-1608,TripHub,DEL-DXB,26700,07-04-2026,18-04-2026,Closed,Rakesh N.,,refund given
+280,RF-1114,Peak Journeys,DEL-KTM,17200,24-05-2026,31-05-2026,Closed,Aditi M.,Portal,amount credited as per process
+281,RF-1589,Nomad Travel,HYD-BKK,14500,14-02-2026,01-03-2026,Not Eligible,Rakesh N.,Email,non-refundable fare
+282,RF-1820,Himalaya Holidays,DEL-DXB,15800,02-02-2026,09-02-2026,Closed,Rakesh N.,WhatsApp,closed - agent informed
+283,RF-1321,Wander Agency,BLR-DXB,30500,03-05-2026,20-05-2026,Closed,Sneha R.,Phone,"refund processed, informed agent"
+284,RF-1773,DeccanFly,BLR-DXB,11900,01-05-2026,10-05-2026,Not Eligible,Vikram T.,WhatsApp,past cancellation window
+285,RF-1223,Kaveri Tours,BOM-BKK,23600,18-04-2026,24-04-2026,Closed,Priya S.,Portal,done
+286,RF-1735,TripHub,DEL-CCU,8800,25/04/26,01-05-2026,Closed,Aditi M.,Phone,"refund processed, informed agent"
+287,RF-1663,Metro Yatra,DEL-BOM,12800,27-06-2026,30-06-2026,Working,Aditi M.,Portal,with finance team
+288,RF-1195,Peak Journeys,DEL-KUL,,25-05-2026,03-06-2026,Not Eligible,Rakesh N.,WhatsApp,non-refundable fare
+289,RF-1122,Wander Agency,DEL-KUL,32200,04-06-2026,13-06-2026,Escalated,Rakesh N.,,escalated to finance
+290,RF-1443,BlueJet Tours,HYD-DEL,11900,09-02-2026,15-02-2026,Closed,Vikram T.,Email,amount credited as per process
+291,RF-1591,Lotus Travel Co,GOI-BOM,6400,29-06-2026,30-06-2026,Working,Aditi M.,Portal,with finance team
+292,RF-1231,Skyline Travels,GOI-BOM,6800,17-05-2026,25-05-2026,Closed,Rakesh N.,Email,refund given
+293,RF-1421,BlueJet Tours,DEL-KUL,23000,03-02-2026,12-02-2026,Closed,Aditi M.,Portal,refund given
+294,RF-1848,Metro Yatra,CCU-BOM,11900,28-02-2026,06-03-2026,Closed,Faizan K.,Phone,amount credited as per process
+295,RF-1241,GoFly Holidays,CCU-BOM,13900,13-02-2026,14-02-2026,Closed,Sneha R.,Phone,"refund processed, informed agent"
+296,RF-1005,Voyage Desk,DEL-DXB,28700,13-03-2026,18-03-2026,Closed,Priya S.,Phone,refund given
+297,RF-1091,SafarNama Travel,GOI-BOM,,06-02-2026,08-02-2026,Closed,Rakesh N.,Email,done
+298,RF-1336,TripHub,DEL-KUL,23300,29-05-2026,29-05-2026,Closed,Aditi M.,Phone,"refund processed, informed agent"
+299,RF-1082,Voyage Desk,BOM-BKK,22500,09-06-2026,21-06-2026,Not Eligible,Priya S.,Portal,past cancellation window
+300,RF-1038,Wander Agency,DEL-BOM,12400,18-03-2026,24-03-2026,Closed,Vikram T.,Portal,customer notified
+301,RF-1077,GoFly Holidays,DEL-DXB,26400,13-03-2026,20-03-2026,Closed,Sneha R.,Portal,amount credited as per process
+302,RF-1212,Metro Yatra,HYD-DEL,12400,15-06-2026,24-06-2026,Closed,Faizan K.,Portal,customer notified
+303,RF-1723,SafarNama Travel,DEL-BOM,8000,17-04-2026,23-04-2026,Closed,Priya S.,Portal,customer notified
+304,RF-1566,Skyline Travels,BLR-MAA,9500,22-05-2026,25-05-2026,Closed,Rakesh N.,Phone,"refund processed, informed agent"
+305,RF-1479,SafarNama Travel,DEL-BOM,6500,23-06-2026,25-06-2026,Closed,Faizan K.,WhatsApp,done
+306,RF-1251,Wander Agency,DEL-DXB,11800,19-04-2026,25-04-2026,Closed,Priya S.,WhatsApp,done
+307,RF-1413,Skyline Travels,DEL-SIN,34600,04-06-2026,04-06-2026,Closed,Rakesh N.,Phone,"refund processed, informed agent"
+308,RF-1222,TripHub,DEL-BOM,9400,29-06-2026,30-06-2026,Working,Rakesh N.,Email,pending confirmation
+309,RF-1602,SafarNama Travel,BOM-BKK,12400,08-06-2026,18-06-2026,Closed,Aditi M.,Phone,closed - agent informed
+310,RF-1468,Voyage Desk,DEL-DXB,27700,06-05-2026,17-05-2026,Closed,Rakesh N.,Phone,refund given
+311,rf-1489,Nomad Travel,DEL-KTM,11000,05-03-2026,15/03/26,Closed,Aditi M.,Portal,closed - agent informed
+312,RF-1418,Orbit Travels,DEL-CCU,6300,02/05/26,02-05-2026,Closed,Vikram T.,Portal,"refund processed, informed agent"
+313,RF-1483,BlueJet Tours,DEL-DXB,29100,20-03-2026,30-03-2026,Closed,Faizan K.,Email,done
+314,RF-1399,Wander Agency,CCU-BOM,6100,26-02-2026,04-03-2026,Closed,Rakesh N.,Portal,refund given
+315,RF-1615,Sunrise Trips,DEL-CCU,12200,08-03-2026,11/03/26,Closed,Faizan K.,Phone,refund given
+316,RF-1065,BlueJet Tours,COK-DXB,14300,10/05/26,22-05-2026,Closed,Aditi M.,WhatsApp,refund given
+317,RF-1858,Metro Yatra,AMD-BOM,9300,11-04-2026,14-04-2026,Closed,Rakesh N.,Phone,done
+318,RF-1520,Nomad Travel,DEL-DXB,20000,25-02-2026,04-03-2026,Closed,Aditi M.,,closed - agent informed
+319,RF-1369,Yatri Junction,DEL-KTM,8700,24-06-2026,30-06-2026,Escalated,Priya S.,Portal,escalated to finance
+320,RF-1030,Voyage Desk,AMD-BOM,5300,24-06-2026,29-06-2026,Working,Aditi M.,Email,awaiting approval
+321,RF-1815,TripHub,DEL-BOM,10300,20-04-2026,26-04-2026,Closed,Priya S.,Email,refund given
+322,RF-1340,Orbit Travels,PNQ-DEL,4300,11-06-2026,22-06-2026,Closed,Rakesh N.,Portal,"refund processed, informed agent"
+323,RF-1200,Peak Journeys,CCU-BOM,12900,29-05-2026,07-06-2026,Closed,Priya S.,Portal,closed - agent informed
+324,RF-1126,METRO YATRA,GOI-BOM,3900,24-02-2026,05-03-2026,Closed,Faizan K.,Portal,refund given
+325,RF-1563,Orbit Travels,BLR-MAA,7500,11-06-2026,22-06-2026,Closed,Vikram T.,Phone,customer notified
+326,RF-1033,Skyline Travels,HYD-DEL,8100,05-04-2026,10-04-2026,Closed,Faizan K.,WhatsApp,"refund processed, informed agent"
+327,RF-1664,Voyage Desk,DEL-BOM,6700,01-05-2026,11-05-2026,Closed,Priya S.,Portal,customer notified
+328,RF-1534,Orbit Travels,DEL-DXB,10400,31/05/26,11-06-2026,Not Eligible,Sneha R.,Portal,outside policy
+329,RF-1628,Skyline Travels,COK-DXB,27000,23-03-2026,29-03-2026,Closed,Priya S.,Portal,closed - agent informed
+330,RF-1515,Metro Yatra,DEL-DXB,17000,24-04-2026,29-04-2026,Closed,Vikram T.,Phone,closed - agent informed
+331,RF-1152,BlueJet Tours,DEL-DXB,25000,01-06-2026,24-06-2026,Closed,Vikram T.,Email,amount credited as per process
+332,RF-1562,Nomad Travel,BOM-BKK,26800,18-03-2026,26-03-2026,Closed,Priya S.,Portal,"refund processed, informed agent"
+333,RF-1494,BlueJet Tours,BLR-DXB,10800,05-03-2026,13-03-2026,Closed,Sneha R.,Email,refund given
+334,RF-1047,Peak Journeys,BOM-BKK,26300,11-02-2026,18-02-2026,Closed,Vikram T.,Portal,closed - agent informed
+335,RF-1540,Kaveri Tours,BLR-MAA,5700,08-02-2026,19-02-2026,Closed,Vikram T.,Phone,amount credited as per process
+336,RF-1583,Anand Travels,DEL-BOM,11700,09-03-2026,15-03-2026,Closed,Priya S.,Portal,customer notified
+337,RF-1803,TripHub,DEL-CCU,11700,02-04-2026,12-04-2026,Closed,Vikram T.,Portal,customer notified
+338,RF-1254,TripHub,GOI-BOM,8200,04-02-2026,08-02-2026,Closed,Faizan K.,Portal,refund given
+339,RF-1533,Metro Yatra,GOI-BOM,,21-05-2026,23-05-2026,Closed,Rakesh N.,Phone,customer notified
+340,RF-1221,Kaveri Tours,DEL-BOM,11600,05-06-2026,14-06-2026,Closed,Faizan K.,Email,closed - agent informed
+341,RF-1107,Peak Journeys,BLR-DXB,31700,25-06-2026,30-06-2026,Escalated,Aditi M.,WhatsApp,under review
+342,RF-1009,Voyage Desk,CCU-BOM,5300,08/03/26,12/03/26,Closed,Aditi M.,Portal,closed - agent informed
+343,RF-1177,Pinnacle Getaways,DEL-KUL,13300,22-03-2026,01-04-2026,Closed,Rakesh N.,Email,amount credited as per process
+344,RF-1017,SafarNama Travel,AMD-BOM,8000,11-03-2026,17/03/26,Closed,Priya S.,Phone,refund given
+345,RF-1165,Orbit Travels,DEL-BOM,10300,15-04-2026,23-04-2026,Closed,Faizan K.,Email,"refund processed, informed agent"
+346,RF-1115,GoFly Holidays,CCU-BOM,12600,08-04-2026,16-04-2026,Closed,Priya S.,Email,refund given
+347,RF-1817,TripHub,PNQ-DEL,9800,28-02-2026,08-03-2026,Working,Priya S.,Phone,closed as per policy
+348,RF-1411,Peak Journeys,CCU-BOM,6200,23-05-2026,26-05-2026,Closed,Rakesh N.,Email,"refund processed, informed agent"
+349,RF-1134,GoFly Holidays,DEL-BOM,8300,16-06-2026,16-06-2026,Closed,Priya S.,WhatsApp,done
+350,RF-1635,Wander Agency,CCU-BOM,14800,02-04-2026,10-04-2026,Closed,Rakesh N.,Email,customer notified
+351,RF-1478,BLUEJET TOURS,DEL-BOM,6000,01-06-2026,11-06-2026,Closed,Faizan K.,Email,done
+352,RF-1081,Metro Yatra,DEL-DXB,29000,22-03-2026,25-03-2026,Closed,Vikram T.,Email,done
+353,RF-1751,GoFly Holidays,HYD-DEL,7000,28-05-2026,04-06-2026,Closed,Vikram T.,Portal,amount credited as per process
+354,RF-1526,BlueJet Tours,DEL-KUL,26600,13-05-2026,05-06-2026,Closed,Aditi M.,Portal,refund given
+355,RF-1016,SafarNama Travel,BLR-DXB,27300,02/06/26,10-06-2026,Not Eligible,Vikram T.,Portal,non-refundable fare
+356,RF-1535,Sunrise Trips,BOM-BKK,22000,09-05-2026,24-05-2026,Closed,Sneha R.,Phone,closed - agent informed
+357,RF-1158,Kaveri Tours,DEL-SIN,39400,02-02-2026,13-02-2026,Closed,Sneha R.,Portal,done
+358,RF-1516,GoFly Holidays,BLR-DXB,27100,29-06-2026,30-06-2026,Closed,Priya S.,Portal,refund given
+359,RF-1559,Metro Yatra,BOM-DXB,14700,27-02-2026,08-03-2026,Closed,Rakesh N.,Portal,closed - agent informed
+360,RF-1225,Voyage Desk,BOM-BKK,19800,03-05-2026,15-05-2026,Closed,Aditi M.,WhatsApp,closed - agent informed
+361,RF-1188,TripHub,MAA-CMB,10400,31-05-2026,05-06-2026,Closed,Faizan K.,,customer notified
+362,RF-1028,BLUEJET TOURS,DEL-DXB,11700,24-05-2026,03-06-2026,Closed,Sneha R.,,customer notified
+363,RF-1383,Orbit Travels,BLR-DXB,19100,03/04/26,11/04/26,Closed,Aditi M.,Portal,refund given
+364,RF-1518,Lotus Travel Co,DEL-BOM,4900,29-03-2026,06-04-2026,Closed,Sneha R.,Email,amount credited as per process
+365,RF-1702,Wander Agency,HYD-BKK,32200,08-05-2026,05-06-2026,Closed,Aditi M.,Portal,done
+366,RF-1121,Global Wings,BLR-MAA,,07-02-2026,16-02-2026,Closed,Vikram T.,Email,closed - agent informed
+367,RF-1400,Wander Agency,DEL-CCU,12300,08-02-2026,17-02-2026,Closed,Rakesh N.,Email,amount credited as per process
+368,RF-1776,Lotus Travel Co,BLR-MAA,4100,19-05-2026,28-05-2026,Closed,Vikram T.,Portal,informed agent
+369,RF-1344,Himalaya Holidays,BLR-DXB,19900,23-04-2026,01/05/26,Not Eligible,Priya S.,Portal,non-refundable fare
+370,RF-1368,TripHub,DEL-BOM,14200,30-03-2026,07-04-2026,Closed,Faizan K.,Email,done
+371,RF-1441,Voyage Desk,HYD-BKK,18600,26-06-2026,30-06-2026,Working,Faizan K.,WhatsApp,escalated to finance
+372,RF-1504,Nomad Travel,DEL-SIN,15200,17/06/26,23-06-2026,Working,Faizan K.,Phone,checking with finance
+373,RF-1064,Orbit Travels,DEL-KTM,17700,28-05-2026,29-05-2026,Closed,Vikram T.,Portal,customer notified
+374,RF-1055,Sunrise Trips,HYD-DEL,5800,19-04-2026,26-04-2026,Closed,Rakesh N.,Portal,"refund processed, informed agent"
+375,RF 1531,BlueJet Tours,BLR-MAA,8900,17-03-2026,23-03-2026,Closed,Rakesh N.,Portal,refund given
+376,RF-1758,Yatri Junction,DEL-CCU,12000,22-03-2026,31/03/26,Closed,Rakesh N.,Phone,closed - agent informed
+377,RF-1437,himalaya holidays,DEL-DXB,26400,03-03-2026,14-03-2026,Closed,Aditi M.,Portal,customer notified
+378,RF-1717,Lotus Travel Co,AMD-BOM,7500,11-06-2026,25-06-2026,Closed,Faizan K.,Phone,closed - agent informed
+379,RF-1348,Himalaya Holidays,GOI-BOM,5700,22-05-2026,29-05-2026,Closed,Aditi M.,Portal,"refund processed, informed agent"
+380,RF-1345,BlueJet Tours,DEL-CCU,5600,01-02-2026,06-02-2026,Closed,Rakesh N.,Phone,closed - agent informed
+381,RF-1308,BlueJet Tours,HYD-BKK,33000,02-03-2026,14-03-2026,Closed,Aditi M.,Phone,"refund processed, informed agent"
+382,RF-1737,Wander Agency,PNQ-DEL,4900,24-06-2026,30-06-2026,Closed,Rakesh N.,Portal,amount credited as per process
+383,RF-1007,TripHub,DEL-DXB,21400,01-04-2026,08-04-2026,Closed,Aditi M.,Phone,done
+384,RF-1137,BlueJet Tours,MAA-CMB,10900,10-02-2026,19-02-2026,Closed,Rakesh N.,Portal,amount credited as per process
+385,RF-1080,Lotus Travel Co,BLR-DXB,19300,12-05-2026,17-05-2026,Closed,Vikram T.,Phone,refund given
+386,RF-1020,BlueJet Tours,AMD-BOM,7700,02-04-2026,10-04-2026,Closed,Rakesh N.,Portal,"refund processed, informed agent"
+387,RF-1359,ZipTrip,COK-DXB,15600,08-02-2026,13-02-2026,Working,Vikram T.,Portal,done
+388,RF-1424,Nomad Travel,DEL-DXB,14700,20-03-2026,26-03-2026,Closed,Faizan K.,Portal,amount credited as per process
+389,RF-1739,TripHub,COK-DXB,17200,10-06-2026,16-06-2026,Not Eligible,Aditi M.,Portal,past cancellation window
+390,RF-1179,GoFly Holidays,CCU-BOM,12600,23-04-2026,02-05-2026,Closed,Rakesh N.,Phone,customer notified
+391,RF-1392,Skyline Travels,DEL-KUL,23300,07-05-2026,15-05-2026,Closed,Priya S.,Portal,informed agent
+392,RF-1026,BlueJet Tours,DEL-CCU,6800,11-02-2026,16-02-2026,Closed,Aditi M.,Portal,done
+393,RF-1482,TripHub,DEL-DXB,21000,09-06-2026,29-06-2026,Escalated,Priya S.,WhatsApp,waiting on supplier
+394,RF-1003,Orbit Travels,BLR-DXB,17800,10-02-2026,15-02-2026,Closed,Faizan K.,Phone,customer notified
+395,RF-1713,TripHub,DEL-SIN,39900,17-06-2026,30-06-2026,Escalated,Faizan K.,Portal,with finance team
+396,RF-1234,Skyline Travels,AMD-BOM,4000,03/06/26,06-06-2026,Closed,Priya S.,Phone,done
+397,RF-1328,Wander Agency,HYD-DEL,6000,23-04-2026,29-04-2026,Closed,Sneha R.,Portal,amount credited as per process
+398,RF 1113,Nomad Travel,DEL-SIN,38800,25-06-2026,30-06-2026,Working,Faizan K.,Portal,pending confirmation
+399,RF-1611,TripHub,HYD-DEL,11900,22-05-2026,02-06-2026,Closed,Priya S.,Portal,closed - agent informed
+400,RF-1490,Metro Yatra,HYD-DEL,7700,10-06-2026,13-06-2026,Closed,Aditi M.,Phone,"refund processed, informed agent"
+401,RF-1056,GoFly Holidays,CCU-BOM,11400,30-03-2026,03-04-2026,Closed,Rakesh N.,Phone,done
+402,RF-1288,Sunrise Trips,MAA-CMB,12800,10-04-2026,19/04/26,Closed,Priya S.,Portal,customer notified
+403,RF-1092,Wander Agency,HYD-DEL,7500,25-05-2026,04-06-2026,Closed,Aditi M.,Portal,customer notified
+404,RF-1185,Skyline Travels,DEL-DXB,14400,26-03-2026,04-04-2026,Closed,Aditi M.,Portal,customer notified
+405,RF-1652,Wander Agency,MAA-CMB,17000,18-05-2026,24-05-2026,Closed,Rakesh N.,Portal,closed - agent informed
+406,RF-1253,Wander Agency,AMD-BOM,7300,01-02-2026,06-02-2026,Closed,Vikram T.,Portal,done
+407,RF-1733,BlueJet Tours,DEL-BOM,11900,06-06-2026,08-06-2026,Closed,Vikram T.,Portal,customer notified
+408,RF-1466,Coral Voyages,BLR-DXB,25500,10-05-2026,09-06-2026,Closed,Priya S.,Portal,"refund processed, informed agent"
+409,RF-1066,safarnama travel,HYD-BKK,25700,25-02-2026,05-03-2026,Closed,Rakesh N.,,customer notified
+410,RF-1630,TripHub,DEL-BOM,10700,07-03-2026,11-03-2026,Closed,Vikram T.,Portal,"refund processed, informed agent"
+411,RF-1728,gofly holidays,PNQ-DEL,6500,21-05-2026,28-05-2026,Closed,Aditi M.,Portal,customer notified
+412,RF-1299,Metro Yatra,BOM-DXB,16100,13-06-2026,21-06-2026,Closed,Priya S.,Portal,amount credited as per process
+413,RF-1809,Metro Yatra,GOI-BOM,5200,10-06-2026,12-06-2026,Closed,Vikram T.,Email,customer notified
+414,RF-1481,GoFly Holidays,MAA-CMB,15800,19-02-2026,26-02-2026,Closed,Sneha R.,Email,closed - agent informed
+415,RF-1736,Pinnacle Getaways,MAA-CMB,9800,30-06-2026,30-06-2026,Working,Priya S.,Email,waiting on supplier
+416,RF-1845,GoFly Holidays,PNQ-DEL,10100,02-04-2026,12-04-2026,Closed,Sneha R.,Portal,amount credited as per process
+417,RF-1855,Himalaya Holidays,DEL-CCU,11400,25-03-2026,03-04-2026,Closed,Faizan K.,Phone,done
+418,RF-1181,Pinnacle Getaways,GOI-BOM,8300,05-06-2026,14-06-2026,Working,Priya S.,Portal,amount credited as per process
+419,RF-1125,Global Wings,MAA-CMB,6800,30-04-2026,09-05-2026,Closed,Aditi M.,Email,done
+420,RF-1374,Voyage Desk,CCU-BOM,8500,28-02-2026,07-03-2026,Closed,Priya S.,Portal,done
+421,RF-1183,Global Wings,DEL-BOM,8700,25-05-2026,27-05-2026,Closed,Vikram T.,Portal,"refund processed, informed agent"
+422,RF-1610,TripHub,HYD-DEL,10100,04-02-2026,11-02-2026,Closed,Priya S.,Email,refund given
+423,RF-1404,Voyage Desk,DEL-DXB,18600,09-04-2026,16-04-2026,Closed,Faizan K.,Portal,amount credited as per process
+424,RF-1493,Nomad Travel,DEL-DXB,17300,19-05-2026,26-05-2026,Closed,,Phone,refund given
+425,RF 1433,Skyline Travels,HYD-BKK,21600,19-04-2026,27-04-2026,Closed,Faizan K.,Portal,amount credited as per process
+426,RF-1435,Anand Travels,HYD-DEL,13600,27-02-2026,06-03-2026,Closed,Aditi M.,Portal,closed - agent informed
+427,RF-1731,Wander Agency,DEL-CCU,6200,06/03/26,13-03-2026,Closed,Aditi M.,Email,done
+428,RF-1191,Peak Journeys,HYD-BKK,28200,12-04-2026,23-04-2026,Closed,Faizan K.,Portal,done
+429,RF-1505,BlueJet Tours,DEL-CCU,11200,22-05-2026,02-06-2026,Closed,Vikram T.,Phone,"refund processed, informed agent"
+430,RF-1444,GoFly Holidays,DEL-DXB,13600,19-06-2026,21-06-2026,Closed,Rakesh N.,WhatsApp,customer notified
+431,RF-1436,BlueJet Tours,GOI-BOM,4900,11-06-2026,21-06-2026,Closed,Priya S.,Portal,amount credited as per process
+432,RF-1398,Pinnacle Getaways,CCU-BOM,,20-04-2026,26-04-2026,Closed,Faizan K.,Email,done
+433,RF-1832,Nomad Travel,DEL-KTM,17200,17-06-2026,29-06-2026,Closed,Rakesh N.,WhatsApp,done
+434,RF-1749,Anand Travels,COK-DXB,26300,14-05-2026,05-06-2026,Closed,Sneha R.,Email,"refund processed, informed agent"
+435,RF-1042,Metro  Yatra,BLR-DXB,11800,10-02-2026,11-02-2026,Closed,Rakesh N.,Phone,refund given
+436,RF 1403,Peak Journeys,DEL-BOM,11000,19-02-2026,26-02-2026,Closed,Vikram T.,Portal,closed - agent informed
+437,RF-1658,Pinnacle Getaways,DEL-BOM,10300,11-04-2026,18-04-2026,Closed,Aditi M.,Portal,done
+438,RF-1473,Wander Agency,BLR-DXB,13400,12/03/26,16-03-2026,Closed,Priya S.,Email,done
+439,RF-1649,Orbit Travels,DEL-KUL,16500,20-02-2026,28-02-2026,Closed,Vikram T.,,refund given
+440,RF-1721,Kaveri Tours,DEL-SIN,16500,13-05-2026,23-05-2026,Closed,Rakesh N.,Portal,"refund processed, informed agent"
+441,RF-1458,Skyline Travels,DEL-DXB,22400,18-06-2026,20-06-2026,Closed,Sneha R.,WhatsApp,refund given
+442,RF-1119,GoFly Holidays,COK-DXB,24000,07-04-2026,14-04-2026,Closed,Rakesh N.,Email,closed - agent informed
+443,RF-1756,Peak Journeys,DEL-CCU,7500,04-03-2026,14-03-2026,Closed,Rakesh N.,Portal,"refund processed, informed agent"
+444,RF-1375,DeccanFly,PNQ-DEL,8900,08-06-2026,18/06/26,Not Eligible,Faizan K.,Portal,"no-show, not eligible"
+445,RF-1548,Metro Yatra,DEL-BOM,6700,26-06-2026,30-06-2026,Working,Sneha R.,WhatsApp,with finance team
+446,RF-1846,BlueJet Tours,DEL-BOM,13200,15-02-2026,25-02-2026,Closed,Faizan K.,WhatsApp,"refund processed, informed agent"
+447,RF-1250,Kaveri Tours,DEL-CCU,12400,03-04-2026,09-04-2026,Closed,Vikram T.,Email,customer notified
+448,RF-1332,Nomad Travel,BOM-DXB,14100,27-02-2026,06-03-2026,Closed,Rakesh N.,Portal,amount credited as per process
+449,RF-1724,TripHub,DEL-DXB,29600,07-05-2026,24-05-2026,Closed,Vikram T.,Phone,closed - agent informed
+450,RF-1637,Metro Yatra,HYD-BKK,33400,10-02-2026,16-02-2026,Closed,Aditi M.,Portal,customer notified
+451,RF-1673,Nomad Travel,CCU-BOM,,09-06-2026,12-06-2026,Closed,Rakesh N.,Portal,"refund processed, informed agent"
+452,RF-1768,SafarNama Travel,HYD-BKK,29900,16-05-2026,05-06-2026,Closed,Aditi M.,,customer notified
+453,RF-1660,GoFly Holidays,CCU-BOM,13700,20-02-2026,28-02-2026,Closed,Faizan K.,Email,refund given
+454,RF-1577,DeccanFly,DEL-KUL,34700,22-05-2026,23-05-2026,Closed,Rakesh N.,Portal,done
+455,RF-1363,Metro Yatra,DEL-KTM,15000,30-04-2026,09-05-2026,Closed,Priya S.,Portal,"refund processed, informed agent"
+456,RF 1257,Skyline Travels,DEL-DXB,27100,15-02-2026,26-02-2026,Closed,,WhatsApp,amount credited as per process
+457,rf-1101,GoFly Holidays,MAA-CMB,9700,02-04-2026,10-04-2026,Closed,Vikram T.,Portal,customer notified
+458,RF-1032,Metro Yatra,DEL-CCU,9100,08-06-2026,15-06-2026,Closed,Faizan K.,Portal,refund given
+459,RF-1452,Pinnacle Getaways,DEL-BOM,13700,18-05-2026,27/05/26,Closed,Faizan K.,Portal,"refund processed, informed agent"
+460,RF-1459,BlueJet Tours,DEL-DXB,13200,26-03-2026,03-04-2026,Closed,,WhatsApp,done
+461,RF-1385,Coral Voyages,CCU-BOM,9600,07-06-2026,09/06/26,Closed,Faizan K.,WhatsApp,refund given
+462,RF-1558,Peak Journeys,DEL-BOM,9000,24-05-2026,26-05-2026,Closed,Priya S.,Portal,customer notified
+463,RF-1281,Voyage Desk,DEL-BOM,13900,29-06-2026,30-06-2026,Escalated,Priya S.,Portal,with finance team
+464,RF-1167,Kaveri Tours,CCU-BOM,10200,15-05-2026,22-05-2026,Closed,Sneha R.,Portal,"refund processed, informed agent"
+465,RF-1409,Nomad Travel,MAA-CMB,7000,09-03-2026,18-03-2026,Closed,Faizan K.,Portal,"refund processed, informed agent"
+466,RF-1153,Metro Yatra,BOM-DXB,19100,23-05-2026,01-06-2026,Closed,Faizan K.,Portal,amount credited as per process
+467,RF-1049,BlueJet Tours,DEL-SIN,41700,07-04-2026,16-04-2026,Closed,Faizan K.,Portal,refund given
+468,RF-1100,TripHub,PNQ-DEL,9700,07-05-2026,15-05-2026,Closed,Aditi M.,Phone,done
+469,RF-1655,Yatri Junction,DEL-KTM,8200,28/06/26,30-06-2026,Closed,Rakesh N.,WhatsApp,refund given
+470,RF-1586,Metro Yatra,PNQ-DEL,9700,26-04-2026,05-05-2026,Closed,Priya S.,,closed - agent informed
+471,RF-1193,Wander Agency,AMD-BOM,6100,31/03/26,07-04-2026,Not Eligible,Rakesh N.,Phone,non-refundable fare
+472,RF-1506,Nomad Travel,BOM-DXB,,01/03/26,12-03-2026,Closed,Priya S.,Portal,"refund processed, informed agent"
+473,RF-1648,Orbit Travels,DEL-BOM,8500,01-04-2026,06-04-2026,Closed,Priya S.,Phone,refund given
+474,RF-1046,SafarNama Travel,HYD-DEL,9500,01/04/26,11-04-2026,Closed,Rakesh N.,Portal,refund given
+475,RF-1656,Orbit Travels,DEL-CCU,6600,27-03-2026,04-04-2026,Closed,Faizan K.,Email,amount credited as per process
+476,RF-1567,Coral Voyages,DEL-BOM,4800,06-05-2026,09-05-2026,Closed,Aditi M.,Portal,customer notified
+477,RF-1350,Himalaya Holidays,HYD-BKK,20100,09-03-2026,15-03-2026,Closed,Rakesh N.,Phone,done
+478,RF-1178,Coral Voyages,DEL-KUL,22300,03-03-2026,07-03-2026,Closed,Sneha R.,Portal,refund given
+479,RF-1765,Metro Yatra,CCU-BOM,8400,27-05-2026,03-06-2026,Closed,Faizan K.,Portal,refund given
+480,RF-1445,Global Wings,BOM-DXB,12800,03-03-2026,06-03-2026,Closed,Vikram T.,Email,refund given
+481,RF-1497,Nomad Travel,HYD-DEL,9400,27-04-2026,03-05-2026,Closed,Sneha R.,Phone,customer notified
+482,RF-1819,peak journeys,MAA-CMB,12200,27-06-2026,30-06-2026,Working,Rakesh N.,Email,pending confirmation
+483,RF-1072,Kaveri Tours,COK-DXB,13200,28-02-2026,06-03-2026,Closed,Vikram T.,WhatsApp,refund given
+484,RF-1537,Sunrise Trips,HYD-BKK,32600,02-06-2026,14-06-2026,Working,Rakesh N.,Portal,waiting on supplier
+485,RF-1763,SafarNama Travel,DEL-DXB,28600,21-04-2026,27-04-2026,Closed,Faizan K.,Portal,customer notified
+486,RF-1169,Peak Journeys,BOM-BKK,24000,23/06/26,28/06/26,Escalated,Sneha R.,Portal,under review
+487,RF-1141,TripHub,BOM-BKK,33500,21-06-2026,28-06-2026,Working,Rakesh N.,Portal,checking with finance
+488,RF-1058,Metro Yatra,BOM-DXB,28200,08-05-2026,06-06-2026,Closed,Rakesh N.,Portal,amount credited as per process
+489,RF-1695,Peak Journeys,COK-DXB,15900,21-04-2026,02-05-2026,Closed,Sneha R.,Phone,"refund processed, informed agent"
+490,RF-1704,GoFly Holidays,DEL-KUL,31300,20-04-2026,21-04-2026,Closed,Rakesh N.,Portal,"refund processed, informed agent"
+491,RF-1239,TripHub,BLR-DXB,14200,24-05-2026,31-05-2026,Closed,Priya S.,Portal,customer notified
+492,RF-1259,BlueJet Tours,COK-DXB,26200,08-06-2026,14-06-2026,Closed,Rakesh N.,WhatsApp,refund given
+493,RF-1039,Peak Journeys,DEL-DXB,12900,29-04-2026,04-05-2026,Closed,Priya S.,Email,closed - agent informed
+494,RF-1753,DeccanFly,DEL-DXB,17000,30-04-2026,08-05-2026,Closed,Rakesh N.,Email,amount credited as per process
+495,RF-1396,Kaveri Tours,DEL-DXB,21200,05-04-2026,14-04-2026,Closed,Faizan K.,Phone,done
+496,RF-1812,ZipTrip,DEL-SIN,35900,07-06-2026,14-06-2026,Escalated,Rakesh N.,Email,waiting on supplier
+497,RF-1440,Voyage Desk,MAA-CMB,16100,10-04-2026,14/04/26,Closed,Priya S.,Email,amount credited as per process
+498,RF-1381,Nomad Travel,HYD-DEL,6200,21-06-2026,24-06-2026,Escalated,Sneha R.,Portal,escalated to finance
+499,RF-1074,BlueJet Tours,HYD-DEL,5900,29-06-2026,30-06-2026,Working,Priya S.,WhatsApp,escalated to finance
+500,RF-1829,Metro Yatra,DEL-KTM,10900,17-04-2026,24-04-2026,Closed,Priya S.,Portal,refund given
+501,RF-1679,Nomad Travel,DEL-KUL,23100,01-03-2026,04/03/26,Not Eligible,Faizan K.,Portal,outside policy
+502,RF-1529,TripHub,HYD-BKK,28600,18-02-2026,26-02-2026,Closed,Aditi M.,Portal,refund given
+503,RF-1661,Lotus Travel Co,DEL-KUL,24100,02-05-2026,17-05-2026,Closed,Sneha R.,Phone,done
+504,RF-1261,TripHub,BLR-MAA,7600,02-05-2026,09-05-2026,Closed,Aditi M.,Portal,done
+505,RF-1551,Peak Journeys,HYD-BKK,33900,11-05-2026,27-05-2026,Closed,Priya S.,Portal,done
+506,RF-1822,GoFly Holidays,DEL-DXB,16900,25-03-2026,02-04-2026,Closed,Rakesh N.,Email,closed - agent informed
+507,RF-1674,GoFly Holidays,COK-DXB,27900,07-02-2026,13-02-2026,Closed,Faizan K.,Portal,refund given
+508,RF-1554,Peak Journeys,HYD-DEL,7600,22-04-2026,28-04-2026,Closed,Sneha R.,Email,refund given
+509,RF-1722,Orbit  Travels,BOM-BKK,25800,25-06-2026,30-06-2026,Escalated,Aditi M.,Portal,under review
+510,RF-1771,Kaveri Tours,DEL-KUL,31100,24-02-2026,06-03-2026,Closed,Aditi M.,Portal,done
+511,RF-1197,GoFly Holidays,BOM-DXB,17700,04-05-2026,11-05-2026,Closed,Vikram T.,Phone,"refund processed, informed agent"
+512,RF-1365,ZipTrip,BLR-DXB,13900,02-03-2026,11-03-2026,Closed,Vikram T.,Portal,done
+513,RF-1816,TripHub,HYD-BKK,27900,31-05-2026,03-06-2026,Closed,Rakesh N.,Email,done
+514,RF-1317,Nomad Travel,DEL-DXB,18500,03-04-2026,07-04-2026,Closed,,Email,done
+515,RF-1292,Voyage Desk,DEL-KUL,23100,27-06-2026,30-06-2026,Working,Faizan K.,Portal,escalated to finance
+516,RF 1079,SafarNama Travel,DEL-DXB,28800,09-02-2026,13-02-2026,Closed,Aditi M.,Portal,done
+517,RF-1048,Lotus Travel Co,DEL-BOM,5000,27/04/26,05-05-2026,Closed,Vikram T.,Portal,refund given
+518,RF-1034,Himalaya Holidays,DEL-CCU,7400,18-02-2026,21-02-2026,Closed,Rakesh N.,Portal,refund given
+519,RF-1698,TripHub,BLR-MAA,7500,01-04-2026,07-04-2026,Closed,Rakesh N.,WhatsApp,refund given
+520,RF-1078,TripHub,PNQ-DEL,10000,29-04-2026,08-05-2026,Closed,Priya S.,Portal,customer notified
+521,RF-1143,SafarNama Travel,BOM-BKK,14800,02-03-2026,11-03-2026,Closed,Priya S.,Phone,closed - agent informed
+522,RF-1712,Anand Travels,DEL-DXB,18700,24-03-2026,01-04-2026,Closed,Aditi M.,Portal,amount credited as per process
+523,RF-1136,TripHub,CCU-BOM,11200,26-03-2026,31-03-2026,Closed,Priya S.,Phone,amount credited as per process
+524,RF-1784,Metro Yatra,BLR-MAA,8700,02-04-2026,09-04-2026,Closed,Sneha R.,Phone,closed - agent informed
+525,RF-1368,TripHub,DEL-BOM,13700,30-03-2026,07-04-2026,Closed,Faizan K.,Email,done
+526,RF-1467,GoFly Holidays,DEL-SIN,19900,12-06-2026,21-06-2026,Closed,Faizan K.,Portal,"refund processed, informed agent"
+527,RF-1001,Skyline Travels,BOM-BKK,29100,08-06-2026,16-06-2026,Escalated,Faizan K.,Portal,under review
+528,RF-1484,BlueJet Tours,DEL-BOM,7400,10-03-2026,20-03-2026,Closed,Faizan K.,Portal,customer notified
+529,RF-1692,Anand Travels,DEL-BOM,4800,23-03-2026,01-04-2026,Closed,Faizan K.,,closed - agent informed
+530,RF-1338,GoFly Holidays,DEL-SIN,37600,12-03-2026,16-03-2026,Closed,Aditi M.,Portal,refund given
+531,RF-1584,TripHub,CCU-BOM,6400,15-04-2026,25-04-2026,Closed,Rakesh N.,Portal,"refund processed, informed agent"
+532,RF-1438,Anand Travels,BLR-MAA,9300,25-03-2026,02-04-2026,Closed,Rakesh N.,Email,done
+533,RF-1600,Voyage Desk,MAA-CMB,14900,14-03-2026,22-03-2026,Closed,Aditi M.,Portal,closed - agent informed
+534,RF-1847,BlueJet Tours,BOM-DXB,23500,08-04-2026,16-04-2026,Closed,Rakesh N.,Email,customer notified
+535,RF-1294,Himalaya Holidays,BLR-DXB,26300,05-04-2026,10-04-2026,Closed,Rakesh N.,Portal,closed - agent informed
+536,RF-1823,SafarNama Travel,BLR-MAA,4300,15-03-2026,27-03-2026,Not Eligible,Faizan K.,Phone,non-refundable fare
+537,RF-1633,BlueJet Tours,DEL-DXB,12700,19-02-2026,27-02-2026,Closed,Priya S.,Email,refund given
+538,RF-1238,DeccanFly,BOM-BKK,21400,14-03-2026,22/03/26,Closed,Priya S.,Portal,done
+539,RF-1284,BlueJet Tours,DEL-CCU,9900,04/03/26,10/03/26,Closed,Priya S.,Portal,refund given
+540,RF-1614,Metro Yatra,DEL-SIN,20500,02-05-2026,08-05-2026,Not Eligible,Vikram T.,Phone,past cancellation window
+541,RF-1774,Pinnacle Getaways,BLR-MAA,10100,04-06-2026,13-06-2026,Closed,Faizan K.,Phone,customer notified
+542,RF-1768,SafarNama Travel,HYD-BKK,29900,16-05-2026,05-06-2026,Closed,Aditi M.,,customer notified
+543,RF-1734,Wander Agency,MAA-CMB,15500,04-03-2026,10-03-2026,Closed,Faizan K.,Portal,done
+544,RF-1063,Voyage Desk,DEL-KUL,25700,07-06-2026,21-06-2026,Working,Vikram T.,Portal,escalated to finance
+545,RF-1787,Peak Journeys,BLR-DXB,14000,21-03-2026,26-03-2026,Closed,Rakesh N.,Portal,amount credited as per process
+546,RF-1303,Nomad Travel,HYD-DEL,5100,22-04-2026,30-04-2026,Closed,Priya S.,Email,customer notified
+547,RF-1022,TripHub,HYD-BKK,23900,21-02-2026,05-03-2026,Closed,Aditi M.,Portal,closed - agent informed
+548,RF-1430,Himalaya Holidays,CCU-BOM,6100,23-06-2026,30-06-2026,Escalated,Priya S.,Portal,escalated to finance
+549,RF-1190,Pinnacle Getaways,GOI-BOM,8800,18-04-2026,20-04-2026,Closed,Rakesh N.,Portal,done
+550,RF-1285,BlueJet Tours,BOM-DXB,12100,11-06-2026,12-06-2026,Closed,Rakesh N.,Portal,done
+551,RF-1355,Peak Journeys,DEL-KTM,8700,14-05-2026,23-05-2026,Closed,Rakesh N.,Portal,refund given
+552,RF-1588,Wander Agency,HYD-DEL,9400,26-04-2026,04-05-2026,Closed,Priya S.,Email,amount credited as per process
+553,RF-1240,Peak Journeys,DEL-BOM,7700,03-02-2026,10-02-2026,Closed,Faizan K.,Portal,"refund processed, informed agent"
+554,RF-1025,SafarNama Travel,DEL-BOM,11600,20-03-2026,29-03-2026,Closed,Priya S.,Email,customer notified
+555,RF-1521,GoFly Holidays,DEL-KTM,14000,22-03-2026,02-04-2026,Closed,Aditi M.,Portal,amount credited as per process
+556,RF-1471,Metro Yatra,BLR-MAA,10500,17-03-2026,23-03-2026,Closed,Rakesh N.,Phone,amount credited as per process
+557,RF-1530,GoFly Holidays,PNQ-DEL,8700,10-06-2026,21-06-2026,Closed,Rakesh N.,Email,amount credited as per process
+558,RF-1807,Metro Yatra,BLR-DXB,19400,06-02-2026,16-02-2026,Closed,Aditi M.,Portal,amount credited as per process
+559,RF-1187,TripHub,DEL-BOM,6300,24-06-2026,29-06-2026,Closed,Aditi M.,Phone,refund given
+560,RF-1435,Anand Travels,HYD-DEL,13100,27-02-2026,06-03-2026,Closed,Aditi M.,Portal,closed - agent informed
+561,rf-1043,Pinnacle Getaways,DEL-BOM,14000,30-06-2026,30-06-2026,Closed,Rakesh N.,Portal,refund given
+562,RF-1402,BlueJet Tours,COK-DXB,23200,22-05-2026,20-06-2026,Closed,Aditi M.,Email,closed - agent informed
+563,RF-1093,TripHub,DEL-BOM,9300,09-03-2026,19-03-2026,Closed,Vikram T.,WhatsApp,customer notified
+564,RF-1108,Himalaya Holidays,DEL-KUL,30100,21-02-2026,01/03/26,Closed,Rakesh N.,Portal,closed - agent informed
+565,RF-1550,SafarNama Travel,BLR-MAA,7700,28-06-2026,30-06-2026,Working,Vikram T.,Portal,pending confirmation
+566,RF-1474,Kaveri Tours,BLR-MAA,5100,21-05-2026,31-05-2026,Closed,Aditi M.,Email,done
+567,RF-1423,Metro Yatra,PNQ-DEL,5100,14-03-2026,19-03-2026,Closed,Priya S.,Portal,amount credited as per process
+568,RF-1507,Skyline Travels,DEL-KTM,18000,08-06-2026,08-06-2026,Closed,Vikram T.,Portal,"refund processed, informed agent"
+569,RF-1354,Pinnacle Getaways,AMD-BOM,6700,09-02-2026,17-02-2026,Closed,Faizan K.,Portal,customer notified
+570,RF-1337,Pinnacle Getaways,HYD-DEL,12300,05-02-2026,15-02-2026,Closed,Aditi M.,Phone,customer notified
+571,RF-1358,Nomad Travel,BLR-DXB,16600,13-04-2026,17-04-2026,Closed,Aditi M.,Portal,done
+572,RF-1052,TripHub,COK-DXB,23200,26-03-2026,02-04-2026,Closed,Aditi M.,Phone,done
+573,RF-1572,BlueJet Tours,GOI-BOM,3500,13-05-2026,26-05-2026,Not Eligible,Priya S.,Portal,past cancellation window
+574,RF-1639,Global Wings,DEL-SIN,15200,01-04-2026,10-04-2026,Closed,Sneha R.,Phone,closed - agent informed
+575,rf-1553,GoFly Holidays,BLR-MAA,6200,22-04-2026,26-04-2026,Closed,Rakesh N.,Portal,amount credited as per process
+576,RF-1766,Wander Agency,AMD-BOM,6100,14-04-2026,17-04-2026,Closed,Faizan K.,WhatsApp,done
+577,RF-1781,Anand Travels,BLR-DXB,18700,09-03-2026,14-03-2026,Closed,Priya S.,Phone,refund given
+578,RF-1738,TripHub,BOM-BKK,31400,02-04-2026,08-04-2026,Closed,Sneha R.,,closed - agent informed
+579,RF-1012,BlueJet Tours,DEL-DXB,18100,04-02-2026,13-02-2026,Closed,Priya S.,Portal,refund given
+580,RF 1349,Nomad Travel,DEL-BOM,11200,15-05-2026,22/05/26,Closed,Aditi M.,Portal,done
+581,RF-1835,Global Wings,DEL-SIN,37900,07-05-2026,09-06-2026,Closed,Priya S.,Phone,"refund processed, informed agent"
+582,RF-1347,Kaveri Tours,AMD-BOM,9400,18-03-2026,23-03-2026,Closed,Sneha R.,Phone,"refund processed, informed agent"
+583,RF-1393,DeccanFly,BLR-DXB,20900,20-02-2026,28-02-2026,Closed,Vikram T.,Portal,amount credited as per process
+584,RF-1053,Voyage Desk,AMD-BOM,8100,14-06-2026,26-06-2026,Closed,Vikram T.,Portal,refund given
+585,RF-1132,TripHub,DEL-BOM,10200,04/02/26,11-02-2026,Closed,Rakesh N.,Phone,customer notified
+586,RF-1228,Peak Journeys,DEL-DXB,14300,06/02/26,10/02/26,Closed,Aditi M.,Portal,"refund processed, informed agent"
+587,RF-1275,Nomad Travel,COK-DXB,25100,27-06-2026,30-06-2026,Working,Aditi M.,Email,waiting on supplier
+588,RF-1761,Global  Wings,DEL-SIN,24800,15-02-2026,24-02-2026,Closed,,Email,done
+589,RF-1456,GoFly Holidays,DEL-BOM,5100,22-05-2026,26-05-2026,Closed,Aditi M.,WhatsApp,refund given
+590,RF-1499,Peak Journeys,BLR-DXB,18300,29-05-2026,29-05-2026,Closed,Faizan K.,Portal,done
+591,RF-1206,BlueJet Tours,DEL-BOM,5500,19-02-2026,25-02-2026,Closed,Priya S.,Portal,done
+592,RF-1352,Wander Agency,PNQ-DEL,12100,02-03-2026,10-03-2026,Closed,Faizan K.,Email,done
+593,RF-1525,GoFly Holidays,DEL-KTM,12900,13-06-2026,21-06-2026,Closed,Sneha R.,Portal,refund given
+594,RF-1105,GoFly Holidays,BLR-DXB,12800,11-04-2026,21-04-2026,Closed,Priya S.,Phone,done
+595,RF-1232,GoFly Holidays,DEL-KTM,8800,22-04-2026,30-04-2026,Closed,Faizan K.,WhatsApp,customer notified
+596,RF-1752,GoFly Holidays,COK-DXB,16000,26-05-2026,07-06-2026,Closed,Vikram T.,Email,customer notified
+597,RF-1427,Yatri Junction,DEL-KTM,7700,07-02-2026,11-02-2026,Closed,Rakesh N.,Portal,amount credited as per process
+598,RF-1732,Metro Yatra,DEL-DXB,12400,20-02-2026,27-02-2026,Closed,Sneha R.,Portal,"refund processed, informed agent"
+599,RF-1782,TripHub,DEL-SIN,34300,13-06-2026,30-06-2026,Working,Faizan K.,WhatsApp,awaiting approval
+600,RF-1705,Wander Agency,HYD-BKK,30700,28-04-2026,05-05-2026,Closed,Priya S.,Email,done
+601,RF-1687,GoFly Holidays,DEL-KTM,18000,09-04-2026,15-04-2026,Closed,Priya S.,Email,closed - agent informed
+602,RF-1260,Nomad Travel,DEL-BOM,9500,04-06-2026,07-06-2026,Closed,Vikram T.,Email,"refund processed, informed agent"
+603,RF-1801,Voyage Desk,GOI-BOM,6900,04-02-2026,09-02-2026,Closed,Sneha R.,Portal,refund given
+604,RF-1041,GoFly Holidays,PNQ-DEL,7000,08-06-2026,20-06-2026,Closed,Aditi M.,Portal,"refund processed, informed agent"
+605,RF-1690,Voyage Desk,CCU-BOM,5500,06/04/26,12-04-2026,Closed,Faizan K.,Portal,"refund processed, informed agent"
+606,RF-1574,GoFly Holidays,DEL-CCU,12100,05-06-2026,12-06-2026,Closed,Priya S.,Email,done
+607,RF-1366,TripHub,DEL-CCU,9000,05-06-2026,19/06/26,Closed,Faizan K.,Phone,amount credited as per process
+608,RF-1008,Sunrise Trips,AMD-BOM,,27-02-2026,07/03/26,Closed,Aditi M.,,amount credited as per process
+609,RF-1182,Himalaya Holidays,CCU-BOM,6000,21-05-2026,30-05-2026,Closed,Priya S.,Portal,customer notified
+610,RF-1052,TripHub,COK-DXB,23200,26-03-2026,02-04-2026,Closed,Aditi M.,Phone,done
+611,RF-1543,Yatri Junction,DEL-KUL,26700,28-02-2026,05-03-2026,Closed,Priya S.,Phone,refund given
+612,RF-1382,Wander Agency,DEL-KTM,16600,15-05-2026,25-05-2026,Closed,Priya S.,Portal,refund given
+613,RF-1416,Wander Agency,DEL-DXB,24600,05-05-2026,21-05-2026,Closed,Aditi M.,Email,done
+614,RF-1446,Orbit Travels,BLR-DXB,12900,12-06-2026,17-06-2026,Closed,Rakesh N.,Portal,done
+615,RF-1310,SafarNama Travel,DEL-KUL,25500,21-03-2026,31-03-2026,Closed,Faizan K.,Phone,"refund processed, informed agent"
+616,RF-1557,Yatri Junction,BLR-MAA,5500,19-04-2026,27-04-2026,Closed,Rakesh N.,Portal,customer notified
+617,RF-1291,peak journeys,MAA-CMB,15500,25-03-2026,03-04-2026,Closed,Faizan K.,Portal,done
+618,RF-1609,GoFly Holidays,DEL-KTM,9900,29-03-2026,05-04-2026,Closed,Sneha R.,Phone,done
+619,RF-1439,BlueJet Tours,BLR-MAA,,10-04-2026,15-04-2026,Closed,Rakesh N.,Portal,amount credited as per process
+620,RF-1805,Peak Journeys,DEL-DXB,11800,04-05-2026,13-05-2026,Closed,Sneha R.,Phone,refund given
+621,RF-1174,Peak Journeys,BLR-MAA,5100,29-03-2026,06-04-2026,Closed,Aditi M.,Phone,done
+622,RF-1120,Kaveri Tours,DEL-SIN,15900,07-06-2026,17-06-2026,Closed,Faizan K.,Email,customer notified
+623,RF-1045,GoFly Holidays,CCU-BOM,10900,19-02-2026,26-02-2026,Closed,Faizan K.,Phone,"refund processed, informed agent"
+624,RF-1131,GoFly Holidays,AMD-BOM,7000,21-03-2026,25-03-2026,Closed,Aditi M.,Portal,refund given
+625,RF-1036,Kaveri Tours,DEL-DXB,11300,26-04-2026,02-05-2026,Closed,Faizan K.,Phone,amount credited as per process
+626,RF-1697,Voyage Desk,DEL-DXB,23200,15-04-2026,23-04-2026,Closed,Rakesh N.,Portal,amount credited as per process
+627,RF-1211,Metro Yatra,HYD-BKK,25200,11-05-2026,03-06-2026,Closed,Aditi M.,Portal,refund given
+628,RF-1154,Nomad Travel,CCU-BOM,7500,28-04-2026,01-05-2026,Closed,Priya S.,Phone,customer notified
+629,RF-1827,Global Wings,DEL-DXB,21100,18-04-2026,30-04-2026,Closed,Faizan K.,Portal,done
+630,RF-1066,safarnama travel,HYD-BKK,25700,25-02-2026,05-03-2026,Closed,Rakesh N.,,customer notified
+631,RF-1585,Wander Agency,COK-DXB,14100,30-03-2026,30-03-2026,Closed,Vikram T.,Portal,done
+632,RF-1789,Orbit Travels,CCU-BOM,10900,18-06-2026,29-06-2026,Closed,Aditi M.,Portal,customer notified
+633,RF-1408,Wander Agency,DEL-SIN,28300,17-04-2026,22-04-2026,Closed,Faizan K.,Portal,closed - agent informed
+634,RF-1708,triphub,AMD-BOM,6200,23-06-2026,30-06-2026,Working,Sneha R.,Portal,waiting on supplier
+635,RF 1301,BlueJet Tours,HYD-DEL,5000,17-03-2026,27-03-2026,Closed,Priya S.,Email,amount credited as per process
+636,RF-1243,GoFly Holidays,DEL-BOM,9900,02-04-2026,08-04-2026,Closed,Rakesh N.,Phone,refund given
+637,RF-1532,Orbit Travels,DEL-DXB,21800,05-05-2026,13-05-2026,Working,Vikram T.,Portal,informed agent
+638,RF-1780,Wander Agency,HYD-BKK,12800,17/02/26,23-02-2026,Closed,Aditi M.,WhatsApp,customer notified
+639,RF-1788,GOFLY HOLIDAYS,DEL-BOM,6800,06-06-2026,15-06-2026,Closed,Faizan K.,,customer notified
+640,RF-1710,GoFly Holidays,PNQ-DEL,6300,04-02-2026,19-02-2026,Not Eligible,Faizan K.,Email,outside policy
+641,RF-1451,Yatri Junction,COK-DXB,29400,29-05-2026,01-06-2026,Closed,Sneha R.,Portal,"refund processed, informed agent"
+642,RF-1709,TripHub,DEL-CCU,7800,26-05-2026,04/06/26,Closed,Aditi M.,Portal,amount credited as per process
+643,RF-1646,BlueJet Tours,CCU-BOM,14100,02-05-2026,09-05-2026,Closed,Priya S.,Portal,done
+644,RF-1324,Nomad Travel,DEL-BOM,12400,14-04-2026,21-04-2026,Closed,Rakesh N.,Portal,refund given
+645,RF-1173,Sunrise Trips,BOM-DXB,23600,28-02-2026,07-03-2026,Closed,Rakesh N.,Portal,done
+646,RF-1621,Lotus Travel Co,DEL-SIN,27100,18-04-2026,27-04-2026,Closed,Aditi M.,Portal,amount credited as per process
+647,RF 1831,Himalaya Holidays,CCU-BOM,11800,14-05-2026,21-05-2026,Closed,Priya S.,Portal,customer notified
+648,RF-1258,Pinnacle Getaways,BLR-MAA,10100,25-02-2026,03-03-2026,Closed,Priya S.,Portal,customer notified
+649,RF-1245,Sunrise Trips,HYD-BKK,15700,25-02-2026,04-03-2026,Working,Faizan K.,Portal,closed - agent informed
+650,RF-1680,GoFly  Holidays,BOM-BKK,22500,01-03-2026,09-03-2026,Closed,Vikram T.,Portal,closed - agent informed
+651,RF-1509,TripHub,GOI-BOM,4600,23/02/26,04-03-2026,Closed,Priya S.,Portal,closed - agent informed
+652,RF-1170,Nomad Travel,BOM-BKK,35900,27-02-2026,07-03-2026,Closed,Faizan K.,Phone,customer notified
+653,RF-1205,DeccanFly,HYD-BKK,,04-03-2026,11-03-2026,Closed,Vikram T.,Portal,"refund processed, informed agent"
+654,RF-1777,GoFly Holidays,MAA-CMB,13400,23-03-2026,01-04-2026,Closed,Vikram T.,Phone,done
+655,RF-1123,BlueJet Tours,BOM-BKK,25400,10-06-2026,25-06-2026,Closed,Priya S.,Email,refund given
+656,RF-1745,BlueJet Tours,BOM-DXB,29100,10-06-2026,28-06-2026,Working,Faizan K.,Portal,waiting on supplier
+657,RF-1513,TripHub,DEL-CCU,4700,19-05-2026,25-05-2026,Closed,Sneha R.,Portal,customer notified
+658,RF-1511,Anand Travels,DEL-KUL,23300,07-06-2026,19-06-2026,Working,Vikram T.,Email,pending confirmation
+659,RF-1290,Kaveri Tours,PNQ-DEL,12200,06-03-2026,13-03-2026,Closed,Aditi M.,Phone,customer notified
+660,RF-1465,Wander Agency,DEL-KTM,11100,04-05-2026,12-05-2026,Closed,Rakesh N.,Portal,amount credited as per process
+661,RF-1024,Peak Journeys,CCU-BOM,5300,02-02-2026,07-02-2026,Closed,Rakesh N.,Phone,closed - agent informed
+662,RF-1770,GoFly Holidays,BOM-BKK,33100,17-06-2026,18-06-2026,Closed,Rakesh N.,Portal,"refund processed, informed agent"
+663,RF-1117,Yatri Junction,BLR-DXB,23200,09-02-2026,17/02/26,Closed,Sneha R.,Portal,amount credited as per process
+664,RF-1015,TripHub,DEL-KUL,15200,16-06-2026,29-06-2026,Closed,Rakesh N.,Portal,customer notified
+665,RF-1094,Peak Journeys,DEL-KUL,30600,27-03-2026,04-04-2026,Closed,Sneha R.,Portal,refund given
+666,RF-1004,Sunrise Trips,MAA-CMB,15900,09-06-2026,18-06-2026,Closed,Aditi M.,Portal,refund given
+667,RF-1860,Sunrise Trips,DEL-DXB,20400,09-05-2026,12-05-2026,Closed,Rakesh N.,WhatsApp,refund given
+668,RF-1391,GoFly Holidays,BOM-BKK,25600,22-02-2026,26-02-2026,Closed,Priya S.,Portal,done
+669,RF-1693,TripHub,BOM-DXB,19000,10-02-2026,21-02-2026,Closed,Faizan K.,WhatsApp,customer notified
+670,RF-1686,TripHub,HYD-BKK,26900,23-03-2026,31-03-2026,Closed,Priya S.,Portal,refund given
+671,RF-1390,Metro Yatra,DEL-DXB,22300,27-05-2026,14-06-2026,Closed,Rakesh N.,Portal,amount credited as per process
+672,RF-1560,TripHub,DEL-DXB,15000,22-06-2026,24-06-2026,Closed,Aditi M.,Portal,"refund processed, informed agent"
+673,RF-1389,Orbit Travels,BLR-DXB,19000,10-02-2026,16-02-2026,Closed,Priya S.,Portal,closed - agent informed
+674,RF-1833,GoFly Holidays,DEL-KUL,13800,11-02-2026,21-02-2026,Closed,Priya S.,Email,amount credited as per process
+675,RF-1813,GoFly Holidays,CCU-BOM,9100,24-03-2026,01-04-2026,Closed,Faizan K.,Portal,done
+676,RF-1406,Sunrise Trips,DEL-BOM,7600,24-04-2026,06-05-2026,Closed,Faizan K.,Phone,refund given
+677,RF-1394,BlueJet Tours,DEL-KTM,11300,20-04-2026,26-04-2026,Closed,Faizan K.,Email,customer notified
+678,RF-1638,Wander Agency,MAA-CMB,7400,22-05-2026,23-05-2026,Closed,Rakesh N.,Portal,refund given
+679,RF-1235,TripHub,HYD-DEL,8600,24-06-2026,30-06-2026,Closed,,Portal,refund given
+680,RF-1139,Nomad Travel,DEL-DXB,15900,06-05-2026,16-05-2026,Closed,Rakesh N.,Portal,refund given
+681,RF-1626,Peak Journeys,BOM-BKK,28100,18-05-2026,07-06-2026,Closed,Faizan K.,Portal,refund given
+682,RF 1672,TripHub,DEL-SIN,26400,14-05-2026,03/06/26,Closed,Vikram T.,Phone,done
+683,RF-1684,Peak Journeys,BOM-BKK,13500,04-02-2026,12-02-2026,Closed,Faizan K.,Portal,closed - agent informed
+684,RF-1359,ZipTrip,COK-DXB,15600,08-02-2026,13-02-2026,Closed,Vikram T.,Portal,done
+685,RF-1592,BlueJet Tours,BLR-MAA,6400,12-03-2026,17-03-2026,Closed,Sneha R.,Phone,closed - agent informed
+686,RF-1377,Voyage Desk,DEL-KUL,14100,30-05-2026,02-06-2026,Not Eligible,Priya S.,Portal,past cancellation window
+687,RF-1578,Peak Journeys,HYD-DEL,6800,15-03-2026,24-03-2026,Closed,Rakesh N.,Portal,customer notified
+688,RF-1447,Wander Agency,BOM-DXB,16900,19-05-2026,29-05-2026,Closed,Faizan K.,Email,done
+689,RF-1217,Peak Journeys,CCU-BOM,9100,20-02-2026,28-02-2026,Closed,Aditi M.,Portal,refund given
+690,RF-1691,BlueJet Tours,CCU-BOM,14500,07-04-2026,14-04-2026,Closed,Rakesh N.,Portal,done
+691,RF-1485,Coral Voyages,GOI-BOM,5500,21-02-2026,25-02-2026,Closed,Sneha R.,Portal,closed - agent informed
+692,RF-1799,Nomad Travel,DEL-CCU,5800,03-06-2026,12-06-2026,Closed,Faizan K.,Phone,amount credited as per process
+693,RF-1037,BlueJet Tours,DEL-SIN,38500,28-03-2026,02-04-2026,Closed,Faizan K.,Portal,customer notified
+694,RF-1517,Nomad Travel,PNQ-DEL,12100,13-02-2026,13-02-2026,Closed,Rakesh N.,Phone,customer notified
+695,rf-1089,Sunrise Trips,DEL-SIN,31100,15-04-2026,25-04-2026,Closed,Aditi M.,Portal,refund given
+696,RF-1189,BlueJet Tours,AMD-BOM,9300,03-04-2026,11-04-2026,Closed,Faizan K.,WhatsApp,customer notified
+697,RF-1568,Wander Agency,BOM-BKK,29300,29-06-2026,30/06/26,Not Eligible,Sneha R.,WhatsApp,past cancellation window
+698,RF-1748,Himalaya Holidays,BLR-MAA,3500,16-06-2026,25-06-2026,Closed,Aditi M.,Portal,closed - agent informed
+699,RF-1370,GoFly Holidays,DEL-BOM,5700,31-03-2026,06-04-2026,Closed,Rakesh N.,Portal,refund given
+700,RF-1367,BlueJet Tours,BLR-DXB,23200,05/02/26,16-02-2026,Closed,Rakesh N.,Email,customer notified
+701,RF-1501,Peak Journeys,CCU-BOM,11500,29-04-2026,06-05-2026,Closed,Aditi M.,Portal,customer notified
+702,RF-1457,GoFly Holidays,BLR-MAA,11000,04-06-2026,13-06-2026,Closed,Faizan K.,Email,"refund processed, informed agent"
+703,RF-1678,Kaveri Tours,HYD-BKK,27700,06-02-2026,11-02-2026,Closed,Priya S.,WhatsApp,customer notified
+704,RF-1719,BlueJet Tours,PNQ-DEL,7600,13-02-2026,18-02-2026,Closed,Faizan K.,Portal,closed - agent informed
+705,RF-1264,Global Wings,BOM-BKK,24200,10/04/26,18-04-2026,Closed,Rakesh N.,Email,"refund processed, informed agent"
+706,RF-1241,GoFly Holidays,CCU-BOM,14400,13-02-2026,14-02-2026,Closed,Sneha R.,Phone,"refund processed, informed agent"
+707,RF-1395,Wander Agency,COK-DXB,24100,23/04/26,30-04-2026,Closed,Priya S.,Portal,customer notified
+708,RF-1854,DeccanFly,COK-DXB,20600,23-06-2026,24-06-2026,Closed,Priya S.,Portal,refund given
+709,RF-1361,Orbit Travels,DEL-BOM,8600,13-06-2026,18-06-2026,Closed,Sneha R.,Email,amount credited as per process
+710,RF-1682,Voyage Desk,COK-DXB,15700,25-03-2026,28-03-2026,Closed,Priya S.,Phone,customer notified
+711,RF-1834,Wander Agency,HYD-BKK,13300,09-04-2026,16-04-2026,Closed,Rakesh N.,Portal,done
+712,rf-1213,Wander Agency,DEL-BOM,12100,05-05-2026,14-05-2026,Closed,Faizan K.,WhatsApp,done
+713,RF-1644,Wander Agency,BOM-DXB,16600,11-05-2026,16-05-2026,Closed,Rakesh N.,Email,refund given
+714,RF-1322,BlueJet Tours,PNQ-DEL,11800,03-04-2026,13-04-2026,Closed,Faizan K.,Portal,customer notified
+715,RF-1118,Lotus Travel Co,BOM-DXB,14600,04-05-2026,05-05-2026,Closed,Rakesh N.,Phone,customer notified
+716,RF-1590,Wander Agency,BLR-MAA,9300,21-02-2026,25-02-2026,Closed,Sneha R.,Portal,customer notified
+717,RF-1634,Sunrise Trips,DEL-KTM,12400,30-04-2026,07-05-2026,Closed,Rakesh N.,Portal,done
+718,RF-1450,Voyage Desk,BLR-MAA,7000,24-02-2026,01-03-2026,Closed,Aditi M.,,amount credited as per process
+719,RF-1654,Wander Agency,BOM-BKK,17200,29-05-2026,31-05-2026,Closed,Rakesh N.,Portal,customer notified
+720,RF-1806,TripHub,BLR-MAA,6700,17/04/26,23-04-2026,Closed,Aditi M.,Portal,refund given
+721,RF-1300,Kaveri Tours,COK-DXB,12500,08-02-2026,14-02-2026,Closed,Rakesh N.,Email,done
+722,RF-1623,BlueJet Tours,DEL-SIN,32000,11-04-2026,15-04-2026,Closed,Faizan K.,Email,closed - agent informed
+723,RF-1491,Nomad Travel,GOI-BOM,5200,16-04-2026,23-04-2026,Closed,Faizan K.,Portal,done
+724,RF-1087,Nomad Travel,BOM-DXB,27500,12-04-2026,19-04-2026,Closed,Priya S.,Email,"refund processed, informed agent"
+725,RF-1671,Peak Journeys,BLR-DXB,23600,26-02-2026,07-03-2026,Not Eligible,Faizan K.,Portal,past cancellation window
+726,RF-1245,Sunrise Trips,HYD-BKK,15700,25-02-2026,04-03-2026,Closed,Faizan K.,Portal,closed - agent informed
+727,RF-1372,BlueJet Tours,DEL-CCU,10100,20-02-2026,27-02-2026,Closed,Priya S.,Email,refund given
+728,RF-1102,BlueJet Tours,BOM-BKK,25400,13-03-2026,18-03-2026,Closed,Faizan K.,Portal,closed - agent informed
+729,RF-1157,Skyline Travels,GOI-BOM,9100,07/05/26,13-05-2026,Closed,Vikram T.,Email,amount credited as per process
+730,RF-1575,Voyage Desk,DEL-KTM,12600,28/02/26,07-03-2026,Closed,Rakesh N.,Portal,done
+731,RF-1329,SafarNama Travel,BOM-DXB,10600,22-04-2026,27-04-2026,Closed,Vikram T.,WhatsApp,amount credited as per process
+732,RF-1220,Yatri Junction,DEL-DXB,16200,17-03-2026,21-03-2026,Closed,Faizan K.,Phone,amount credited as per process
+733,RF-1607,GOFLY HOLIDAYS,DEL-BOM,11700,03/03/26,11-03-2026,Closed,Vikram T.,Email,closed - agent informed
+734,RF-1828,Voyage Desk,DEL-BOM,12500,15-02-2026,24-02-2026,Closed,Aditi M.,Portal,closed - agent informed
+735,RF-1051,Sunrise Trips,BLR-DXB,24800,25-05-2026,17-06-2026,Closed,Priya S.,Phone,amount credited as per process
+736,RF-1041,GoFly Holidays,PNQ-DEL,6500,08-06-2026,20-06-2026,Closed,Aditi M.,Portal,"refund processed, informed agent"
+737,RF-1612,global wings,DEL-CCU,6800,23-06-2026,27-06-2026,Working,Aditi M.,Phone,under review
+738,RF-1503,BlueJet Tours,HYD-DEL,9200,16-02-2026,25-02-2026,Closed,Vikram T.,Portal,amount credited as per process
+739,RF-1150,Orbit Travels,MAA-CMB,7900,26-06-2026,30-06-2026,Closed,Sneha R.,Portal,"refund processed, informed agent"
+740,RF-1010,BlueJet Tours,DEL-BOM,10000,26-06-2026,30-06-2026,Closed,Aditi M.,WhatsApp,refund given
+741,RF-1564,TripHub,COK-DXB,19700,06-06-2026,06-06-2026,Closed,Aditi M.,WhatsApp,done
+742,RF-1172,Sunrise Trips,DEL-DXB,25500,25-04-2026,01-05-2026,Closed,,Phone,closed - agent informed
+743,RF-1794,Sunrise Trips,DEL-KTM,8700,15-06-2026,18-06-2026,Closed,Vikram T.,Portal,customer notified
+744,RF-1565,Peak Journeys,MAA-CMB,12900,27-02-2026,08-03-2026,Closed,Vikram T.,Portal,closed - agent informed
+745,RF-1287,Metro Yatra,CCU-BOM,11100,27-04-2026,06-05-2026,Closed,Vikram T.,Portal,refund given
+746,RF-1289,DeccanFly,MAA-CMB,15400,17-02-2026,27-02-2026,Closed,Priya S.,Portal,amount credited as per process
+747,RF-1636,TripHub,MAA-CMB,15100,23-04-2026,30-04-2026,Closed,Vikram T.,Portal,"refund processed, informed agent"
+748,RF-1293,Nomad Travel,PNQ-DEL,8000,19-02-2026,24-02-2026,Closed,Faizan K.,Email,closed - agent informed
+749,RF-1420,TripHub,DEL-BOM,13000,22-04-2026,29-04-2026,Closed,Vikram T.,Portal,checking with finance
+750,RF-1783,Metro Yatra,DEL-CCU,5200,24-06-2026,30-06-2026,Not Eligible,Aditi M.,Email,non-refundable fare
+751,RF-1453,GoFly Holidays,DEL-KUL,20500,26/04/26,04-05-2026,Closed,Priya S.,Portal,closed - agent informed
+752,RF-1599,Skyline Travels,PNQ-DEL,11400,03-06-2026,09-06-2026,Closed,Rakesh N.,Portal,refund given
+753,RF-1428,Kaveri Tours,BLR-DXB,17800,02-02-2026,14-02-2026,Closed,Faizan K.,Phone,done
+754,RF-1859,Himalaya Holidays,BLR-DXB,28600,06-04-2026,17-04-2026,Closed,Aditi M.,Email,amount credited as per process
+755,RF-1380,TripHub,CCU-BOM,11700,23-04-2026,01-05-2026,Closed,Rakesh N.,Phone,"refund processed, informed agent"
+756,RF-1852,Metro Yatra,CCU-BOM,13000,23-03-2026,28-03-2026,Closed,Faizan K.,Portal,closed - agent informed

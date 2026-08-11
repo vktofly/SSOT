@@ -1,0 +1,41 @@
+,A
+1,BharatTrip - Refund Operations Data Extract
+2,
+3,Extract window: 1 February 2026 to 30 June 2026. Snapshot taken 30 June 2026.
+4,
+5,This workbook contains anonymised operational data from a B2B travel company's
+6,refund process. When a travel agent cancels a booking they request a refund.
+7,Two teams touch every refund:
+8,
+9,- The Support team talks to agents and logs each request in 'Support_Tracker'.
+10,- The Finance team actually pays the money out and logs it in 'Finance_Tracker'.
+11,
+12,"Each team maintains its own sheet, in its own way. Column names and conventions"
+13,"differ between them. The two sheets are supposed to describe the same refunds,"
+14,but they were built independently and were never reconciled. Working out how
+15,they relate to each other is part of the task.
+16,
+17,TAB: Support_Tracker
+18,One row per refund request as logged by Support. 'Refund Amount (INR)' is the
+19,amount recorded against the request. 'Status' values are set by Support and mean
+20,whatever the individual agent took them to mean. 'Channel' is how the request
+21,reached us. 'Handled By' is the Support person who owns the ticket.
+22,
+23,TAB: Finance_Tracker
+24,One row per refund Finance was made aware of. 'Amount Paid (INR)' is what actually
+25,left the account. 'Received On' is when Finance says the request reached them.
+26,'Approved By' is only filled in where a sign-off happened.
+27,
+28,TAB: Escalations
+29,Complaints logged against refunds. The escalation log was only started on
+30,"1 March 2026, so nothing before that date appears here. 'Days Open' is measured"
+31,"to the resolution date, or to the 30 June snapshot if still open."
+32,
+33,"Known limitations of this extract (stated plainly, not fixed):"
+34,- Some refund requests arrive by email or messaging app and are never logged.
+35,"- Dates were hand-typed in places, so some cells are text rather than dates."
+36,- Agent names were free-typed and are not spelled consistently.
+37,- Rows have occasionally been pasted twice.
+38,
+39,"No other documentation exists. There is no process manual, no SLA document and no"
+40,"written refund policy in circulation. If you need to make an assumption, write it down."

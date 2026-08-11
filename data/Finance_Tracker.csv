@@ -1,0 +1,692 @@
+,A,B,C,D,E,F,G,H,I,J
+1,Ref No,Agent Name,Sector,Amount Paid (INR),Deduction (INR),Received On,Processed On,Payout Status,Approved By,Remarks
+,,,,,,,,,,
+2,RF-1713,TripHub,DEL-SIN,,3200,18-06-2026,,Pending Payout,,pending manager sign-off
+3,RF-1178,Coral Voyages,DEL-KUL,22300,0,04-03-2026,07-03-2026,Refund Done,N. Iyer,payout complete
+4,RF-1632,BlueJet Tours,HYD-BKK,27800,0,23/03/26,25-03-2026,Refund Done,N. Iyer,transferred
+5,RF-1754,Metro Yatra,DEL-CCU,4700,0,16-03-2026,20-03-2026,Refund Done,,NEFT done
+6,RF-1796,Skyline Travels,DEL-BOM,5100,,26-05-2026,29-05-2026,Refund Done,,settled
+7,RF-1628,Skyline Travels,COK-DXB,27000,0,24/03/26,29-03-2026,Refund Done,S. Bhatt,paid to wallet
+8,RF-1780,WANDER AGENCY,HYD-BKK,12800,0,21-02-2026,22-02-2026,Refund Done,,NEFT done
+9,RF-1231,Skyline Travels,GOI-BOM,6800,0,19-05-2026,23-05-2026,Refund Done,,settled
+10,RF-1213,Wander Agency,DEL-BOM,12100,0,08-05-2026,10-05-2026,Refund Done,,payout complete
+11,RF-1652,Wander Agency,MAA-CMB,17000,,21-05-2026,24-05-2026,Refund Done,,transferred
+12,RF-1313 (revised),SafarNama Travel,HYD-BKK,17200,1500,11-06-2026,14-06-2026,Refund Done,,paid to wallet
+13,RF-1562,Nomad Travel,BOM-BKK,26800,0,21-03-2026,25-03-2026,Refund Done,N. Iyer,transferred
+14,RF-1589,Nomad Travel,HYD-BKK,0,,18-02-2026,24-02-2026,Declined,,rejected by policy
+15,RF-1648,Orbit Travels,DEL-BOM,8500,0,03-04-2026,06-04-2026,Refund Done,,settled
+16,RF-1714,yatri junction,DEL-KUL,,1800,27-06-2026,,Pending Payout,,supplier not confirmed
+17,RF-1689,Voyage Desk,BLR-DXB,29500,2600,11-05-2026,30-05-2026,Refund Done,N. Iyer,transferred
+18,RF-1568,Wander Agency,BOM-BKK,0,,30-06-2026,01-07-2026,Declined,,rejected by policy
+19,RF-1722,Orbit Travels,BOM-BKK,,0,27-06-2026,,Pending Payout,,in queue
+20,RF-1812,ZipTrip,DEL-SIN,,,09-06-2026,,Pending Payout,,hold - amount mismatch
+21,RF-1692,Anand Travels,DEL-BOM,4800,0,24-03-2026,28-03-2026,Refund Done,,NEFT done
+22,RF-1340,Orbit Travels,PNQ-DEL,4300,0,15-06-2026,20-06-2026,Refund Done,,transferred
+23,RF-1777,GoFly Holidays,MAA-CMB,13400,0,25-03-2026,29-03-2026,Refund Done,,transferred
+24,RF-1679,Nomad Travel,DEL-KUL,0,0,02-03-2026,03-03-2026,Declined,,rejected
+25,RF-1232,GoFly Holidays,DEL-KTM,8800,,23-04-2026,26-04-2026,Refund Done,,transferred
+26,RF-1536,DeccanFly,BOM-BKK,0,,22-05-2026,27-05-2026,Declined,,non-refundable fare
+27,RF-1680,GoFly Holidays,BOM-BKK,22500,,02-03-2026,08-03-2026,Refund Done,N. Iyer,payout complete
+28,RF-1543,Yatri Junction,DEL-KUL,26700,0,01-03-2026,03-03-2026,Refund Done,S. Bhatt,settled
+29,RF-1557,Yatri Junction,BLR-MAA,5500,,22-04-2026,26-04-2026,Refund Done,,payout complete
+30,RF-1661 (revised),Lotus Travel Co,DEL-KUL,22200,1900,03-05-2026,14-05-2026,Refund Done,S. Bhatt,paid to wallet
+31,RF-1740,BlueJet Tours,GOI-BOM,5400,0,27-04-2026,28-04-2026,Refund Done,,transferred
+32,RF-1531,BlueJet Tours,BLR-MAA,8900,0,20-03-2026,21-03-2026,Refund Done,,NEFT done
+33,RF-1380,TripHub,CCU-BOM,11700,,26-04-2026,30-04-2026,Refund Done,,NEFT done
+34,RF-1709,TripHub,DEL-CCU,7800,0,27-05-2026,01-06-2026,Refund Done,,NEFT done
+35,RF-1405,Global Wings,GOI-BOM,4900,0,07-02-2026,10-02-2026,Refund Done,,settled
+36,RF-1596,Peak Journeys,DEL-BOM,6000,0,05/03/26,09-03-2026,Refund Done,,transferred
+37,RF-1518,Lotus Travel Co,DEL-BOM,4900,,02-04-2026,04-04-2026,Refund Done,,transferred
+38,RF-1138,GoFly Holidays,BLR-MAA,10500,0,13-03-2026,17-03-2026,Refund Done,,payout complete
+39,RF-1629,BlueJet Tours,DEL-BOM,12500,0,09-02-2026,10-02-2026,Refund Done,,transferred
+40,RF-1534,Orbit Travels,DEL-DXB,0,0,03-06-2026,08-06-2026,Declined,,outside cancellation window
+41,RF-1612,Global Wings,DEL-CCU,,0,27-06-2026,,Pending Payout,,supplier not confirmed
+42,RF-1321,Wander Agency,BLR-DXB,28100,2400,05-05-2026,18-05-2026,Refund Done,N. Iyer,paid to wallet
+43,RF-1237,TripHub,HYD-BKK,18200,1600,08-05-2026,13/05/26,Refund Done,,NEFT done
+44,RF-1539,Nomad Travel,BLR-MAA,6100,0,24-04-2026,28-04-2026,Refund Done,,settled
+45,RF-1323,Kaveri Tours,HYD-BKK,16100,0,03-06-2026,05-06-2026,Refund Done,,NEFT done
+46,RF-1102,BlueJet Tours,BOM-BKK,25400,0,14-03-2026,17-03-2026,Refund Done,N. Iyer,NEFT done
+47,RF-1100,TripHub,PNQ-DEL,9700,0,11-05-2026,12-05-2026,Refund Done,,payout complete
+48,RF-1663,Metro Yatra,DEL-BOM,,0,28-06-2026,,Pending Payout,,supplier not confirmed
+49,RF-1752,GoFly Holidays,COK-DXB,14500,1500,28-05-2026,03-06-2026,Refund Done,,transferred
+50,RF-1289,DeccanFly,MAA-CMB,15400,0,21-02-2026,24-02-2026,Refund Done,,transferred
+51,RF-1440,Voyage Desk,MAA-CMB,16100,,11-04-2026,12-04-2026,Refund Done,,payout complete
+52,RF-1420,TripHub,DEL-BOM,0,0,24-04-2026,28-04-2026,Declined,,outside cancellation window
+53,RF-1766,Wander Agency,AMD-BOM,6100,0,15-04-2026,16-04-2026,Refund Done,,payout complete
+54,RF-1840,GoFly Holidays,DEL-DXB,27600,,12-03-2026,15-03-2026,Refund Done,R. Menon,transferred
+55,RF-1603,Wander Agency,DEL-KUL,24500,0,08-03-2026,12-03-2026,Refund Done,R. Menon,paid to wallet
+56,RF-1169,Peak Journeys,BOM-BKK,,1900,24-06-2026,,Pending Payout,,supplier not confirmed
+57,RF-1849,BlueJet Tours,DEL-KUL,24900,0,11-02-2026,16-02-2026,Refund Done,N. Iyer,payout complete
+58,RF-1515,Metro Yatra,DEL-DXB,17000,0,26-04-2026,28-04-2026,Refund Done,,payout complete
+59,RF-1281,Voyage Desk,DEL-BOM,,0,30-06-2026,,Pending Payout,,hold - amount mismatch
+60,rf-1575,Voyage Desk,DEL-KTM,12600,0,01-03-2026,05-03-2026,Refund Done,,paid to wallet
+61,RF-1345,BlueJet Tours,DEL-CCU,5600,0,03/02/26,05-02-2026,Refund Done,,paid to wallet
+62,RF-1616,Skyline Travels,COK-DXB,11700,0,03-04-2026,06-04-2026,Refund Done,,NEFT done
+63,RF-1753,DeccanFly,DEL-DXB,17000,0,02-05-2026,04-05-2026,Refund Done,,settled
+64,RF-1308,BlueJet  Tours,HYD-BKK,33000,0,06-03-2026,11-03-2026,Refund Done,N. Iyer,payout complete
+65,RF-1203,Peak Journeys,HYD-DEL,5500,0,03-06-2026,09-06-2026,Refund Done,,transferred
+66,RF1109,Voyage Desk,BLR-DXB,27700,0,12-03-2026,15-03-2026,Refund Done,R. Menon,payout complete
+67,rf1251,Wander Agency,DEL-DXB,11800,0,21-04-2026,22-04-2026,Refund Done,,payout complete
+68,RF-1279,Peak Journeys,BOM-DXB,22400,0,02-04-2026,05-04-2026,Refund Done,N. Iyer,paid to wallet
+69,RF-1392,Skyline Travels,DEL-KUL,0,0,09-05-2026,10-05-2026,Declined,,rejected by policy
+70,RF-1443,BlueJet Tours,HYD-DEL,11900,0,13/02/26,15-02-2026,Refund Done,,payout complete
+71,RF-1219,Kaveri Tours,BLR-DXB,,0,27-06-2026,,Pending Payout,,awaiting approval
+72,RF-1004,Sunrise Trips,MAA-CMB,15900,0,11-06-2026,17-06-2026,Refund Done,,settled
+73,RF-1303,Nomad Travel,HYD-DEL,5100,,25-04-2026,26-04-2026,Refund Done,,payout complete
+74,RF-1608,TripHub,DEL-DXB,26700,0,11-04-2026,15-04-2026,Refund Done,N. Iyer,settled
+75,RF-1122,Wander Agency,DEL-KUL,,2600,05-06-2026,,Pending Payout,,awaiting approval
+76,RF-1667,Nomad Travel,GOI-BOM,6400,0,16-05-2026,19-05-2026,Refund Done,,transferred
+77,RF-1125,Global Wings,MAA-CMB,6800,0,04-05-2026,06-05-2026,Refund Done,,paid to wallet
+78,RF-1296,Skyline Travels,BLR-DXB,20900,,18-03-2026,24-03-2026,Refund Done,N. Iyer,settled
+79,RF-1070,lotus travel co,CCU-BOM,13700,,17-05-2026,18-05-2026,Refund Done,,payout complete
+80,RF-1720,Lotus Travel Co,BOM-BKK,15300,0,20/05/26,24-05-2026,Refund Done,,NEFT done
+81,RF-1843,GoFly Holidays,BOM-DXB,22900,2000,06-05-2026,18-05-2026,Refund Done,S. Bhatt,payout complete
+82,RF-1145,Peak Journeys,DEL-DXB,,1700,13-06-2026,,Pending Payout,,in queue
+83,RF-1393,DeccanFly,BLR-DXB,20900,,22-02-2026,26/02/26,Refund Done,N. Iyer,NEFT done
+84,RF-1500,Wander Agency,HYD-BKK,18300,1600,07-05-2026,12-05-2026,Refund Done,,transferred
+85,RF-1522,Nomad Travel,MAA-CMB,13400,0,04/03/26,06-03-2026,Refund Done,,paid to wallet
+86,RF-1317,Nomad Travel,DEL-DXB,18500,0,04-04-2026,06-04-2026,Refund Done,,NEFT done
+87,RF-1555,Global Wings,HYD-DEL,12300,,22-05-2026,26-05-2026,Refund Done,,transferred
+88,RF-1393,DeccanFly,BLR-DXB,20900,,22-02-2026,26/02/26,Refund Done,N. Iyer,re-entry
+89,RF-1535,Sunrise Trips,BOM-BKK,22000,,11-05-2026,23/05/26,Refund Done,N. Iyer,settled
+90,RF-1389,Orbit Travels,BLR-DXB,19000,0,14-02-2026,16-02-2026,Refund Done,,payout complete
+91,RF-1690,Voyage Desk,CCU-BOM,5500,0,09-04-2026,12-04-2026,Refund Done,,paid to wallet
+92,RF-1394,BlueJet Tours,DEL-KTM,11300,0,22-04-2026,24/04/26,Refund Done,,paid to wallet
+93,RF-1262,Orbit Travels,DEL-CCU,5900,,15-05-2026,16-05-2026,Refund Done,,payout complete
+94,RF-1185,Skyline Travels,DEL-DXB,14400,0,28-03-2026,01-04-2026,Refund Done,,payout complete
+95,RF-1275,Nomad Travel,COK-DXB,,0,30-06-2026,,Pending Payout,,awaiting approval
+96,RF-1526,BlueJet Tours,DEL-KUL,24500,2100,15/05/26,05-06-2026,Refund Done,N. Iyer,payout complete
+97,RF-1735,TripHub,DEL-CCU,8800,,29/04/26,01-05-2026,Refund Done,,paid to wallet
+98,RF-1682,Voyage Desk,COK-DXB,15700,0,26-03-2026,27-03-2026,Refund Done,,NEFT done
+99,RF-1583,Anand Travels,DEL-BOM,11700,,12-03-2026,14/03/26,Refund Done,,payout complete
+100,RF-1484,BlueJet Tours,DEL-BOM,7400,,14-03-2026,18-03-2026,Refund Done,,settled
+101,RF-1157,Skyline Travels,GOI-BOM,9100,0,11-05-2026,13-05-2026,Refund Done,,NEFT done
+102,RF-1193,Wander Agency,AMD-BOM,0,0,02-04-2026,04-04-2026,Declined,,declined
+103,RF-1090,ZipTrip,PNQ-DEL,10300,0,29-03-2026,02-04-2026,Refund Done,,NEFT done
+104,RF-1403,Peak Journeys,DEL-BOM,11000,,20-02-2026,24-02-2026,Refund Done,,settled
+105,RF-1573,Nomad Travel,DEL-DXB,0,0,27-06-2026,29-06-2026,Declined,,outside cancellation window
+106,RF-1815 (revised),TripHub,DEL-BOM,10300,0,21-04-2026,23-04-2026,Refund Done,,settled
+107,RF-1474,kaveri tours,BLR-MAA,5100,,24-05-2026,28-05-2026,Refund Done,,transferred
+108,RF 1123,BlueJet Tours,BOM-BKK,,0,11-06-2026,,Pending Payout,,supplier not confirmed
+109,RF-1041,GoFly Holidays,PNQ-DEL,6500,0,11-06-2026,17-06-2026,Refund Done,,payout complete
+110,RF-1683,Skyline Travels,DEL-SIN,0,0,15-02-2026,20-02-2026,Declined,,declined
+111,RF-1349,Nomad Travel,DEL-BOM,11200,0,16-05-2026,21-05-2026,Refund Done,,paid to wallet
+112,RF-1473,Wander Agency,BLR-DXB,13400,,13-03-2026,15-03-2026,Refund Done,,transferred
+113,RF-1082,Voyage Desk,BOM-BKK,0,0,13/06/26,18-06-2026,Declined,,rejected by policy
+114,RF-1833,GoFly Holidays,DEL-KUL,13800,0,14-02-2026,18-02-2026,Refund Done,,transferred
+115,RF-1505,BlueJet Tours,DEL-CCU,11200,0,23-05-2026,29/05/26,Refund Done,,payout complete
+116,RF-1220,Yatri Junction,DEL-DXB,16200,,18-03-2026,19/03/26,Refund Done,,paid to wallet
+117,RF-1445,Global Wings,BOM-DXB,12800,0,04-03-2026,05-03-2026,Refund Done,,paid to wallet
+118,RF-1421,BlueJet Tours,DEL-KUL,23000,0,07-02-2026,10-02-2026,Refund Done,N. Iyer,NEFT done
+119,RF-1494,BlueJet Tours,BLR-DXB,10800,0,09-03-2026,11-03-2026,Refund Done,,NEFT done
+120,RF-1783,Metro Yatra,DEL-CCU,0,,26-06-2026,01-07-2026,Declined,,rejected by policy
+121,RF-1310,SafarNama Travel,DEL-KUL,25500,,25-03-2026,30-03-2026,Refund Done,N. Iyer,paid to wallet
+122,RF-1300,Kaveri Tours,COK-DXB,12500,,09-02-2026,11-02-2026,Refund Done,,settled
+123,RF-1602,SafarNama Travel,BOM-BKK,12400,0,10-06-2026,15/06/26,Refund Done,,settled
+124,RF-1333,Nomad Travel,DEL-SIN,40600,0,14-04-2026,19/04/26,Refund Done,N. Iyer,settled
+125,RF-1359,ZipTrip,COK-DXB,15600,0,10-02-2026,11-02-2026,Refund Done,,transferred
+126,RF-1636,TripHub,MAA-CMB,15100,,27-04-2026,30/04/26,Refund Done,,transferred
+127,RF-1524,Orbit Travels,HYD-BKK,22900,,25-04-2026,27-04-2026,Refund Done,N. Iyer,NEFT done
+128,RF-1665,Himalaya Holidays,DEL-KUL,14000,0,19-03-2026,22/03/26,Refund Done,,settled
+129,RF-1376,Anand Travels,HYD-DEL,0,0,07-03-2026,13-03-2026,Declined,,not approved
+130,RF-1599,Skyline Travels,PNQ-DEL,11400,0,05-06-2026,08-06-2026,Refund Done,,paid to wallet
+131,RF-1156,Peak Journeys,DEL-DXB,26200,0,16-03-2026,20-03-2026,Refund Done,N. Iyer,paid to wallet
+132,RF-1519,Pinnacle Getaways,DEL-KUL,29700,0,02-03-2026,05-03-2026,Refund Done,N. Iyer,NEFT done
+133,RF-1395,Wander Agency,COK-DXB,24100,,26-04-2026,30-04-2026,Refund Done,S. Bhatt,NEFT done
+134,RF-1390,METRO YATRA,DEL-DXB,20500,1800,28-05-2026,12-06-2026,Refund Done,R. Menon,paid to wallet
+135,RF-1044,Pinnacle Getaways,COK-DXB,21400,0,29-04-2026,04-05-2026,Refund Done,S. Bhatt,transferred
+136,RF-1556,GoFly Holidays,DEL-DXB,14300,1500,20-05-2026,22-05-2026,Refund Done,,NEFT done
+137,RF-1023,Peak Journeys,DEL-DXB,11400,1500,14-05-2026,15-05-2026,Refund Done,,payout complete
+138,RF-1453,GoFly Holidays,DEL-KUL,20500,,29-04-2026,02-05-2026,Refund Done,N. Iyer,payout complete
+139,RF-1724,TRIPHUB,DEL-DXB,27200,2400,10-05-2026,21-05-2026,Refund Done,N. Iyer,paid to wallet
+140,RF-1646,BlueJet Tours,CCU-BOM,14100,0,05-05-2026,08-05-2026,Refund Done,,transferred
+141,RF-1423,Metro Yatra,PNQ-DEL,5100,0,16/03/26,19-03-2026,Refund Done,,settled
+142,RF-1046,SafarNama Travel,HYD-DEL,9500,0,05-04-2026,09-04-2026,Refund Done,,settled
+143,RF-1176,DeccanFly,DEL-SIN,20000,0,10-03-2026,11-03-2026,Refund Done,,settled
+144,RF-1466,Coral Voyages,BLR-DXB,23500,2000,13-05-2026,05-06-2026,Refund Done,N. Iyer,settled
+145,RF-1180,Kaveri Tours,PNQ-DEL,,,27-06-2026,,Pending Payout,,supplier not confirmed
+146,RF-1410,Sunrise Trips,BLR-MAA,8300,0,21-05-2026,23-05-2026,Refund Done,,NEFT done
+147,RF-1736,Pinnacle Getaways,MAA-CMB,,1500,30-06-2026,,Pending Payout,,in queue
+148,RF-1732,Metro Yatra,DEL-DXB,12400,0,24-02-2026,25-02-2026,Refund Done,,paid to wallet
+149,RF-1265,Lotus Travel Co,HYD-DEL,7500,,13-05-2026,19-05-2026,Refund Done,,transferred
+150,RF-1658,Pinnacle Getaways,DEL-BOM,10300,0,15/04/26,16-04-2026,Refund Done,,NEFT done
+151,RF-1089,Sunrise Trips,DEL-SIN,31100,,19-04-2026,21-04-2026,Refund Done,S. Bhatt,paid to wallet
+152,RF-1253,Wander Agency,AMD-BOM,7300,0,02/02/26,04-02-2026,Refund Done,,payout complete
+153,RF-1368,TripHub,DEL-BOM,13700,0,01-04-2026,03-04-2026,Refund Done,,payout complete
+154,RF-1361,Orbit Travels,DEL-BOM,8600,0,16-06-2026,18-06-2026,Refund Done,,settled
+155,RF-1008,Sunrise Trips,AMD-BOM,7300,0,01-03-2026,03-03-2026,Refund Done,,payout complete
+156,RF-1545,coral voyages,BOM-DXB,19000,0,25-02-2026,01-03-2026,Refund Done,,settled
+157,RF-1115,GoFly Holidays,CCU-BOM,12600,,11-04-2026,13-04-2026,Refund Done,,settled
+158,RF-1111,TripHub,HYD-BKK,30500,,22-03-2026,25-03-2026,Refund Done,N. Iyer,transferred
+159,RF-1746,DeccanFly,BLR-DXB,24900,0,22-05-2026,04-06-2026,Refund Done,S. Bhatt,settled
+160,RF-1250,Kaveri Tours,DEL-CCU,12400,,04-04-2026,06-04-2026,Refund Done,,NEFT done
+161,RF-1693,TripHub,BOM-DXB,19000,0,14/02/26,18/02/26,Refund Done,,NEFT done
+162,RF-1431,GoFly Holidays,DEL-CCU,12300,,27-03-2026,29-03-2026,Refund Done,,payout complete
+163,RF-1030,Voyage Desk,AMD-BOM,,,27-06-2026,,Pending Payout,,awaiting approval
+164,RF-1242,BlueJet Tours,DEL-DXB,12900,0,05-03-2026,06-03-2026,Refund Done,,settled
+165,RF-1851,Voyage Desk,BLR-DXB,30500,0,20-04-2026,22-04-2026,Refund Done,N. Iyer,transferred
+166,RF-1021,Kaveri Tours,AMD-BOM,7000,,04-03-2026,08-03-2026,Refund Done,,settled
+167,RF-1119,GoFly Holidays,COK-DXB,24000,0,10-04-2026,13-04-2026,Refund Done,S. Bhatt,NEFT done
+168,RF-1217,PEAK JOURNEYS,CCU-BOM,9100,,24-02-2026,28-02-2026,Refund Done,,transferred
+169,RF-1179,GoFly Holidays,CCU-BOM,12600,0,26-04-2026,28-04-2026,Refund Done,,NEFT done
+170,RF-1264,Global Wings,BOM-BKK,24200,0,13-04-2026,16-04-2026,Refund Done,S. Bhatt,payout complete
+171,RF-1805,Peak Journeys,DEL-DXB,10300,1500,07-05-2026,11-05-2026,Refund Done,,payout complete
+172,RF-1171,nomad travel,DEL-KUL,17200,0,22-04-2026,25-04-2026,Refund Done,,payout complete
+173,RF-1161,Nomad Travel,DEL-DXB,17200,1500,21-05-2026,27-05-2026,Refund Done,,paid to wallet
+174,RF-1055,Sunrise Trips,HYD-DEL,5800,,20-04-2026,23-04-2026,Refund Done,,payout complete
+175,RF-1703,Skyline Travels,DEL-BOM,6700,0,28-02-2026,04-03-2026,Refund Done,,NEFT done
+176,rf-1594,TripHub,DEL-BOM,6800,0,14-05-2026,16-05-2026,Refund Done,,paid to wallet
+177,RF-1842,SafarNama Travel,COK-DXB,17400,1500,05-06-2026,08-06-2026,Refund Done,,payout complete
+178,RF1384,BlueJet Tours,BLR-DXB,28900,,11-02-2026,13-02-2026,Refund Done,N. Iyer,transferred
+179,RF-1287,Metro Yatra,CCU-BOM,11100,0,29-04-2026,03-05-2026,Refund Done,,paid to wallet
+180,RF-1513,TripHub,DEL-CCU,4700,0,23-05-2026,24-05-2026,Refund Done,,paid to wallet
+181,RF-1832,Nomad Travel,DEL-KTM,15700,1500,20-06-2026,25-06-2026,Refund Done,,payout complete
+182,RF-1212,METRO YATRA,HYD-DEL,12400,0,16-06-2026,21-06-2026,Refund Done,,NEFT done
+183,RF-1698,TripHub,BLR-MAA,7500,0,03-04-2026,05-04-2026,Refund Done,,settled
+184,RF-1116,Yatri Junction,BLR-DXB,24700,,09-02-2026,13-02-2026,Refund Done,N. Iyer,NEFT done
+185,RF-1346,Nomad Travel,HYD-DEL,13000,0,27-03-2026,29-03-2026,Refund Done,,settled
+186,RF-1073,Peak Journeys,BLR-MAA,7500,0,14-06-2026,17-06-2026,Refund Done,,settled
+187,RF-1785,GoFly Holidays,BLR-DXB,17900,0,02-04-2026,06-04-2026,Refund Done,,NEFT done
+188,RF-1158,Kaveri Tours,DEL-SIN,39400,0,06-02-2026,10-02-2026,Refund Done,N. Iyer,paid to wallet
+189,RF-1019,GoFly Holidays,DEL-KTM,13500,,04-06-2026,07-06-2026,Refund Done,,NEFT done
+190,RF-1728,GoFly Holidays,PNQ-DEL,6500,,22-05-2026,25-05-2026,Refund Done,,transferred
+191,RF-1798,GoFly Holidays,DEL-BOM,4300,0,20-05-2026,23-05-2026,Refund Done,,paid to wallet
+192,RF-1315,Kaveri Tours,BOM-DXB,,2000,20-06-2026,,Pending Payout,,hold - amount mismatch
+193,RF-1398,Pinnacle Getaways,CCU-BOM,6900,0,24-04-2026,25-04-2026,Refund Done,,payout complete
+194,RF-1124,GoFly Holidays,HYD-DEL,11900,,25-03-2026,27-03-2026,Refund Done,,NEFT done
+195,RF-1256,Peak Journeys,BOM-DXB,13200,0,22-04-2026,23-04-2026,Refund Done,,settled
+196,RF-1617,anand travels,HYD-DEL,9300,0,08-03-2026,09-03-2026,Refund Done,,transferred
+197,RF-1069,Peak Journeys,BLR-DXB,22200,0,04-04-2026,07-04-2026,Refund Done,S. Bhatt,settled
+198,RF-1016,SafarNama Travel,BLR-DXB,0,,05-06-2026,06-06-2026,Declined,,outside cancellation window
+199,RF-1254,TripHub,GOI-BOM,8200,,05-02-2026,08-02-2026,Refund Done,,settled
+200,RF-1140,Kaveri Tours,COK-DXB,13100,0,26-02-2026,27-02-2026,Refund Done,,NEFT done
+201,RF-1222,TripHub,DEL-BOM,,0,30-06-2026,,Pending Payout,,hold - amount mismatch
+202,RF-1580,SKYLINE TRAVELS,DEL-KUL,34300,,14-02-2026,16-02-2026,Refund Done,S. Bhatt,settled
+203,RF-1439,BlueJet Tours,BLR-MAA,6900,,13-04-2026,15-04-2026,Refund Done,,settled
+204,RF-1331,Wander Agency,GOI-BOM,4700,,17-04-2026,21-04-2026,Refund Done,,settled
+205,RF-1606,BlueJet Tours,DEL-KUL,32500,,14-03-2026,20-03-2026,Refund Done,S. Bhatt,settled
+206,RF-1139,Nomad Travel,DEL-DXB,14400,1500,09-05-2026,13-05-2026,Refund Done,,payout complete
+207,RF-1830,Pinnacle Getaways,DEL-BOM,10300,0,11-02-2026,13-02-2026,Refund Done,,payout complete
+208,RF-1078,TripHub,PNQ-DEL,10000,,03-05-2026,06-05-2026,Refund Done,,transferred
+209,RF-1762,BlueJet Tours,DEL-DXB,0,,22-03-2026,23-03-2026,Declined,,rejected
+210,RF-1362,SafarNama Travel,BLR-DXB,31400,0,06-04-2026,10/04/26,Refund Done,N. Iyer,transferred
+211,RF-1160,GoFly Holidays,BLR-DXB,12500,1500,06-05-2026,12-05-2026,Refund Done,,NEFT done
+212,RF-1529,TripHub,HYD-BKK,28600,0,21-02-2026,23-02-2026,Refund Done,S. Bhatt,payout complete
+213,RF-1789,Orbit Travels,CCU-BOM,10900,0,22-06-2026,26-06-2026,Refund Done,,paid to wallet
+214,RF-1409,Nomad Travel,MAA-CMB,7000,0,11-03-2026,14-03-2026,Refund Done,,NEFT done
+215,RF-1198,GoFly Holidays,PNQ-DEL,10800,0,19-06-2026,25-06-2026,Refund Done,,paid to wallet
+216,RF-1672,TripHub,DEL-SIN,26400,,17-05-2026,02-06-2026,Refund Done,N. Iyer,re-entry
+217,RF-1586,Metro Yatra,PNQ-DEL,9700,0,28-04-2026,02-05-2026,Refund Done,,transferred
+218,RF-1153,Metro Yatra,BOM-DXB,19100,,27-05-2026,31-05-2026,Refund Done,,payout complete
+219,RF-1151,GoFly Holidays,BLR-DXB,27800,0,01-03-2026,03-03-2026,Refund Done,N. Iyer,paid to wallet
+220,RF-1853,Coral Voyages,PNQ-DEL,8400,0,08-03-2026,09-03-2026,Refund Done,,paid to wallet
+221,RF-1334,GoFly Holidays,DEL-BOM,6500,0,16-02-2026,19-02-2026,Refund Done,,payout complete
+222,RF-1552,BlueJet Tours,COK-DXB,,1500,30-06-2026,,Pending Payout,,pending manager sign-off
+223,RF-1195,Peak Journeys,DEL-KUL,0,,28-05-2026,29-05-2026,Declined,,outside cancellation window
+224,RF-1058,Metro Yatra,BOM-DXB,28200,0,11-05-2026,03-06-2026,Refund Done,N. Iyer,settled
+225,RF1435,Anand Travels,HYD-DEL,13100,,03-03-2026,06-03-2026,Refund Done,,NEFT done
+226,RF-1592,BlueJet Tours,BLR-MAA,6400,0,13-03-2026,14-03-2026,Refund Done,,payout complete
+227,RF-1613,Kaveri Tours,AMD-BOM,,0,28-06-2026,,Pending Payout,,in queue
+228,RF-1147,Global Wings,AMD-BOM,3700,,24-03-2026,26-03-2026,Refund Done,,NEFT done
+229,RF-1467,GoFly Holidays,DEL-SIN,19900,0,16-06-2026,20-06-2026,Refund Done,,transferred
+230,RF-1351,TripHub,HYD-BKK,31100,0,10-04-2026,12-04-2026,Refund Done,N. Iyer,payout complete
+231,RF-1056,GoFly Holidays,CCU-BOM,11400,0,01-04-2026,02-04-2026,Refund Done,,paid to wallet
+232,RF-1572,BlueJet Tours,GOI-BOM,0,,17/05/26,23-05-2026,Declined,,outside cancellation window
+233,RF-1817,TripHub,PNQ-DEL,0,,01-03-2026,07-03-2026,Declined,,not approved
+234,RF-1653,Himalaya Holidays,DEL-SIN,28300,0,08-02-2026,13-02-2026,Refund Done,S. Bhatt,paid to wallet
+235,RF-1742,BlueJet Tours,DEL-BOM,8600,,22-03-2026,26-03-2026,Refund Done,,payout complete
+236,RF-1610,TripHub,HYD-DEL,10100,0,08-02-2026,09-02-2026,Refund Done,,settled
+237,RF-1343,Skyline Travels,CCU-BOM,10800,0,01-04-2026,02-04-2026,Refund Done,,settled
+238,RF-1520,Nomad Travel,DEL-DXB,20000,0,28-02-2026,02-03-2026,Refund Done,,payout complete
+239,RF-1747,GoFly Holidays,BLR-MAA,5000,0,22-06-2026,27-06-2026,Refund Done,,paid to wallet
+240,RF-1038,Wander Agency,DEL-BOM,12400,0,19-03-2026,21-03-2026,Refund Done,,NEFT done
+241,RF-1504,Nomad Travel,DEL-SIN,0,0,19-06-2026,22-06-2026,Declined,,outside cancellation window
+242,RF-1686,TripHub,HYD-BKK,26900,0,25-03-2026,30-03-2026,Refund Done,N. Iyer,NEFT done
+243,RF-1012,BlueJet Tours,DEL-DXB,18100,,08-02-2026,11-02-2026,Refund Done,,payout complete
+244,RF-1205,DeccanFly,HYD-BKK,24800,0,06-03-2026,11-03-2026,Refund Done,N. Iyer,paid to wallet
+245,RF-1164,Sunrise Trips,DEL-BOM,10700,0,01/03/26,05-03-2026,Refund Done,,settled
+246,RF-1182,Himalaya Holidays,CCU-BOM,6000,,22-05-2026,26-05-2026,Refund Done,,settled
+247,RF-1850,Orbit Travels,BOM-BKK,32500,0,04-04-2026,08-04-2026,Refund Done,N. Iyer,settled
+248,RF-1074,BlueJet Tours,HYD-DEL,,0,30-06-2026,,Pending Payout,,hold - amount mismatch
+249,RF-1312,Orbit Travels,PNQ-DEL,5400,,27-05-2026,29-05-2026,Refund Done,,settled
+250,RF-1337,Pinnacle Getaways,HYD-DEL,12300,,07-02-2026,11-02-2026,Refund Done,,settled
+251,RF-1734,Wander Agency,MAA-CMB,15500,0,07-03-2026,10-03-2026,Refund Done,,payout complete
+252,RF-1369,Yatri Junction,DEL-KTM,,1500,27-06-2026,,Pending Payout,,awaiting approval
+253,RF-1404,Voyage Desk,DEL-DXB,18600,0,12-04-2026,16-04-2026,Refund Done,,settled
+254,RF-1786,Peak Journeys,HYD-DEL,7300,,18-02-2026,21-02-2026,Refund Done,,transferred
+255,RF-1672,TripHub,DEL-SIN,26400,,17-05-2026,02-06-2026,Refund Done,N. Iyer,transferred
+256,RF-1149,BlueJet Tours,BOM-BKK,23900,0,04-04-2026,08-04-2026,Refund Done,N. Iyer,NEFT done
+257,RF-1276,Skyline Travels,CCU-BOM,11600,0,19-02-2026,20-02-2026,Refund Done,,transferred
+258,RF-1177,Pinnacle Getaways,DEL-KUL,13300,0,26-03-2026,28-03-2026,Refund Done,,duplicate check pending
+259,RF-1487,Yatri Junction,COK-DXB,28000,,01-05-2026,04-05-2026,Refund Done,N. Iyer,transferred
+260,RF-1642,BlueJet Tours,BOM-DXB,16200,0,12-02-2026,13-02-2026,Refund Done,,transferred
+261,RF-1377,Voyage Desk,DEL-KUL,0,0,01-06-2026,02-06-2026,Declined,,declined
+262,RF-1406,Sunrise Trips,DEL-BOM,7600,0,28-04-2026,02-05-2026,Refund Done,,paid to wallet
+263,RF-1530,GoFly Holidays,PNQ-DEL,8700,,12-06-2026,17-06-2026,Refund Done,,payout complete
+264,RF-1836,Peak Journeys,COK-DXB,24100,0,16-03-2026,22-03-2026,Refund Done,N. Iyer,NEFT done
+265,RF-1238,DeccanFly,BOM-BKK,21400,,15-03-2026,20-03-2026,Refund Done,S. Bhatt,NEFT done
+266,RF-1708,TripHub,AMD-BOM,,0,25-06-2026,,Pending Payout,,in queue
+267,RF-1408,Wander Agency,DEL-SIN,28300,,19/04/26,22-04-2026,Refund Done,N. Iyer,NEFT done
+268,RF-1643,SafarNama Travel,DEL-DXB,9500,0,12-04-2026,15-04-2026,Refund Done,,transferred
+269,RF-1068,Nomad Travel,DEL-SIN,17900,1600,18-05-2026,23-05-2026,Refund Done,,settled
+270,RF-1110,Lotus Travel Co,DEL-SIN,18300,1600,14-05-2026,18-05-2026,Refund Done,,settled
+271,RF-1846,BlueJet Tours,DEL-BOM,13200,0,18-02-2026,22-02-2026,Refund Done,,payout complete
+272,RF-1167,Kaveri Tours,CCU-BOM,10200,0,17-05-2026,19-05-2026,Refund Done,,paid to wallet
+273,RF-1537,Sunrise Trips,HYD-BKK,,0,06-06-2026,,Pending Payout,,hold - amount mismatch
+274,RF-1402,BlueJet Tours,COK-DXB,23200,0,26-05-2026,16-06-2026,Refund Done,S. Bhatt,payout complete
+275,RF-1852,Metro Yatra,CCU-BOM,13000,0,27-03-2026,28-03-2026,Refund Done,,NEFT done
+276,RF-1571,Orbit Travels,BLR-MAA,8000,,22-04-2026,24-04-2026,Refund Done,,paid to wallet
+277,RF-1370,GoFly Holidays,DEL-BOM,5700,0,02-04-2026,06-04-2026,Refund Done,,transferred
+278,RF-1001,Skyline Travels,BOM-BKK,,2300,09-06-2026,,Pending Payout,,hold - amount mismatch
+279,RF-1441,Voyage Desk,HYD-BKK,,1500,29-06-2026,,Pending Payout,,hold - amount mismatch
+280,RF-1788,GoFly Holidays,DEL-BOM,6800,0,10-06-2026,13-06-2026,Refund Done,,paid to wallet
+281,RF-1065,BlueJet Tours,COK-DXB,12800,1500,14-05-2026,20-05-2026,Refund Done,,NEFT done
+282,RF-1639,Global Wings,DEL-SIN,15200,0,02-04-2026,06-04-2026,Refund Done,,settled
+283,RF-1066,SafarNama Travel,HYD-BKK,25700,0,28-02-2026,05-03-2026,Refund Done,S. Bhatt,transferred
+284,RF-1072,Kaveri Tours,COK-DXB,13200,0,02-03-2026,05-03-2026,Refund Done,,transferred
+285,RF-1844,TripHub,CCU-BOM,10500,0,20-06-2026,25-06-2026,Refund Done,,transferred
+286,RF-1425,Yatri Junction,BLR-DXB,32000,0,25-02-2026,28-02-2026,Refund Done,N. Iyer,paid to wallet
+287,RF-1129,Global Wings,DEL-KTM,,1500,30-06-2026,,Pending Payout,,supplier not confirmed
+288,RF-1132,TripHub,DEL-BOM,10200,0,07-02-2026,10-02-2026,Refund Done,,settled
+289,RF-1542,TripHub,DEL-CCU,,0,29-06-2026,,Pending Payout,,supplier not confirmed
+290,RF-1859,Himalaya Holidays,BLR-DXB,28600,,09-04-2026,14-04-2026,Refund Done,N. Iyer,transferred
+291,RF-1006,DeccanFly,GOI-BOM,4500,0,11-02-2026,14-02-2026,Refund Done,,paid to wallet
+292,RF-1191,Peak Journeys,HYD-BKK,28200,0,16-04-2026,19-04-2026,Refund Done,N. Iyer,payout complete
+293,RF-1114,Peak Journeys,DEL-KTM,17200,0,27-05-2026,30-05-2026,Refund Done,,transferred
+294,RF-1356,Skyline Travels,BOM-BKK,25200,,20-03-2026,24-03-2026,Refund Done,N. Iyer,NEFT done
+295,RF-1553,GoFly Holidays,BLR-MAA,6200,0,24-04-2026,25-04-2026,Refund Done,,NEFT done
+296,RF-1292,Voyage Desk,DEL-KUL,,1800,29-06-2026,,Pending Payout,,supplier not confirmed
+297,RF-1108,Himalaya Holidays,DEL-KUL,30100,,24-02-2026,01-03-2026,Refund Done,N. Iyer,paid to wallet
+298,RF-1322,BlueJet Tours,PNQ-DEL,11800,0,05-04-2026,09-04-2026,Refund Done,,NEFT done
+299,RF-1574,GoFly Holidays,DEL-CCU,12100,0,07-06-2026,09-06-2026,Refund Done,,payout complete
+300,RF-1491,Nomad Travel,GOI-BOM,5200,0,20-04-2026,21-04-2026,Refund Done,,payout complete
+301,RF-1005,Voyage Desk,DEL-DXB,28700,0,14-03-2026,17-03-2026,Refund Done,S. Bhatt,paid to wallet
+302,RF-1847,BlueJet Tours,BOM-DXB,24500,,12-04-2026,15/04/26,Refund Done,N. Iyer,NEFT done
+303,RF-1565,Peak Journeys,MAA-CMB,12900,0,03-03-2026,04-03-2026,Refund Done,,transferred
+304,RF-1347 (revised),Kaveri Tours,AMD-BOM,9400,0,21-03-2026,23-03-2026,Refund Done,,paid to wallet
+305,RF-1787,peak journeys,BLR-DXB,14000,0,23-03-2026,25-03-2026,Refund Done,,NEFT done
+306,RF-1819,Peak Journeys,MAA-CMB,,1500,30-06-2026,,Pending Payout,,hold - amount mismatch
+307,RF-1062,DeccanFly,DEL-BOM,0,,17-05-2026,19-05-2026,Declined,,not approved
+308,RF-1240,Peak Journeys,DEL-BOM,7700,,05-02-2026,08-02-2026,Refund Done,,NEFT done
+309,RF-1514,Lotus Travel Co,DEL-DXB,31000,0,17-03-2026,23-03-2026,Refund Done,R. Menon,NEFT done
+310,RF-1619,GoFly Holidays,HYD-BKK,0,0,10-03-2026,12-03-2026,Declined,,not approved
+311,RF-1774,Pinnacle Getaways,BLR-MAA,10100,0,06-06-2026,13-06-2026,Refund Done,,NEFT done
+312,RF-1476,BlueJet Tours,PNQ-DEL,10800,0,26-05-2026,27-05-2026,Refund Done,,NEFT done
+313,RF-1130,GoFly Holidays,BLR-DXB,26100,0,07-05-2026,16-05-2026,Refund Done,N. Iyer,settled
+314,RF-1252,TripHub,DEL-KUL,19400,1700,21-05-2026,04-06-2026,Refund Done,N. Iyer,paid to wallet
+315,RF-1135,Orbit Travels,CCU-BOM,12500,,04-03-2026,06-03-2026,Refund Done,,paid to wallet
+316,RF-1295,Metro Yatra,BOM-DXB,28800,0,17-02-2026,19-02-2026,Refund Done,R. Menon,paid to wallet
+317,RF-1725,GoFly Holidays,MAA-CMB,16700,0,03-04-2026,05-04-2026,Refund Done,,paid to wallet
+318,RF-1761,Global Wings,DEL-SIN,24800,0,17-02-2026,21/02/26,Refund Done,S. Bhatt,NEFT done
+319,RF-1442,DeccanFly,MAA-CMB,14600,0,03-05-2026,08-05-2026,Refund Done,,settled
+320,RF-1637,Metro Yatra,HYD-BKK,33400,,11-02-2026,16-02-2026,Refund Done,N. Iyer,settled
+321,RF-1449,Voyage Desk,BOM-DXB,14400,,06-03-2026,09-03-2026,Refund Done,,payout complete
+322,RF-1745,BlueJet Tours,BOM-DXB,,2300,13-06-2026,,Pending Payout,,in queue
+323,RF-1200,Peak Journeys,CCU-BOM,12900,0,01-06-2026,03-06-2026,Refund Done,,NEFT done
+324,RF-1567,Coral Voyages,DEL-BOM,4800,0,07-05-2026,09-05-2026,Refund Done,,payout complete
+325,RF-1483,BlueJet Tours,DEL-DXB,29100,0,23-03-2026,27-03-2026,Refund Done,N. Iyer,transferred
+326,RF-1304,Nomad Travel,DEL-KTM,9700,0,06-03-2026,08-03-2026,Refund Done,,settled
+327,RF-1379,BlueJet Tours,DEL-BOM,12000,,05-03-2026,06-03-2026,Refund Done,,settled
+328,RF-1396,Kaveri Tours,DEL-DXB,21200,0,08-04-2026,11-04-2026,Refund Done,S. Bhatt,payout complete
+329,RF-1657,Voyage Desk,DEL-KTM,11600,,28-04-2026,29-04-2026,Refund Done,,paid to wallet
+330,RF-1036,KAVERI TOURS,DEL-DXB,11300,,28-04-2026,01-05-2026,Refund Done,,settled
+331,RF-1327,Sunrise Trips,BOM-DXB,12500,0,01-03-2026,02-03-2026,Refund Done,,settled
+332,RF-1077,GoFly Holidays,DEL-DXB,26400,0,15-03-2026,20-03-2026,Refund Done,N. Iyer,NEFT done
+333,RF-1092,Wander Agency,HYD-DEL,7500,0,29-05-2026,04-06-2026,Refund Done,,paid to wallet
+334,RF-1268,ziptrip,DEL-CCU,11800,0,22-03-2026,24-03-2026,Refund Done,,transferred
+335,RF-1133,Himalaya Holidays,DEL-CCU,9300,0,09-06-2026,12-06-2026,Refund Done,,NEFT done
+336,RF-1486,Peak Journeys,DEL-DXB,31200,0,21-04-2026,23/04/26,Refund Done,N. Iyer,settled
+337,RF-1047,Peak Journeys,BOM-BKK,26300,0,13-02-2026,16-02-2026,Refund Done,N. Iyer,NEFT done
+338,RF-1472,Sunrise Trips,BLR-DXB,28300,0,26-03-2026,31-03-2026,Refund Done,S. Bhatt,transferred
+339,RF-1446,Orbit Travels,BLR-DXB,11400,1500,14-06-2026,16-06-2026,Refund Done,,NEFT done
+340,RF-1454,Pinnacle Getaways,DEL-KUL,24300,0,28-02-2026,05-03-2026,Refund Done,S. Bhatt,settled
+341,RF-1424,Nomad Travel,DEL-DXB,14700,0,22-03-2026,24/03/26,Refund Done,,payout complete
+342,RF-1399,Wander Agency,CCU-BOM,6100,0,01-03-2026,03-03-2026,Refund Done,,transferred
+343,RF-1248,Peak Journeys,MAA-CMB,13600,,27-04-2026,01-05-2026,Refund Done,,NEFT done
+344,RF-1293,Nomad Travel,PNQ-DEL,8000,0,20-02-2026,21-02-2026,Refund Done,,transferred
+345,RF-1025,SafarNama Travel,DEL-BOM,11600,,22-03-2026,26-03-2026,Refund Done,,settled
+346,RF-1829,Metro Yatra,DEL-KTM,10900,0,19-04-2026,20-04-2026,Refund Done,,transferred
+347,RF-1700,GoFly Holidays,BOM-DXB,,2300,30-06-2026,,Pending Payout,,supplier not confirmed
+348,RF-1660,GoFly Holidays,CCU-BOM,13700,0,23-02-2026,26-02-2026,Refund Done,,NEFT done
+349,RF-1106,BlueJet Tours,DEL-KTM,17500,1500,25-06-2026,28-06-2026,Refund Done,,transferred
+350,RF-1302,PINNACLE GETAWAYS,DEL-DXB,11300,0,18-05-2026,22-05-2026,Refund Done,,paid to wallet
+351,RF-1052,triphub,COK-DXB,23200,0,28-03-2026,31-03-2026,Refund Done,N. Iyer,payout complete
+352,RF-1053,Voyage Desk,AMD-BOM,8100,0,15-06-2026,22/06/26,Refund Done,,payout complete
+353,RF-1238,DeccanFly,BOM-BKK,21400,,15-03-2026,20-03-2026,Refund Done,S. Bhatt,duplicate check pending
+354,RF-1464,Voyage Desk,BLR-DXB,0,0,04-02-2026,06-02-2026,Declined,,not approved
+355,RF-1729,TripHub,HYD-DEL,11100,0,22-04-2026,24/04/26,Refund Done,,settled
+356,RF-1576,GoFly Holidays,DEL-BOM,10100,0,12-06-2026,16/06/26,Refund Done,,transferred
+357,RF-1142,Himalaya Holidays,BLR-DXB,18000,0,14-06-2026,19-06-2026,Refund Done,,paid to wallet
+358,RF-1739,TripHub,COK-DXB,0,0,11-06-2026,16-06-2026,Declined,,non-refundable fare
+359,RF-1086,GoFly Holidays,DEL-DXB,28200,0,15-03-2026,18-03-2026,Refund Done,N. Iyer,transferred
+360,RF-1422,Wander Agency,BOM-DXB,8700,1500,22-05-2026,26-05-2026,Refund Done,,paid to wallet
+361,RF-1688,Voyage Desk,HYD-DEL,8300,,30-03-2026,03-04-2026,Refund Done,,transferred
+362,RF-1485,Coral Voyages,GOI-BOM,5500,0,22-02-2026,23-02-2026,Refund Done,,NEFT done
+363,RF-1352,Wander Agency,PNQ-DEL,12100,0,06-03-2026,10-03-2026,Refund Done,,NEFT done
+364,RF-1671,Peak Journeys,BLR-DXB,0,,28-02-2026,05-03-2026,Declined,,declined
+365,RF-1329,SafarNama Travel,BOM-DXB,10600,,25-04-2026,26-04-2026,Refund Done,,paid to wallet
+366,RF-1428,Kaveri Tours,BLR-DXB,17800,0,06-02-2026,10-02-2026,Refund Done,,settled
+367,RF-1259,BlueJet Tours,COK-DXB,,2100,12/06/26,,Pending Payout,,in queue
+368,RF-1282,Wander Agency,HYD-BKK,12400,0,06/05/26,12-05-2026,Refund Done,,settled
+369,RF-1670,SafarNama Travel,COK-DXB,22000,0,20-02-2026,25-02-2026,Refund Done,N. Iyer,paid to wallet
+370,RF-1495,TripHub,BOM-BKK,28900,0,23-03-2026,25-03-2026,Refund Done,N. Iyer,payout complete
+371,RF-1532,Orbit Travels,DEL-DXB,0,0,07-05-2026,12-05-2026,Declined,,rejected
+372,RF-1174,Peak Journeys,BLR-MAA,5100,,01-04-2026,03-04-2026,Refund Done,,transferred
+373,RF-1563,Orbit Travels,BLR-MAA,7500,0,12-06-2026,21-06-2026,Refund Done,,settled
+374,RF-1277,TripHub,DEL-KTM,11600,,21-06-2026,26-06-2026,Refund Done,,settled
+375,RF-1083,Wander Agency,BOM-BKK,33600,,23-02-2026,26-02-2026,Refund Done,S. Bhatt,settled
+376,RF-1386,TripHub,HYD-DEL,8000,0,27-04-2026,29-04-2026,Refund Done,,paid to wallet
+377,RF-1755,GoFly Holidays,DEL-DXB,10700,0,16-05-2026,20/05/26,Refund Done,,transferred
+378,RF-1054,Kaveri Tours,DEL-DXB,0,0,22-06-2026,25-06-2026,Declined,,outside cancellation window
+379,RF-1624,Wander Agency,HYD-BKK,12000,1500,31-05-2026,03-06-2026,Refund Done,,NEFT done
+380,RF-1773 (revised),DeccanFly,BLR-DXB,0,0,02-05-2026,05-05-2026,Declined,,not approved
+381,RF-1235,TripHub,HYD-DEL,,,25-06-2026,,Pending Payout,,awaiting approval
+382,RF-1823,SafarNama Travel,BLR-MAA,0,,16-03-2026,22-03-2026,Declined,,outside cancellation window
+383,RF-1795,Kaveri Tours,DEL-DXB,12800,0,23-06-2026,30-06-2026,Refund Done,,NEFT done
+384,RF-1835,Global Wings,DEL-SIN,34900,3000,11-05-2026,05-06-2026,Refund Done,S. Bhatt,transferred
+385,RF-1137,BlueJet Tours,MAA-CMB,10900,0,13-02-2026,15-02-2026,Refund Done,,settled
+386,RF-1291,Peak Journeys,MAA-CMB,15500,,29-03-2026,02-04-2026,Refund Done,,payout complete
+387,RF-1037,BlueJet Tours,DEL-SIN,38500,0,29-03-2026,02-04-2026,Refund Done,N. Iyer,transferred
+388,RF-1211,Metro Yatra,HYD-BKK,23200,2000,14-05-2026,31/05/26,Refund Done,N. Iyer,NEFT done
+389,RF-1375,DeccanFly,PNQ-DEL,0,0,10/06/26,16-06-2026,Declined,,rejected
+390,RF-1493,Nomad Travel,DEL-DXB,15800,1500,21-05-2026,22/05/26,Refund Done,,NEFT done
+391,RF-1305,TripHub,BOM-BKK,26600,2300,20-05-2026,09-06-2026,Refund Done,S. Bhatt,NEFT done
+392,RF-1644,Wander Agency,BOM-DXB,16600,0,13-05-2026,15/05/26,Refund Done,,transferred
+393,RF-1034,Himalaya Holidays,DEL-CCU,7400,0,19-02-2026,20-02-2026,Refund Done,,settled
+394,RF-1684,Peak Journeys,BOM-BKK,13500,,08-02-2026,11-02-2026,Refund Done,,transferred
+395,RF-1087,Nomad Travel,BOM-DXB,27500,,14-04-2026,17/04/26,Refund Done,N. Iyer,settled
+396,RF-1324,Nomad Travel,DEL-BOM,12400,0,18-04-2026,19-04-2026,Refund Done,,NEFT done
+397,RF-1017,SafarNama Travel,AMD-BOM,8000,,13-03-2026,16-03-2026,Refund Done,,NEFT done
+398,RF-1681,BlueJet Tours,BLR-MAA,9800,0,28-02-2026,03-03-2026,Refund Done,,paid to wallet
+399,RF-1701,bluejet tours,HYD-BKK,17400,1500,17-06-2026,21-06-2026,Refund Done,,transferred
+400,RF-1314,Nomad Travel,DEL-DXB,0,,03-05-2026,06-05-2026,Declined,,rejected
+401,RF-1187,TripHub,DEL-BOM,,,28-06-2026,,Pending Payout,,hold - amount mismatch
+402,RF-1550,SafarNama Travel,BLR-MAA,,,30-06-2026,,Pending Payout,,pending manager sign-off
+403,RF1299,Metro Yatra,BOM-DXB,14600,1500,14-06-2026,21-06-2026,Refund Done,,payout complete
+404,RF-1026,BlueJet Tours,DEL-CCU,6800,0,12-02-2026,14-02-2026,Refund Done,,NEFT done
+405,RF-1759,Voyage Desk,DEL-CCU,12000,0,26-02-2026,28-02-2026,Refund Done,,settled
+406,RF-1009,Voyage Desk,CCU-BOM,5300,0,09-03-2026,11-03-2026,Refund Done,,transferred
+407,RF-1154,Nomad Travel,CCU-BOM,7500,,30-04-2026,01-05-2026,Refund Done,,payout complete
+408,RF-1748,Himalaya Holidays,BLR-MAA,3500,,19-06-2026,24-06-2026,Refund Done,,transferred
+409,RF1003,Orbit Travels,BLR-DXB,17800,,12-02-2026,14-02-2026,Refund Done,,settled
+410,RF-1438,Anand Travels,BLR-MAA,9300,0,26-03-2026,29-03-2026,Refund Done,,paid to wallet
+411,RF-1664,Voyage Desk,DEL-BOM,6700,0,04-05-2026,08-05-2026,Refund Done,,settled
+412,RF-1039,Peak Journeys,DEL-DXB,12900,0,01-05-2026,03-05-2026,Refund Done,,payout complete
+413,RF-1510,DeccanFly,DEL-DXB,13500,0,16-03-2026,19-03-2026,Refund Done,,NEFT done
+414,RF-1395,Wander Agency,COK-DXB,24100,,26-04-2026,30-04-2026,Refund Done,S. Bhatt,settled
+415,RF-1091,SafarNama Travel,GOI-BOM,4500,0,07-02-2026,08-02-2026,Refund Done,,NEFT done
+416,RF-1196,BlueJet Tours,DEL-DXB,30900,0,12-04-2026,15/04/26,Refund Done,S. Bhatt,settled
+417,RF-1148,Skyline Travels,COK-DXB,16500,,02-06-2026,06-06-2026,Refund Done,,re-entry
+418,RF-1227,Peak Journeys,DEL-BOM,12300,0,21-06-2026,30-06-2026,Refund Done,,settled
+419,RF-1822,GoFly Holidays,DEL-DXB,16900,,26-03-2026,30-03-2026,Refund Done,,NEFT done
+420,RF-1381,NOMAD TRAVEL,HYD-DEL,,,25-06-2026,,Pending Payout,,awaiting approval
+421,RF-1215,Orbit Travels,DEL-BOM,7500,0,30-03-2026,03-04-2026,Refund Done,,settled
+422,RF-1615,Sunrise Trips,DEL-CCU,12200,0,10-03-2026,11-03-2026,Refund Done,,NEFT done
+423,RF-1741,Peak Journeys,MAA-CMB,7300,0,15-04-2026,17-04-2026,Refund Done,,settled
+424,RF-1749,Anand Travels,COK-DXB,24200,2100,16-05-2026,04-06-2026,Refund Done,N. Iyer,settled
+425,RF-1382,Wander Agency,DEL-KTM,15100,1500,18-05-2026,23-05-2026,Refund Done,,paid to wallet
+426,RF-1355,Peak Journeys,DEL-KTM,7200,1500,16-05-2026,21-05-2026,Refund Done,,settled
+427,RF-1457,GoFly Holidays,BLR-MAA,11000,0,06-06-2026,10-06-2026,Refund Done,,transferred
+428,RF-1450,Voyage Desk,BLR-MAA,7000,0,25-02-2026,27-02-2026,Refund Done,,settled
+429,RF-1697,voyage desk,DEL-DXB,23200,,17-04-2026,19-04-2026,Refund Done,N. Iyer,payout complete
+430,RF-1540,Kaveri Tours,BLR-MAA,5700,0,11-02-2026,15-02-2026,Refund Done,,transferred
+431,RF-1096,GoFly Holidays,BOM-DXB,24200,0,17-02-2026,21-02-2026,Refund Done,N. Iyer,payout complete
+432,RF-1465,Wander Agency,DEL-KTM,9600,1500,08-05-2026,09-05-2026,Refund Done,,NEFT done
+433,RF-1097,TripHub,BLR-DXB,22200,,05-04-2026,08/04/26,Refund Done,N. Iyer,settled
+434,RF-1611,TripHub,HYD-DEL,11900,0,25-05-2026,31-05-2026,Refund Done,,NEFT done
+435,RF-1397,Lotus Travel Co,DEL-KUL,13200,0,10-04-2026,14-04-2026,Refund Done,,paid to wallet
+436,RF-1825,Wander Agency,BLR-MAA,8000,,18-02-2026,21-02-2026,Refund Done,,payout complete
+437,RF-1760,Sunrise Trips,DEL-KTM,12000,,27-04-2026,29-04-2026,Refund Done,,transferred
+438,RF-1163,Metro Yatra,HYD-DEL,5100,0,08-03-2026,09-03-2026,Refund Done,,payout complete
+439,RF-1127,Voyage Desk,BOM-DXB,16300,0,12-02-2026,15-02-2026,Refund Done,,paid to wallet
+440,RF-1600,Voyage Desk,MAA-CMB,14900,0,16-03-2026,19-03-2026,Refund Done,,settled
+441,RF-1459,BlueJet Tours,DEL-DXB,13200,0,30-03-2026,02-04-2026,Refund Done,,transferred
+442,RF-1353,GoFly Holidays,AMD-BOM,8700,0,12/02/26,13-02-2026,Refund Done,,settled
+443,RF-1141,TripHub,BOM-BKK,0,,23-06-2026,25-06-2026,Declined,,rejected by policy
+444,RF-1112,Metro  Yatra,MAA-CMB,10100,0,30-04-2026,04-05-2026,Refund Done,,transferred
+445,RF-1136,TripHub,CCU-BOM,11200,0,29-03-2026,30/03/26,Refund Done,,paid to wallet
+446,RF-1223,Kaveri Tours,BOM-BKK,23600,0,22-04-2026,24-04-2026,Refund Done,S. Bhatt,settled
+447,RF-1031,GoFly Holidays,BLR-MAA,8400,0,13-03-2026,14-03-2026,Refund Done,,payout complete
+448,RF-1723,SafarNama Travel,DEL-BOM,8000,,20-04-2026,21-04-2026,Refund Done,,NEFT done
+449,RF-1691,BlueJet Tours,CCU-BOM,14500,0,10-04-2026,11-04-2026,Refund Done,,payout complete
+450,RF-1501,Peak Journeys,CCU-BOM,11500,,02-05-2026,05-05-2026,Refund Done,,NEFT done
+451,RF-1856,Yatri Junction,BLR-DXB,,2300,05-06-2026,,Pending Payout,,hold - amount mismatch
+452,RF-1010,BlueJet Tours,DEL-BOM,,0,28-06-2026,,Pending Payout,,awaiting approval
+453,RF-1014,Global Wings,BLR-MAA,4100,0,26-03-2026,28/03/26,Refund Done,,payout complete
+454,RF-1497,Nomad Travel,HYD-DEL,9400,0,29-04-2026,01-05-2026,Refund Done,,settled
+455,RF-1695,Peak Journeys,COK-DXB,15900,0,24-04-2026,28/04/26,Refund Done,,payout complete
+456,RF-1784,Metro Yatra,BLR-MAA,8700,0,05-04-2026,08-04-2026,Refund Done,,paid to wallet
+457,RF-1731,Wander Agency,DEL-CCU,6200,,09-03-2026,10-03-2026,Refund Done,,NEFT done
+458,RF-1841,Peak Journeys,BLR-MAA,9000,0,25-03-2026,27-03-2026,Refund Done,,NEFT done
+459,RF-1626,Peak Journeys,BOM-BKK,28100,,21-05-2026,03-06-2026,Refund Done,N. Iyer,NEFT done
+460,RF-1561,Nomad Travel,GOI-BOM,9100,0,22-04-2026,26-04-2026,Refund Done,,settled
+461,RF-1489,Nomad Travel,DEL-KTM,11000,0,09/03/26,11-03-2026,Refund Done,,settled
+462,RF-1579,Skyline Travels,MAA-CMB,10700,0,26-04-2026,30/04/26,Refund Done,,transferred
+463,RF-1598,Voyage Desk,DEL-KUL,23300,0,22-05-2026,08/06/26,Refund Done,R. Menon,settled
+464,RF-1093,TripHub,DEL-BOM,9300,,13-03-2026,16-03-2026,Refund Done,,paid to wallet
+465,RF-1655,Yatri Junction,DEL-KTM,,1500,30-06-2026,,Pending Payout,,pending manager sign-off
+466,RF-1426,peak journeys,BOM-BKK,13000,0,26-02-2026,02-03-2026,Refund Done,,transferred
+467,RF-1848,Metro Yatra,CCU-BOM,11900,,01-03-2026,05-03-2026,Refund Done,,settled
+468,RF-1706,BlueJet Tours,DEL-SIN,36700,,02-03-2026,07-03-2026,Refund Done,N. Iyer,paid to wallet
+469,RF-1372,BlueJet Tours,DEL-CCU,10100,,22-02-2026,24-02-2026,Refund Done,,payout complete
+470,RF-1063,Voyage Desk,DEL-KUL,,2100,11-06-2026,,Pending Payout,,in queue
+471,RF-1319,Skyline Travels,GOI-BOM,6300,0,01-05-2026,04-05-2026,Refund Done,,paid to wallet
+472,RF-1328,Wander Agency,HYD-DEL,6000,0,24-04-2026,25-04-2026,Refund Done,,payout complete
+473,RF-1401,Metro Yatra,DEL-KUL,,2000,14-06-2026,,Pending Payout,,awaiting approval
+474,RF-1350,HIMALAYA HOLIDAYS,HYD-BKK,20100,0,11-03-2026,13-03-2026,Refund Done,S. Bhatt,settled
+475,RF-1245,Sunrise Trips,HYD-BKK,15700,0,01-03-2026,02-03-2026,Refund Done,,settled
+476,RF-1767,Wander Agency,DEL-KUL,31800,0,29-04-2026,01-05-2026,Refund Done,S. Bhatt,NEFT done
+477,RF-1607,GoFly Holidays,DEL-BOM,11700,0,06-03-2026,10-03-2026,Refund Done,,payout complete
+478,RF-1482,TripHub,DEL-DXB,,1700,13-06-2026,,Pending Payout,,hold - amount mismatch
+479,RF-1048,Lotus Travel Co,DEL-BOM,5000,,01-05-2026,03-05-2026,Refund Done,,settled
+480,RF-1280,ZipTrip,DEL-BOM,,0,30-06-2026,,Pending Payout,,awaiting approval
+481,RF-1481,GoFly Holidays,MAA-CMB,15800,,23/02/26,24-02-2026,Refund Done,,settled
+482,RF-1243,GoFly Holidays,DEL-BOM,9900,0,06-04-2026,08-04-2026,Refund Done,,payout complete
+483,RF-1035,Nomad Travel,BLR-DXB,10800,1500,29-05-2026,03-06-2026,Refund Done,,settled
+484,RF-1471,Metro Yatra,BLR-MAA,10500,0,21-03-2026,23-03-2026,Refund Done,,transferred
+485,RF-1432,Global Wings,PNQ-DEL,10800,0,28-04-2026,30-04-2026,Refund Done,,transferred
+486,RF-1218,Voyage Desk,DEL-DXB,26700,,10-02-2026,15-02-2026,Refund Done,S. Bhatt,paid to wallet
+487,RF-1509,TripHub,GOI-BOM,4600,0,25-02-2026,28-02-2026,Refund Done,,settled
+488,RF-1020,BlueJet Tours,AMD-BOM,7700,,06-04-2026,09-04-2026,Refund Done,,payout complete
+489,RF-1804,TripHub,BOM-DXB,30200,,19-04-2026,24-04-2026,Refund Done,S. Bhatt,transferred
+490,RF-1851,Voyage Desk,BLR-DXB,30500,0,20-04-2026,22-04-2026,Refund Done,N. Iyer,re-entry
+491,RF-1656,Orbit Travels,DEL-CCU,6600,0,29-03-2026,01-04-2026,Refund Done,,settled
+492,RF-1584,TripHub,CCU-BOM,6400,,17-04-2026,21-04-2026,Refund Done,,transferred
+493,RF-1834,Wander Agency,HYD-BKK,13300,,10-04-2026,12-04-2026,Refund Done,,paid to wallet
+494,RF-1107,Peak Journeys,BLR-DXB,,2500,27/06/26,,Pending Payout,,in queue
+495,RF-1430,Himalaya Holidays,CCU-BOM,,0,24/06/26,,Pending Payout,,supplier not confirmed
+496,RF-1348,Himalaya Holidays,GOI-BOM,5700,0,23-05-2026,27-05-2026,Refund Done,,transferred
+497,RF-1718,Nomad Travel,DEL-DXB,24600,0,05-03-2026,09-03-2026,Refund Done,N. Iyer,transferred
+498,RF-1120,Kaveri Tours,DEL-SIN,15900,0,09-06-2026,17-06-2026,Refund Done,,paid to wallet
+499,RF-1559,Metro Yatra,BOM-DXB,14700,0,03-03-2026,05-03-2026,Refund Done,,transferred
+500,RF-1354,Pinnacle Getaways,AMD-BOM,6700,0,11-02-2026,14-02-2026,Refund Done,,paid to wallet
+501,RF-1758,Yatri Junction,DEL-CCU,12000,,24-03-2026,27-03-2026,Refund Done,,settled
+502,RF-1175,Orbit Travels,DEL-KTM,16600,0,13/05/26,19-05-2026,Refund Done,,NEFT done
+503,RF-1666,TripHub,DEL-KTM,18700,0,05-03-2026,07-03-2026,Refund Done,,payout complete
+504,RF-1707,Coral Voyages,BLR-DXB,26400,,12-05-2026,30-05-2026,Refund Done,N. Iyer,paid to wallet
+505,RF-1094 (revised),Peak Journeys,DEL-KUL,30600,,30-03-2026,01-04-2026,Refund Done,N. Iyer,settled
+506,RF-1820,Himalaya Holidays,DEL-DXB,15800,0,05-02-2026,09-02-2026,Refund Done,,NEFT done
+507,RF-1051,Sunrise Trips,BLR-DXB,24800,0,29-05-2026,13-06-2026,Refund Done,N. Iyer,transferred
+508,RF-1338,GoFly Holidays,DEL-SIN,37600,0,13-03-2026,15-03-2026,Refund Done,S. Bhatt,transferred
+509,RF-1286,Sunrise Trips,DEL-KTM,10200,0,27-05-2026,31-05-2026,Refund Done,,settled
+510,RF-1743,Global Wings,HYD-DEL,11700,,30-04-2026,02-05-2026,Refund Done,,NEFT done
+511,RF-1189,BlueJet Tours,AMD-BOM,9300,0,05/04/26,07-04-2026,Refund Done,,paid to wallet
+512,RF-1173,Sunrise Trips,BOM-DXB,23600,0,02-03-2026,07-03-2026,Refund Done,N. Iyer,transferred
+513,RF-1278,Kaveri Tours,BLR-DXB,10500,0,12-02-2026,16-02-2026,Refund Done,,transferred
+514,RF-1549,Peak Journeys,DEL-KTM,13900,1500,08-06-2026,15-06-2026,Refund Done,,payout complete
+515,RF-1768,SafarNama Travel,HYD-BKK,29900,,20-05-2026,04-06-2026,Refund Done,N. Iyer,NEFT done
+516,RF-1799,Nomad Travel,DEL-CCU,5800,0,04-06-2026,08-06-2026,Refund Done,,payout complete
+517,RF-1148,Skyline Travels,COK-DXB,16500,,02-06-2026,06-06-2026,Refund Done,,transferred
+518,RF-1827,Global Wings,DEL-DXB,21100,,21-04-2026,26-04-2026,Refund Done,N. Iyer,payout complete
+519,RF-1802,ORBIT TRAVELS,DEL-SIN,40500,0,15-02-2026,18-02-2026,Refund Done,R. Menon,transferred
+520,RF-1101,GoFly Holidays,MAA-CMB,9700,0,04-04-2026,08-04-2026,Refund Done,,NEFT done
+521,RF-1447,WANDER AGENCY,BOM-DXB,16900,0,20-05-2026,26-05-2026,Refund Done,,NEFT done
+522,RF-1712,Anand Travels,DEL-DXB,18700,,27-03-2026,31-03-2026,Refund Done,,paid to wallet
+523,rf-1711,TripHub,DEL-DXB,13600,0,17-03-2026,18/03/26,Refund Done,,paid to wallet
+524,RF-1590,Wander Agency,BLR-MAA,9300,,22-02-2026,23-02-2026,Refund Done,,payout complete
+525,RF-1845,GoFly Holidays,PNQ-DEL,10100,0,04-04-2026,08-04-2026,Refund Done,,payout complete
+526,RF-1228,Peak Journeys,DEL-DXB,14300,0,09-02-2026,10-02-2026,Refund Done,,paid to wallet
+527,RF-1694,Skyline Travels,BLR-MAA,6400,0,08-05-2026,11-05-2026,Refund Done,,transferred
+528,rf-1367,BlueJet Tours,BLR-DXB,23200,0,09-02-2026,12-02-2026,Refund Done,N. Iyer,NEFT done
+529,RF-1290,Kaveri Tours,PNQ-DEL,12200,0,07-03-2026,10-03-2026,Refund Done,,payout complete
+530,RF-1640,Peak Journeys,CCU-BOM,11300,,29-05-2026,02-06-2026,Refund Done,,transferred
+531,RF-1298,GoFly Holidays,MAA-CMB,13900,1500,07-06-2026,12-06-2026,Refund Done,,NEFT done
+532,RF-1113,Nomad Travel,DEL-SIN,,0,28-06-2026,,Pending Payout,,in queue
+533,RF-1771,Kaveri Tours,DEL-KUL,31100,0,28-02-2026,02-03-2026,Refund Done,N. Iyer,payout complete
+534,RF-1150,Orbit Travels,MAA-CMB,,,29-06-2026,,Pending Payout,,awaiting approval
+535,RF-1826,Pinnacle Getaways,DEL-CCU,8000,0,29-03-2026,31/03/26,Refund Done,,paid to wallet
+536,RF-1332,Nomad Travel,BOM-DXB,14100,0,02-03-2026,03-03-2026,Refund Done,,paid to wallet
+537,RF-1831,Himalaya Holidays,CCU-BOM,11800,0,17-05-2026,18-05-2026,Refund Done,,NEFT done
+538,RF-1588 (revised),Wander Agency,HYD-DEL,9400,,29-04-2026,01-05-2026,Refund Done,,paid to wallet
+539,RF-1801,Voyage Desk,GOI-BOM,6900,0,06-02-2026,08/02/26,Refund Done,,paid to wallet
+540,RF-1029,Skyline Travels,HYD-BKK,17100,0,06-03-2026,09-03-2026,Refund Done,,settled
+541,RF-1015,TripHub,DEL-KUL,15200,0,17-06-2026,26-06-2026,Refund Done,,settled
+542,RF-1079,SafarNama Travel,DEL-DXB,28800,0,10-02-2026,13-02-2026,Refund Done,N. Iyer,NEFT done
+543,rf-1705,Wander Agency,HYD-BKK,30700,0,30-04-2026,05-05-2026,Refund Done,S. Bhatt,payout complete
+544,RF-1635,Wander Agency,CCU-BOM,14800,0,05-04-2026,07-04-2026,Refund Done,,transferred
+545,RF-1492,Skyline Travels,BOM-BKK,21200,0,19-04-2026,24-04-2026,Refund Done,N. Iyer,payout complete
+546,RF-1623,BlueJet Tours,DEL-SIN,32000,0,13-04-2026,15-04-2026,Refund Done,N. Iyer,NEFT done
+547,RF-1807,Metro Yatra,BLR-DXB,19400,0,09-02-2026,12-02-2026,Refund Done,,paid to wallet
+548,RF-1503,BlueJet Tours,HYD-DEL,9200,,19-02-2026,22-02-2026,Refund Done,,NEFT done
+549,RF-1587,Global Wings,BLR-MAA,10100,,10-06-2026,14-06-2026,Refund Done,,payout complete
+550,RF-1221,Kaveri Tours,DEL-BOM,11600,0,09-06-2026,14-06-2026,Refund Done,,transferred
+551,RF-1702,Wander Agency,HYD-BKK,29600,2600,11-05-2026,03-06-2026,Refund Done,N. Iyer,paid to wallet
+552,RF-1606,BlueJet Tours,DEL-KUL,32500,,14-03-2026,20-03-2026,Refund Done,S. Bhatt,payout complete
+553,RF-1437,Himalaya Holidays,DEL-DXB,26400,0,07-03-2026,11-03-2026,Refund Done,S. Bhatt,settled
+554,RF-1468,VOYAGE DESK,DEL-DXB,25500,2200,07-05-2026,16-05-2026,Refund Done,N. Iyer,NEFT done
+555,RF-1581,Yatri Junction,COK-DXB,14300,0,06-02-2026,07-02-2026,Refund Done,,paid to wallet
+556,RF-1216,wander agency,BLR-DXB,15000,0,05-05-2026,06-05-2026,Refund Done,,paid to wallet
+557,RF-1506,Nomad Travel,BOM-DXB,21000,0,05-03-2026,09-03-2026,Refund Done,N. Iyer,transferred
+558,RF-1045,GoFly Holidays,CCU-BOM,10900,0,22/02/26,26-02-2026,Refund Done,,settled
+559,RF-1117,Yatri Junction,BLR-DXB,23200,0,11-02-2026,13/02/26,Refund Done,N. Iyer,paid to wallet
+560,RF-1202,TripHub,BLR-MAA,7900,,19-02-2026,23-02-2026,Refund Done,,transferred
+561,RF-1496,Skyline Travels,BLR-DXB,25600,,07-03-2026,10/03/26,Refund Done,N. Iyer,NEFT done
+562,RF 1374,Voyage Desk,CCU-BOM,8500,,02-03-2026,06-03-2026,Refund Done,,transferred
+563,RF-1634,Sunrise Trips,DEL-KTM,12400,,01-05-2026,03-05-2026,Refund Done,,payout complete
+564,RF-1609,GoFly Holidays,DEL-KTM,9900,0,31-03-2026,03-04-2026,Refund Done,,paid to wallet
+565,RF-1416,Wander Agency,DEL-DXB,22600,2000,06-05-2026,21-05-2026,Refund Done,N. Iyer,transferred
+566,RF-1294,Himalaya Holidays,BLR-DXB,26300,0,08-04-2026,10-04-2026,Refund Done,S. Bhatt,paid to wallet
+567,RF-1813,GoFly Holidays,CCU-BOM,9100,0,27-03-2026,29-03-2026,Refund Done,,transferred
+568,RF-1750,BlueJet Tours,DEL-CCU,12900,,11-02-2026,15-02-2026,Refund Done,,NEFT done
+569,RF-1776,Lotus Travel Co,BLR-MAA,0,,21-05-2026,25-05-2026,Declined,,not approved
+570,RF-1007,TripHub,DEL-DXB,21400,0,04-04-2026,07-04-2026,Refund Done,N. Iyer,transferred
+571,RF-1344,Himalaya Holidays,BLR-DXB,0,0,25-04-2026,30-04-2026,Declined,,declined
+572,RF-1267 (revised),TripHub,BLR-MAA,6400,0,30-05-2026,31-05-2026,Refund Done,,NEFT done
+573,RF-1687,GoFly Holidays,DEL-KTM,18000,0,10-04-2026,11-04-2026,Refund Done,,paid to wallet
+574,RF-1104,GoFly Holidays,DEL-DXB,11200,1500,26/05/26,01-06-2026,Refund Done,,payout complete
+575,RF-1765,Metro Yatra,CCU-BOM,8400,0,30-05-2026,02-06-2026,Refund Done,,NEFT done
+576,RF-1461,Skyline Travels,DEL-BOM,,0,30-06-2026,,Pending Payout,,pending manager sign-off
+577,RF-1417,Orbit Travels,PNQ-DEL,4100,0,29-05-2026,02-06-2026,Refund Done,,transferred
+578,RF-1525,GoFly Holidays,DEL-KTM,11400,1500,16-06-2026,19-06-2026,Refund Done,,payout complete
+579,RF-1024,Peak Journeys,CCU-BOM,5300,0,03-02-2026,05-02-2026,Refund Done,,payout complete
+580,RF1470,Kaveri Tours,DEL-CCU,8300,0,28-04-2026,29-04-2026,Refund Done,,paid to wallet
+581,RF-1674,GoFly Holidays,COK-DXB,27900,,09-02-2026,13-02-2026,Refund Done,N. Iyer,NEFT done
+582,RF-1306,Skyline Travels,HYD-DEL,,,26-06-2026,,Pending Payout,,awaiting approval
+583,RF-1463,DeccanFly,DEL-BOM,,0,30-06-2026,,Pending Payout,,hold - amount mismatch
+584,RF-1257,Skyline Travels,DEL-DXB,27100,0,19-02-2026,24-02-2026,Refund Done,N. Iyer,paid to wallet
+585,RF-1650,BlueJet Tours,DEL-CCU,4200,0,09-04-2026,10-04-2026,Refund Done,,NEFT done
+586,RF-1737,Wander Agency,PNQ-DEL,4900,,28-06-2026,30-06-2026,Refund Done,,NEFT done
+587,RF-1511,Anand Travels,DEL-KUL,,1900,09/06/26,,Pending Payout,,pending manager sign-off
+588,RF-1791,TripHub,BLR-DXB,,1600,29-06-2026,,Pending Payout,,supplier not confirmed
+589,RF-1165,Orbit Travels,DEL-BOM,10300,,17-04-2026,19-04-2026,Refund Done,,settled
+590,RF-1618,Lotus Travel Co,BLR-DXB,16300,,19-03-2026,21-03-2026,Refund Done,,paid to wallet
+591,RF-1414,TripHub,BLR-DXB,28500,0,17/03/26,22-03-2026,Refund Done,N. Iyer,settled
+592,RF-1757,Wander Agency,COK-DXB,,,13-06-2026,,Pending Payout,,awaiting approval
+593,RF-1456,GoFly Holidays,DEL-BOM,5100,,23-05-2026,24-05-2026,Refund Done,,paid to wallet
+594,RF-1488,Peak Journeys,DEL-CCU,8800,0,21-05-2026,26-05-2026,Refund Done,,NEFT done
+595,RF-1498,Kaveri Tours,DEL-KTM,14000,0,07-04-2026,09-04-2026,Refund Done,,NEFT done
+596,RF-1756,PEAK JOURNEYS,DEL-CCU,7500,,07-03-2026,10-03-2026,Refund Done,,transferred
+597,RF-1621,Lotus  Travel  Co,DEL-SIN,27100,0,22-04-2026,24-04-2026,Refund Done,N. Iyer,transferred
+598,RF-1828,Voyage Desk,DEL-BOM,12500,,19-02-2026,20-02-2026,Refund Done,,settled
+599,RF-1647,Voyage Desk,HYD-DEL,6300,0,06-05-2026,12-05-2026,Refund Done,,settled
+600,RF-1778,Skyline Travels,DEL-KUL,,2300,04-06-2026,,Pending Payout,,supplier not confirmed
+601,RF-1192,Yatri Junction,AMD-BOM,9600,0,05/05/26,08-05-2026,Refund Done,,settled
+602,RF-1855,Himalaya Holidays,DEL-CCU,11400,0,29-03-2026,30-03-2026,Refund Done,,settled
+603,RF-1721,Kaveri Tours,DEL-SIN,16500,0,15-05-2026,20-05-2026,Refund Done,,payout complete
+604,RF-1649,Orbit Travels,DEL-KUL,16500,,24-02-2026,27-02-2026,Refund Done,,transferred
+605,RF-1131,GoFly Holidays,AMD-BOM,7000,,22-03-2026,24-03-2026,Refund Done,,transferred
+606,RF-1261,TripHub,BLR-MAA,7600,0,03-05-2026,07-05-2026,Refund Done,,settled
+607,RF-1152,BlueJet Tours,DEL-DXB,23000,2000,02-06-2026,21-06-2026,Refund Done,S. Bhatt,NEFT done
+608,RF-1763,SafarNama Travel,DEL-DXB,28600,0,23/04/26,27-04-2026,Refund Done,N. Iyer,payout complete
+609,RF-1455,Peak Journeys,DEL-CCU,8400,0,17-03-2026,20-03-2026,Refund Done,,settled
+610,RF-1545,coral voyages,BOM-DXB,19000,0,25-02-2026,01-03-2026,Refund Done,,paid to wallet
+611,RF-1013,Sunrise Trips,CCU-BOM,4600,0,25-03-2026,26-03-2026,Refund Done,,paid to wallet
+612,RF-1614,Metro Yatra,DEL-SIN,0,0,03-05-2026,06-05-2026,Declined,,rejected
+613,RF-1059,BlueJet Tours,HYD-DEL,7000,0,01-04-2026,03-04-2026,Refund Done,,settled
+614,RF-1782,TripHub,DEL-SIN,,0,17-06-2026,,Pending Payout,,supplier not confirmed
+615,RF-1797,GoFly Holidays,BOM-BKK,21100,0,21-03-2026,25-03-2026,Refund Done,N. Iyer,transferred
+616,RF-1239,triphub,BLR-DXB,14200,0,25-05-2026,31-05-2026,Refund Done,,settled
+617,RF-1578,Peak Journeys,HYD-DEL,6800,,19-03-2026,20/03/26,Refund Done,,payout complete
+618,RF-1301,BlueJet Tours,HYD-DEL,5000,0,21-03-2026,25-03-2026,Refund Done,,settled
+619,RF-1554,peak journeys,HYD-DEL,7600,,26-04-2026,28-04-2026,Refund Done,,paid to wallet
+620,RF-1548,Metro Yatra,DEL-BOM,,,28-06-2026,,Pending Payout,,hold - amount mismatch
+621,RF-1284,BlueJet Tours,DEL-CCU,9900,,05-03-2026,07-03-2026,Refund Done,,payout complete
+622,RF-1633,BlueJet Tours,DEL-DXB,12700,0,20-02-2026,24-02-2026,Refund Done,,NEFT done
+623,RF-1325,GoFly Holidays,BLR-MAA,10700,,11-02-2026,13/02/26,Refund Done,,paid to wallet
+624,RF-1719,BlueJet Tours,PNQ-DEL,7600,0,17-02-2026,18-02-2026,Refund Done,,settled
+625,RF-1022,TripHub,HYD-BKK,23900,0,25-02-2026,01-03-2026,Refund Done,S. Bhatt,settled
+626,RF-1751,GoFly Holidays,HYD-DEL,7000,0,30-05-2026,01-06-2026,Refund Done,,payout complete
+627,RF-1521,GoFly Holidays,DEL-KTM,14000,,26-03-2026,29-03-2026,Refund Done,,settled
+628,RF-1659,BlueJet Tours,DEL-KUL,18000,0,01-04-2026,05-04-2026,Refund Done,,paid to wallet
+629,RF-1049,BlueJet Tours,DEL-SIN,41700,0,10-04-2026,12-04-2026,Refund Done,S. Bhatt,NEFT done
+630,RF-1363 (revised),Metro Yatra,DEL-KTM,15000,0,04-05-2026,06-05-2026,Refund Done,,transferred
+631,RF-1806,TripHub,BLR-MAA,6700,0,19-04-2026,23-04-2026,Refund Done,,settled
+632,RF-1170,Nomad Travel,BOM-BKK,35900,0,03-03-2026,07-03-2026,Refund Done,N. Iyer,transferred
+633,RF-1181,Pinnacle Getaways,GOI-BOM,8800,,08-06-2026,10-06-2026,Refund Done,,paid to wallet
+634,RF-1769,Anand Travels,DEL-DXB,10800,0,24-02-2026,28-02-2026,Refund Done,,payout complete
+635,RF-1775,Sunrise Trips,DEL-CCU,9400,0,23-03-2026,27-03-2026,Refund Done,,NEFT done
+636,RF-1803,TripHub,DEL-CCU,11700,0,06/04/26,08-04-2026,Refund Done,,NEFT done
+637,RF-1839,TripHub,DEL-CCU,5800,0,29-03-2026,01-04-2026,Refund Done,,NEFT done
+638,RF-1630,TripHub,DEL-BOM,10700,0,09-03-2026,11-03-2026,Refund Done,,paid to wallet
+639,RF-1502,DeccanFly,DEL-DXB,22500,,03-03-2026,06-03-2026,Refund Done,N. Iyer,NEFT done
+640,RF-1676,Pinnacle Getaways,COK-DXB,0,0,10-02-2026,16-02-2026,Declined,,rejected
+641,RF-1366,TripHub,DEL-CCU,9000,,07-06-2026,15-06-2026,Refund Done,,transferred
+642,RF-1391,GoFly Holidays,BOM-BKK,25600,0,23-02-2026,25-02-2026,Refund Done,N. Iyer,transferred
+643,RF-1225,Voyage Desk,BOM-BKK,18200,1600,06-05-2026,12-05-2026,Refund Done,,NEFT done
+644,RF-1121,Global Wings,BLR-MAA,3500,,10-02-2026,12-02-2026,Refund Done,,settled
+645,rf-1033,Skyline Travels,HYD-DEL,8100,0,06/04/26,10-04-2026,Refund Done,,settled
+646,RF-1400,Wander Agency,DEL-CCU,12300,0,12-02-2026,13-02-2026,Refund Done,,paid to wallet
+647,RF-1028,BlueJet Tours,DEL-DXB,10200,1500,28-05-2026,03-06-2026,Refund Done,,transferred
+648,RF-1601,TripHub,DEL-DXB,30400,,09-02-2026,11-02-2026,Refund Done,N. Iyer,payout complete
+649,RF-1717,Lotus Travel Co,AMD-BOM,7500,,15-06-2026,23-06-2026,Refund Done,,settled
+650,RF-1551,Peak Journeys,HYD-BKK,31200,2700,12-05-2026,23-05-2026,Refund Done,N. Iyer,paid to wallet
+651,RF-1186,TripHub,DEL-KUL,31800,,02-03-2026,05-03-2026,Refund Done,S. Bhatt,settled
+652,RF-1143,SafarNama Travel,BOM-BKK,14800,0,06/03/26,07-03-2026,Refund Done,,settled
+653,RF-1032,METRO YATRA,DEL-CCU,9100,0,10-06-2026,13/06/26,Refund Done,,transferred
+654,RF-1595,Metro Yatra,GOI-BOM,4000,0,21-03-2026,24-03-2026,Refund Done,,payout complete
+655,RF-1527,WANDER AGENCY,DEL-CCU,0,0,19-04-2026,24-04-2026,Declined,,rejected by policy
+656,RF-1288,Sunrise Trips,MAA-CMB,12800,0,13-04-2026,15-04-2026,Refund Done,,paid to wallet
+657,RF-1738,TripHub,BOM-BKK,31400,,05-04-2026,07-04-2026,Refund Done,R. Menon,paid to wallet
+658,RF-1358,Nomad Travel,BLR-DXB,16600,0,15-04-2026,16-04-2026,Refund Done,,transferred
+659,RF-1188,TripHub,MAA-CMB,8900,1500,03-06-2026,04-06-2026,Refund Done,,NEFT done
+660,RF-1080,Lotus Travel Co,BLR-DXB,17800,1500,13-05-2026,17-05-2026,Refund Done,,settled
+661,RF-1388,safarnama travel,CCU-BOM,8900,0,21-06-2026,26-06-2026,Refund Done,,paid to wallet
+662,RF-1365,ZIPTRIP,BLR-DXB,13900,0,06-03-2026,08-03-2026,Refund Done,,payout complete
+663,RF-1433,Skyline Travels,HYD-BKK,21600,0,23-04-2026,27-04-2026,Refund Done,S. Bhatt,payout complete
+664,RF-1824,GoFly Holidays,BLR-DXB,16500,0,05-04-2026,08-04-2026,Refund Done,,payout complete
+665,RF-1316,BlueJet Tours,DEL-CCU,7700,0,07-02-2026,09-02-2026,Refund Done,,paid to wallet
+666,RF-1206,BlueJet Tours,DEL-BOM,5500,0,22/02/26,25-02-2026,Refund Done,,settled
+667,RF-1197,GoFly Holidays,BOM-DXB,16200,1500,07-05-2026,10-05-2026,Refund Done,,settled
+668,RF-1184,Nomad Travel,COK-DXB,11000,0,12-03-2026,14-03-2026,Refund Done,,NEFT done
+669,RF-1478,BlueJet Tours,DEL-BOM,6000,,05-06-2026,08-06-2026,Refund Done,,paid to wallet
+670,RF-1177,Pinnacle Getaways,DEL-KUL,13300,0,26-03-2026,28-03-2026,Refund Done,,settled
+671,RF-1710,GoFly Holidays,PNQ-DEL,0,,08-02-2026,14-02-2026,Declined,,not approved
+672,RF-1383,Orbit Travels,BLR-DXB,19100,0,04-04-2026,07-04-2026,Refund Done,,NEFT done
+673,RF-1582,Sunrise Trips,MAA-CMB,5800,1500,07-06-2026,09/06/26,Refund Done,,transferred
+674,RF-1427,Yatri Junction,DEL-KTM,7700,0,08-02-2026,09-02-2026,Refund Done,,payout complete
+675,RF-1452,Pinnacle Getaways,DEL-BOM,13700,0,19-05-2026,23-05-2026,Refund Done,,NEFT done
+676,RF-1226,Orbit Travels,MAA-CMB,15800,1500,04-06-2026,09-06-2026,Refund Done,,paid to wallet
+677,RF-1105,GoFly Holidays,BLR-DXB,12800,,15-04-2026,18-04-2026,Refund Done,,settled
+678,RF-1512,Metro Yatra,CCU-BOM,7100,0,16-04-2026,18-04-2026,Refund Done,,NEFT done
+679,RF-1318,Kaveri Tours,HYD-DEL,11100,0,08-03-2026,12-03-2026,Refund Done,,NEFT done
+680,RF-1678,Kaveri Tours,HYD-BKK,27700,0,08-02-2026,11-02-2026,Refund Done,S. Bhatt,paid to wallet
+681,RF-1172,Sunrise Trips,DEL-DXB,25500,0,26-04-2026,28-04-2026,Refund Done,N. Iyer,settled
+682,RF-1258,Pinnacle Getaways,BLR-MAA,10100,0,01-03-2026,03-03-2026,Refund Done,,payout complete
+683,RF-1781,Anand Travels,BLR-DXB,18700,0,11-03-2026,13-03-2026,Refund Done,,NEFT done
+684,RF-1126,Metro Yatra,GOI-BOM,3900,,27-02-2026,03-03-2026,Refund Done,,payout complete
+685,RF-1591,Lotus Travel Co,GOI-BOM,,0,30-06-2026,,Pending Payout,,pending manager sign-off
+686,RF-1429,Lotus Travel Co,MAA-CMB,12500,0,02-05-2026,04-05-2026,Refund Done,,transferred
+687,RF-1436,BlueJet Tours,GOI-BOM,4900,0,13-06-2026,21-06-2026,Refund Done,,NEFT done
+688,RF-1244,Skyline Travels,DEL-CCU,11000,0,21-04-2026,22-04-2026,Refund Done,,NEFT done
+689,RF-1194,Metro Yatra,BOM-DXB,18300,,08-02-2026,10-02-2026,Refund Done,,payout complete
+690,RF-1373,BlueJet Tours,DEL-KUL,0,0,10-03-2026,13-03-2026,Declined,,non-refundable fare
