@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
 from datetime import datetime
-from src.agents import parse_informal_message, draft_reconciliation_message
+from src.agents import parse_informal_message, draft_reconciliation_message, analyze_escalations
 from src.data_manager import load_data, find_mismatches
 from src.config import HAS_API_KEY
 
@@ -29,6 +29,15 @@ def render_dashboard():
     col2.metric("Dropped Tickets (Support -> Finance)", missing_in_finance, delta="Leakage", delta_color="inverse")
     col3.metric("Deduction Mismatches", mismatches, delta="Communication Gap", delta_color="inverse")
     
+    st.markdown("---")
+    
+    st.subheader("🤖 AI Executive Summary")
+    st.markdown("Generate a quick root-cause analysis of the recent escalation volume.")
+    if st.button("🔍 Generate AI Executive Summary", type="primary"):
+        with st.spinner("Analyzing escalation data with Gemini..."):
+            summary = analyze_escalations(escalations_df)
+            st.info(summary)
+            
     st.markdown("---")
     st.subheader("System Architecture")
     st.info("💡 **Proposed Architecture**: By implementing the **Model Context Protocol (MCP)**, our AI agents can securely read from and write to the internal SSOT without exposing the raw database credentials to the LLM context. The Ingestion Agent captures unstructured data and sanitizes it, while the Execution Agent reconciles anomalies.")
