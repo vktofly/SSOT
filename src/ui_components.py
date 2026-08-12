@@ -57,7 +57,7 @@ def render_ingestion():
                 with msg_col:
                     st.markdown(f"💬 **WhatsApp ID-{1042 + i}:** *{msg}*")
                 with btn_col:
-                    if st.button("Ingest", key=f"ingest_single_{i}", use_container_width=True):
+                    if st.button("Ingest", key=f"ingest_single_{i}", width="stretch"):
                         with st.spinner("..."):
                             result = parse_informal_message(msg)
                             st.session_state.review_queue.append(result)
@@ -275,12 +275,12 @@ def render_database_explorer(support_df, finance_df, escalations_df):
     
     with tab1:
         st.subheader("Support Tracker (B2B Agent Bookings)")
-        st.dataframe(support_view, use_container_width=True)
+        st.dataframe(support_view, width="stretch")
         
     with tab2:
         st.subheader("Finance Tracker (Actuals & Deductions)")
-        st.dataframe(finance_view, use_container_width=True)
+        st.dataframe(finance_view, width="stretch")
         
     with tab3:
         st.subheader("Escalations & Anomalies")
-        st.dataframe(escalations_view, use_container_width=True)
+        st.dataframe(escalations_view, width="stretch")

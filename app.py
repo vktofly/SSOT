@@ -53,7 +53,7 @@ def check_password():
         with st.form("login_form"):
             username = st.text_input("Username").strip()
             password = st.text_input("Password", type="password").strip()
-            submit = st.form_submit_button("Log In", type="primary", use_container_width=True)
+            submit = st.form_submit_button("Log In", type="primary", width="stretch")
             
             if submit:
                 if username in MOCK_USERS and MOCK_USERS[username]["password"] == password:
