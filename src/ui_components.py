@@ -198,7 +198,7 @@ def render_database_explorer(support_df, finance_df, escalations_df):
         def mask_sensitive_data(df):
             masked_df = df.copy()
             if 'Agent' in masked_df.columns:
-                masked_df['Agent'] = masked_df['Agent'].astype(str).apply(lambda x: x[:2] + '***' + x[-1:] if len(x) > 3 else '***')
+                masked_df['Agent'] = masked_df['Agent'].apply(lambda x: str(x)[:2] + '***' + str(x)[-1:] if len(str(x)) > 3 else '***')
             if 'Support Amount' in masked_df.columns:
                 masked_df['Support Amount'] = '[HIDDEN]'
             if 'Finance Amount' in masked_df.columns:
