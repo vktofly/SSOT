@@ -9,9 +9,20 @@ def render_dashboard():
     st.title("Operations Telemetry Dashboard")
     st.markdown("Real-time view of refund pipeline health and escalation metrics.")
     
-    total_escalations = 155
-    missing_in_finance = 100
-    mismatches = 149
+    # Calculate metrics dynamically
+    support_df = st.session_state.get('support_df', pd.DataFrame())
+    finance_df = st.session_state.get('finance_df', pd.DataFrame())
+    escalations_df = st.session_state.get('escalations_df', pd.DataFrame())
+    
+    total_escalations = len(escalations_df)
+    
+    if not support_df.empty and not finance_df.empty and 'Ticket ID' in support_df.columns and 'Ref No' in finance_df.columns:
+        # Count tickets in Support that are missing in Finance
+        missing_in_finance = len(support_df[~support_df['Ticket ID'].isin(finance_df['Ref No'])])
+        mismatches = len(find_mismatches(support_df, finance_df))
+    else:
+        missing_in_finance = 0
+        mismatches = 0
     
     col1, col2, col3 = st.columns(3)
     col1.metric("Total Escalations", total_escalations, delta="High Volume", delta_color="inverse")
@@ -31,6 +42,8 @@ def init_ingestion_state():
         ]
     if "review_queue" not in st.session_state:
         st.session_state.review_queue = []
+    if "processed_today" not in st.session_state:
+        st.session_state.processed_today = 0
 
 def render_ingestion():
     st.title("📥 Ingestion Agent (Event-Driven)")
@@ -42,7 +55,7 @@ def render_ingestion():
     col1, col2, col3 = st.columns(3)
     col1.metric("Live Webhook Inbox", len(st.session_state.webhook_inbox))
     col2.metric("Pending Human Review", len(st.session_state.review_queue))
-    col3.metric("Processed Today", 42) # Mock metric
+    col3.metric("Processed Today", st.session_state.processed_today)
 
     st.markdown("---")
     
@@ -182,8 +195,8 @@ def render_ingestion():
             col_btn, _ = st.columns([1, 3])
             with col_btn:
                 if st.button("Approve & Save to SSOT", type="primary", key=f"approve_{selected_index}", width="stretch"):
-                    # Append or update in support_db
-                    support_db = st.session_state.support_db
+                    # Append or update in support_df
+                    support_df = st.session_state.support_df
                     
                     new_row = {
                         'Ticket ID': new_ref_id,
@@ -198,13 +211,15 @@ def render_ingestion():
                         'Notes': f"Intent: {new_intent}, Urgency: {new_urgency}"
                     }
                     
-                    if new_ref_id and 'Ticket ID' in support_db.columns and new_ref_id in support_db['Ticket ID'].values:
-                        idx = support_db.index[support_db['Ticket ID'] == new_ref_id].tolist()[0]
+                    if new_ref_id and 'Ticket ID' in support_df.columns and new_ref_id in support_df['Ticket ID'].values:
+                        idx = support_df.index[support_df['Ticket ID'] == new_ref_id].tolist()[0]
                         for k, v in new_row.items():
-                            support_db.at[idx, k] = v
+                            support_df.at[idx, k] = v
                     else:
                         new_df = pd.DataFrame([new_row])
-                        st.session_state.support_db = pd.concat([support_db, new_df], ignore_index=True)
+                        st.session_state.support_df = pd.concat([support_df, new_df], ignore_index=True)
+                    
+                    st.session_state.processed_today += 1
                     
                     # Remove from queue
                     st.session_state.review_queue.pop(selected_index)
@@ -279,6 +294,17 @@ def render_reconciliation(support_df, finance_df):
                 with col1:
                     if st.button("Approve & Send", type="primary", key=f"send_{m['Ticket ID']}"):
                         st.session_state.resolved_tickets.add(m['Ticket ID'])
+                        
+                        # Update Support DB
+                        support_df = st.session_state.support_df
+                        if m['Ticket ID'] in support_df['Ticket ID'].values:
+                            idx = support_df.index[support_df['Ticket ID'] == m['Ticket ID']].tolist()[0]
+                            support_df.at[idx, 'Status'] = 'Client Notified'
+                            current_notes = support_df.at[idx, 'Notes']
+                            if pd.isna(current_notes):
+                                current_notes = ""
+                            support_df.at[idx, 'Notes'] = f"{current_notes} | Finance Deduction: {m['Reason']}".strip(" |")
+                            
                         log_action(f"Email dispatched to {m['Agent']} regarding Ticket {m['Ticket ID']}. SSOT Status updated to 'Client_Notified'.")
                         # We use balloons internally within the click, then rerun
                         st.session_state['show_success_toast'] = True

@@ -143,3 +143,49 @@ def draft_reconciliation_message(agent_name: str, route: str, ticket_id: str,
             return response.text.strip()
     except Exception as e:
         return str(e)
+
+def analyze_escalations(escalations_df) -> str:
+    """
+    Analyzes the escalations dataset and returns an executive summary.
+    """
+    if escalations_df is None or escalations_df.empty:
+        return "No escalations data available to analyze."
+        
+    if not HAS_API_KEY:
+        return "*(Mocked Summary)*: Analysis indicates that 80% of escalations are due to missing reference numbers and delayed finance responses, predominantly affecting 'GoFly Holidays'."
+        
+    # Convert DataFrame to a CSV string
+    csv_data = escalations_df.to_csv(index=False)
+    
+    prompt = f"""
+    You are an Operations Analyst for a travel company. I am providing you with the recent Escalations data in CSV format.
+    
+    Please provide a concise, bulleted Executive Summary (max 4-5 bullet points) highlighting:
+    1. The top reasons why complaints are spiking.
+    2. Which agencies or teams are most frequently involved.
+    3. Any other notable patterns (e.g., average resolution delays or common channels).
+    
+    Here is the CSV data:
+    {csv_data}
+    """
+    
+    try:
+        if API_KEY.startswith("sk-"):
+            headers = {"Authorization": f"Bearer {API_KEY}", "Content-Type": "application/json"}
+            payload = {
+                "model": "gpt-4o-mini",
+                "messages": [{"role": "user", "content": prompt}],
+                "temperature": 0.3
+            }
+            resp = requests.post("https://api.openai.com/v1/chat/completions", headers=headers, json=payload)
+            resp.raise_for_status()
+            return resp.json()["choices"][0]["message"]["content"].strip()
+        else:
+            response = CLIENT.models.generate_content(
+                model='gemini-2.5-flash',
+                contents=prompt,
+                config=types.GenerateContentConfig(temperature=0.3),
+            )
+            return response.text.strip()
+    except Exception as e:
+        return f"Failed to generate summary: {str(e)}"
