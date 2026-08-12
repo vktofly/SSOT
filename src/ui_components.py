@@ -34,11 +34,34 @@ def render_dashboard():
         missing_in_support_count = 0
         mismatches = 0
     
+    def go_to_database(query):
+        st.session_state._current_page = "🗄️ Database Explorer"
+        st.session_state._nav_version = st.session_state.get("_nav_version", 0) + 1
+        st.session_state.global_search_query = query
+
     col1, col2, col3, col4 = st.columns(4)
-    col1.metric("Total Escalations", total_escalations, delta="High Volume", delta_color="inverse")
-    col2.metric("Avg Time to Resolution", f"{avg_ttr} Days", delta="Dynamic", delta_color="off")
-    col3.metric("Dropped (Support -> Finance)", missing_in_finance_count, delta="Leakage", delta_color="inverse")
-    col4.metric("Unlogged (Finance -> Support)", missing_in_support_count, delta="Silent Payouts", delta_color="inverse")
+    with col1:
+        st.metric("Total Escalations", total_escalations, delta="High Volume", delta_color="inverse")
+    with col2:
+        st.metric("Avg Time to Resolution", f"{avg_ttr} Days", delta="Dynamic", delta_color="off")
+    with col3:
+        st.metric("Dropped (Support -> Finance)", missing_in_finance_count, delta="Leakage", delta_color="inverse")
+        if missing_in_finance_count > 0:
+            with st.expander("View Tickets"):
+                for i, m in enumerate(missing_in_finance[:5]):
+                    tid = str(m['Ticket ID'])
+                    st.button(f"🔍 {tid}", key=f"dash_drop_{i}_{tid}", on_click=go_to_database, args=(tid,))
+                if missing_in_finance_count > 5:
+                    st.caption(f"+ {missing_in_finance_count - 5} more...")
+    with col4:
+        st.metric("Unlogged (Finance -> Support)", missing_in_support_count, delta="Silent Payouts", delta_color="inverse")
+        if missing_in_support_count > 0:
+            with st.expander("View Tickets"):
+                for i, m in enumerate(missing_in_support[:5]):
+                    ref = str(m['Ref No'])
+                    st.button(f"🔍 {ref}", key=f"dash_unlog_{i}_{ref}", on_click=go_to_database, args=(ref,))
+                if missing_in_support_count > 5:
+                    st.caption(f"+ {missing_in_support_count - 5} more...")
     
     st.markdown("---")
     
@@ -303,25 +326,25 @@ def render_reconciliation(support_df, finance_df):
             m = ticket_options[selected_label]
             
             with st.container(border=True):
+                tid = str(m['Ticket ID'])
                 if m.get('Risk Level') == 'High':
                     st.error("🚨 HIGH RISK (Difference > 20%)")
-                st.subheader(f"Ticket: {m['Ticket ID']} | Agent: {m['Agent']}")
+                st.subheader(f"Ticket: {tid} | Agent: {m['Agent']}")
                 colA, colB, colC = st.columns(3)
                 colA.metric("Support Quoted", f"₹{m['Support Amount']}")
                 colB.metric("Finance Paid", f"₹{m['Finance Amount']}")
                 colC.metric("Deduction", f"₹{m['Deduction']}", delta=m['Reason'], delta_color="off")
                 
                 st.markdown("### 🤖 AI Drafted Explanation")
-                
-                # Using session state to persist the draft across re-renders when buttons are clicked
-                draft_key = f"draft_{m['Ticket ID']}"
+                    
+                draft_key = f"draft_{tid}"
                 if draft_key not in st.session_state:
                     st.session_state[draft_key] = ""
                     
-                if st.button("Generate Draft", key=f"gen_{m['Ticket ID']}"):
+                if st.button("Generate Draft", key=f"gen_draft_{tid}"):
                     with st.spinner("Drafting response..."):
                         draft = draft_reconciliation_message(
-                            m['Agent'], m['Route'], m['Ticket ID'], 
+                            m['Agent'], m['Route'], tid, 
                             m['Support Amount'], m['Finance Amount'], 
                             m['Deduction'], m['Reason']
                         )
@@ -329,17 +352,18 @@ def render_reconciliation(support_df, finance_df):
                         st.rerun()
                         
                 if st.session_state[draft_key]:
-                    edited_draft = st.text_area("Review Message:", value=st.session_state[draft_key], height=150, key=f"text_{m['Ticket ID']}")
+                    edited_draft = st.text_area("Review Message:", value=st.session_state[draft_key], height=150, key=f"text_{tid}")
                     
                     col1, col2 = st.columns([1, 4])
                     with col1:
-                        if st.button("Approve & Send", type="primary", key=f"send_{m['Ticket ID']}"):
-                            st.session_state.resolved_tickets.add(m['Ticket ID'])
+                        if st.button("Approve & Send", type="primary", key=f"send_draft_{tid}"):
+                            st.session_state.resolved_tickets.add(tid)
+                                
                             
                             # Update Support DB
                             support_df = st.session_state.support_df
-                            if m['Ticket ID'] in support_df['Ticket ID'].values:
-                                idx = support_df.index[support_df['Ticket ID'] == m['Ticket ID']].tolist()[0]
+                            if tid in support_df['Ticket ID'].values:
+                                idx = support_df.index[support_df['Ticket ID'] == tid].tolist()[0]
                                 support_df.at[idx, 'Status'] = 'Client Notified'
                                 current_notes = support_df.at[idx, 'Notes']
                                 if pd.isna(current_notes):
@@ -348,12 +372,11 @@ def render_reconciliation(support_df, finance_df):
                                 support_df.at[idx, 'Notes'] = new_notes
                                 
                                 # Persist to SQLite
-                                update_support_status(m['Ticket ID'], 'Client Notified', new_notes)
+                                update_support_status(tid, 'Client Notified', new_notes)
                             
-                        log_action(f"Email dispatched to {m['Agent']} regarding Ticket {m['Ticket ID']}. SSOT Status updated to 'Client_Notified'.")
-                        # We use balloons internally within the click, then rerun
-                        st.session_state['show_success_toast'] = True
-                        st.rerun()
+                            log_action(f"Email dispatched to {m['Agent']} regarding Ticket {tid}. SSOT Status updated to 'Client_Notified'.")
+                            st.session_state['show_success_toast'] = True
+                            st.rerun()
         else:
             st.success("🎉 All discrepancies have been resolved! Inbox zero.")
         
@@ -438,7 +461,7 @@ def render_reconciliation(support_df, finance_df):
                                 
                     st.write(f"Showing {len(filtered_matches)} of {len(pending_matches)} remaining proposals.")
                     
-                    for match in filtered_matches:
+                    for i, match in enumerate(filtered_matches):
                         s_id = match['support_ticket_id']
                         f_id = match['finance_ref_no']
                         
@@ -458,7 +481,7 @@ def render_reconciliation(support_df, finance_df):
                             
                             c_btn1, c_btn2, _ = st.columns([1, 1, 3])
                             with c_btn1:
-                                if st.button("✅ Approve", key=f"app_{s_id}"):
+                                if st.button("✅ Approve", key=f"app_{i}_{s_id}"):
                                     update_ticket_id(s_id, f_id)
                                     idx = st.session_state.support_df.index[st.session_state.support_df['Ticket ID'] == s_id].tolist()
                                     if idx:
@@ -467,7 +490,7 @@ def render_reconciliation(support_df, finance_df):
                                     log_action(f"Approved AI Linkage: {s_id} -> {f_id}")
                                     st.rerun()
                             with c_btn2:
-                                if st.button("❌ Reject", type="secondary", key=f"rej_{s_id}"):
+                                if st.button("❌ Reject", type="secondary", key=f"rej_{i}_{s_id}"):
                                     st.session_state.acted_matches.add(s_id)
                                     log_action(f"Rejected AI Linkage: {s_id} -> {f_id}")
                                     st.rerun()
@@ -521,7 +544,7 @@ def render_database_explorer(support_df, finance_df, escalations_df):
     
     col1, col2 = st.columns([4, 1])
     with col1:
-        search_query = st.text_input("🔍 Global Ticket Search (Enter Ticket ID, Agent Name, etc.)").strip()
+        search_query = st.text_input("🔍 Global Ticket Search (Enter Ticket ID, Agent Name, etc.)", key="global_search_query").strip()
     with col2:
         if st.session_state.get('role') == 'Manager':
             csv = support_df.to_csv(index=False).encode('utf-8')

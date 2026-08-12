@@ -110,7 +110,18 @@ def main():
         # Junior Role restrictions
         pages = ["🚨 Escalation Triage"]
         
-    page = st.sidebar.radio("Navigate", pages)
+    # Track navigation via our own session state (never a widget key)
+    if "_current_page" not in st.session_state:
+        st.session_state._current_page = pages[0]
+    
+    # Ensure current page is valid for the user's role
+    if st.session_state._current_page not in pages:
+        st.session_state._current_page = pages[0]
+    
+    default_idx = pages.index(st.session_state._current_page)
+    nav_version = st.session_state.get("_nav_version", 0)
+    page = st.sidebar.radio("Navigate", pages, index=default_idx, key=f"nav_v{nav_version}")
+    st.session_state._current_page = page
     
     if not HAS_API_KEY:
         st.sidebar.warning("⚠️ `GEMINI_API_KEY` not found. Using mocked AI responses for demonstration.")
