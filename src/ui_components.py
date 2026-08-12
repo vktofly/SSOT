@@ -152,14 +152,17 @@ def render_reconciliation(support_df, finance_df):
     if st.session_state.system_logs:
         st.markdown("---")
         
-        # Audit Log CSV Export
-        csv_data = "Log_Entry\n" + "\n".join([f'"{log}"' for log in st.session_state.system_logs])
-        st.download_button(
-            label="📥 Download Audit Log (CSV)",
-            data=csv_data,
-            file_name=f"audit_log_{datetime.now().strftime('%Y%m%d')}.csv",
-            mime="text/csv"
-        )
+        # Audit Log CSV Export (RBAC: Managers only)
+        if st.session_state.get('role') == 'Manager':
+            csv_data = "Log_Entry\n" + "\n".join([f'"{log}"' for log in st.session_state.system_logs])
+            st.download_button(
+                label="📥 Download Audit Log (CSV)",
+                data=csv_data,
+                file_name=f"audit_log_{datetime.now().strftime('%Y%m%d')}.csv",
+                mime="text/csv"
+            )
+        else:
+            st.info("🔒 Audit Log Export is restricted to Managers.")
         
         with st.expander("🛠️ System Activity Logs", expanded=True):
             for log in st.session_state.system_logs:
@@ -181,6 +184,24 @@ def render_database_explorer(support_df, finance_df, escalations_df):
         support_view = support_df
         finance_view = finance_df
         escalations_view = escalations_df
+
+    # Frontend Data Masking (Least Privilege)
+    if st.session_state.get('role') == 'Junior':
+        st.warning("🔒 **Junior Role Active**: Sensitive financial and PII data is masked.")
+        def mask_sensitive_data(df):
+            masked_df = df.copy()
+            if 'Agent' in masked_df.columns:
+                masked_df['Agent'] = masked_df['Agent'].astype(str).apply(lambda x: x[:2] + '***' + x[-1:] if len(x) > 3 else '***')
+            if 'Support Amount' in masked_df.columns:
+                masked_df['Support Amount'] = '[HIDDEN]'
+            if 'Finance Amount' in masked_df.columns:
+                masked_df['Finance Amount'] = '[HIDDEN]'
+            return masked_df
+            
+        support_view = mask_sensitive_data(support_view)
+        finance_view = mask_sensitive_data(finance_view)
+        escalations_view = mask_sensitive_data(escalations_view)
+
 
     tab1, tab2, tab3 = st.tabs(["Support Tracker", "Finance Tracker", "Escalations"])
     
