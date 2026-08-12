@@ -22,31 +22,59 @@ def render_dashboard():
     st.subheader("System Architecture")
     st.info("💡 **Proposed Architecture**: By implementing the **Model Context Protocol (MCP)**, our AI agents can securely read from and write to the internal SSOT without exposing the raw database credentials to the LLM context. The Ingestion Agent captures unstructured data and sanitizes it, while the Execution Agent reconciles anomalies.")
 
+def init_ingestion_state():
+    if "webhook_inbox" not in st.session_state:
+        st.session_state.webhook_inbox = [
+            "Hi, I cancelled booking for DEL-DXB last week and was told I'd get a refund. I don't have my ref number. My number is 9876543210.",
+            "urgent! MAA-CMB refund not processed yet for Peak Journeys agency.",
+            "Need status on my refund."
+        ]
+    if "review_queue" not in st.session_state:
+        st.session_state.review_queue = []
+
 def render_ingestion():
-    st.title("Ingestion Agent")
-    st.markdown("Parses informal WhatsApp/Email requests into structured SSOT tickets to prevent data leakage.")
+    st.title("Ingestion Agent (Event-Driven Auto-Queue)")
+    st.markdown("Simulates a background AI process that automatically reads from a webhook inbox and stages structured data for human review.")
     
-    with st.form("ingestion_form"):
-        text_input = st.text_area("Paste WhatsApp or Email Message:", height=150, 
-                                  value="Hi, I cancelled booking for DEL-DXB last week and was told I'd get a refund. I haven't received anything and I don't have any reference number.")
-        submitted = st.form_submit_button("Extract & Create Ticket", type="primary")
-        
-    if submitted:
-        with st.spinner("Processing via AI Ingestion Agent..."):
-            result = parse_informal_message(text_input)
-            st.success("Extraction Complete!")
+    init_ingestion_state()
+    
+    col1, col2 = st.columns([1, 2])
+    
+    with col1:
+        st.subheader(f"📥 Live Webhook Inbox ({len(st.session_state.webhook_inbox)})")
+        with st.container(border=True):
+            if not st.session_state.webhook_inbox:
+                st.write("Inbox is empty.")
+            else:
+                for msg in st.session_state.webhook_inbox:
+                    st.info(f'"{msg}"')
+                    
+        if st.session_state.webhook_inbox:
+            if st.button("▶️ Run AI Auto-Ingestion", type="primary", use_container_width=True):
+                with st.spinner("Batch processing via LLM..."):
+                    for msg in st.session_state.webhook_inbox:
+                        result = parse_informal_message(msg)
+                        st.session_state.review_queue.append(result)
+                    st.session_state.webhook_inbox = []
+                    st.rerun()
+                    
+    with col2:
+        st.subheader(f"🛡️ Human Review Queue ({len(st.session_state.review_queue)})")
+        if not st.session_state.review_queue:
+            st.write("No tickets awaiting review.")
+        else:
+            low_confidence = any(r.get("confidence_score", 100) < 80 for r in st.session_state.review_queue)
+            if low_confidence:
+                st.warning("⚠️ Some extractions had low AI confidence. Please review carefully.")
+                
+            df_queue = pd.DataFrame(st.session_state.review_queue)
+            edited_df = st.data_editor(df_queue, num_rows="dynamic", use_container_width=True)
             
-            confidence = result.get("confidence_score", 100)
-            if confidence < 80:
-                st.warning(f"⚠️ Low AI Confidence ({confidence}%). Human review required before saving.")
-            
-            st.markdown("**Extracted Data (Editable):**")
-            df_result = pd.DataFrame([result])
-            edited_df = st.data_editor(df_result, num_rows="dynamic", use_container_width=True)
-            
-            if st.button("Confirm & Save to SSOT (Mock)"):
-                st.success("Data saved successfully!")
+            if st.button("Approve All & Save to SSOT", type="primary"):
+                st.session_state.review_queue = []
+                st.success("Tickets successfully committed to the database!")
                 st.balloons()
+                st.rerun()
 
 def init_reconciliation_state(mismatches):
     """Initializes session state to track resolved tickets."""
