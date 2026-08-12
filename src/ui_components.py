@@ -319,6 +319,49 @@ def render_reconciliation(support_df, finance_df):
             progress = resolved_count / total_mismatches
             st.progress(progress, text=f"Resolved {resolved_count} of {total_mismatches} tickets")
             
+            # Define callback for sending a draft safely to avoid rerun loops
+            def handle_approve_send(ticket_id, mismatch_record, final_draft):
+                st.session_state.resolved_tickets.add(ticket_id)
+                
+                # Update Support DB
+                sdf = st.session_state.support_df
+                if ticket_id in sdf['Ticket ID'].values:
+                    idx = sdf.index[sdf['Ticket ID'] == ticket_id].tolist()[0]
+                    sdf.at[idx, 'Status'] = 'Client Notified'
+                    current_notes = sdf.at[idx, 'Notes']
+                    if pd.isna(current_notes):
+                        current_notes = ""
+                    new_notes = f"{current_notes} | Finance Deduction: {mismatch_record['Reason']}".strip(" |")
+                    sdf.at[idx, 'Notes'] = new_notes
+                    
+                    # Persist to SQLite
+                    update_support_status(ticket_id, 'Client Notified', new_notes)
+                
+                log_action(f"Email dispatched to {mismatch_record['Agent']} regarding Ticket {ticket_id}. SSOT Status updated to 'Client_Notified'.")
+                st.session_state['show_success_toast'] = True
+                
+            with st.expander("🛠️ Optional: Batch Resolve All Discrepancies"):
+                st.markdown("Use this to automatically generate drafts and send emails for ALL pending deduction mismatches at once.")
+                if st.button("🚀 Batch Process All Pending", type="primary"):
+                    with st.spinner("Processing all pending tickets..."):
+                        count = 0
+                        for pending_m in pending_mismatches:
+                            p_tid = str(pending_m['Ticket ID'])
+                            # Auto-generate draft
+                            draft = draft_reconciliation_message(
+                                pending_m['Agent'], pending_m['Route'], p_tid, 
+                                pending_m['Support Amount'], pending_m['Finance Amount'], 
+                                pending_m['Deduction'], pending_m['Reason']
+                            )
+                            # Handle send
+                            handle_approve_send(p_tid, pending_m, draft)
+                            count += 1
+                        st.success(f"Successfully processed {count} tickets.")
+                        st.rerun()
+
+            st.markdown("---")
+            st.markdown("**Individual Review (Default Workflow)**")
+            
             # Allow the user to select which ticket to review to prioritize high-value items (selectbox is natively searchable)
             ticket_options = {f"Ticket {m['Ticket ID']} | Agent: {m['Agent']} | Deduction: ₹{m['Deduction']}": m for m in pending_mismatches}
             
@@ -349,34 +392,13 @@ def render_reconciliation(support_df, finance_df):
                             m['Deduction'], m['Reason']
                         )
                         st.session_state[draft_key] = draft
-                        st.rerun()
                         
                 if st.session_state[draft_key]:
                     edited_draft = st.text_area("Review Message:", value=st.session_state[draft_key], height=150, key=f"text_{tid}")
                     
                     col1, col2 = st.columns([1, 4])
                     with col1:
-                        if st.button("Approve & Send", type="primary", key=f"send_draft_{tid}"):
-                            st.session_state.resolved_tickets.add(tid)
-                                
-                            
-                            # Update Support DB
-                            support_df = st.session_state.support_df
-                            if tid in support_df['Ticket ID'].values:
-                                idx = support_df.index[support_df['Ticket ID'] == tid].tolist()[0]
-                                support_df.at[idx, 'Status'] = 'Client Notified'
-                                current_notes = support_df.at[idx, 'Notes']
-                                if pd.isna(current_notes):
-                                    current_notes = ""
-                                new_notes = f"{current_notes} | Finance Deduction: {m['Reason']}".strip(" |")
-                                support_df.at[idx, 'Notes'] = new_notes
-                                
-                                # Persist to SQLite
-                                update_support_status(tid, 'Client Notified', new_notes)
-                            
-                            log_action(f"Email dispatched to {m['Agent']} regarding Ticket {tid}. SSOT Status updated to 'Client_Notified'.")
-                            st.session_state['show_success_toast'] = True
-                            st.rerun()
+                        st.button("Approve & Send", type="primary", key=f"send_draft_{tid}", on_click=handle_approve_send, args=(tid, m, edited_draft))
         else:
             st.success("🎉 All discrepancies have been resolved! Inbox zero.")
         
