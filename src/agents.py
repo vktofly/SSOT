@@ -1,0 +1,112 @@
+import json
+import requests
+from typing import Dict, Any
+from google.genai import types
+from src.config import HAS_API_KEY, API_KEY, CLIENT
+
+def parse_informal_message(text: str) -> Dict[str, Any]:
+    """
+    Ingestion Agent: Extracts structured entities from informal complaints.
+    """
+    if not HAS_API_KEY:
+        return {
+            "agent_name": "Peak Journeys",
+            "route": "DEL-DXB",
+            "missing_reference": True,
+            "urgency": "High",
+            "intent": "status_update",
+            "_mocked": True
+        }
+
+    prompt = f"""
+    You are the Ingestion Agent for a travel company. 
+    Analyze the following informal message and return a valid JSON object.
+    
+    Extract these keys:
+    - "agent_name": The name of the agency if identifiable, else null.
+    - "route": The flight/travel route (e.g., BLR-MAA, DEL-DXB), else null.
+    - "missing_reference": Boolean, true if they mention missing a ref number or PNR.
+    - "urgency": "High", "Medium", or "Low" based on the tone and wait time.
+    - "intent": "status_update" or "new_refund"
+    
+    Message: "{text}"
+    """
+    
+    try:
+        if API_KEY.startswith("sk-"):
+            headers = {"Authorization": f"Bearer {API_KEY}", "Content-Type": "application/json"}
+            payload = {
+                "model": "gpt-4o-mini",
+                "messages": [{"role": "user", "content": prompt}],
+                "temperature": 0.0,
+                "response_format": {"type": "json_object"}
+            }
+            resp = requests.post("https://api.openai.com/v1/chat/completions", headers=headers, json=payload)
+            resp.raise_for_status()
+            parsed = json.loads(resp.json()["choices"][0]["message"]["content"])
+        else:
+            response = CLIENT.models.generate_content(
+                model='gemini-3.5-flash',
+                contents=prompt,
+                config=types.GenerateContentConfig(
+                    response_mime_type="application/json",
+                    temperature=0.0,
+                ),
+            )
+            parsed = json.loads(response.text)
+        
+        # --- UNHAPPY PATH HANDLING ---
+        valid_sectors = ["DEL-SIN", "DEL-KUL", "HYD-BKK", "DEL-CCU", "DEL-BOM", "COK-DXB", "GOI-BOM", "MAA-CMB", "BOM-BKK", "BLR-DXB", "PNQ-DEL", "DEL-KTM", "BLR-MAA"]
+        if parsed.get("route") and parsed.get("route") not in valid_sectors:
+            parsed["route"] = None
+            parsed["route_flagged"] = True
+            
+        if not parsed.get("agent_name") or not parsed.get("route"):
+            parsed["needs_human_review"] = True
+            
+        return parsed
+        
+    except Exception as e:
+        return {"error": str(e), "needs_human_review": True}
+
+def draft_reconciliation_message(agent_name: str, route: str, ticket_id: str, 
+                                 support_amount: float, finance_amount: float, 
+                                 deduction: float, reason: str) -> str:
+    """
+    Execution Agent: Drafts a polite message explaining a discrepancy to an agent.
+    """
+    if not HAS_API_KEY:
+        return (f"Dear {agent_name},\n\nRegarding your refund for {route} (Ticket {ticket_id}): "
+                f"Support originally quoted {support_amount} INR. However, Finance processed "
+                f"{finance_amount} INR due to a deduction of {deduction} INR for the following "
+                f"reason: {reason}.\n\nBest regards,\nBharatTrip Operations\n\n*(Mocked response)*")
+
+    prompt = f"""
+    Write a polite, professional, and concise message (max 3 sentences) to {agent_name} explaining a refund payout.
+    They requested a refund for route {route} (Ticket: {ticket_id}).
+    Support originally quoted them {support_amount} INR.
+    Finance actually paid {finance_amount} INR because of a deduction of {deduction} INR.
+    The reason for the deduction/rejection is: {reason}.
+    
+    Make it sound like it's coming from BharatTrip Operations. Do not include subject lines, just the message body.
+    """
+    try:
+        if API_KEY.startswith("sk-"):
+            headers = {"Authorization": f"Bearer {API_KEY}", "Content-Type": "application/json"}
+            payload = {
+                "model": "gpt-4o-mini",
+                "messages": [{"role": "user", "content": prompt}],
+                "temperature": 0.3
+            }
+            resp = requests.post("https://api.openai.com/v1/chat/completions", headers=headers, json=payload)
+            resp.raise_for_status()
+            return resp.json()["choices"][0]["message"]["content"].strip()
+        else:
+            response = CLIENT.models.generate_content(
+                model='gemini-3.5-flash',
+                contents=prompt,
+                config=types.GenerateContentConfig(temperature=0.3),
+            )
+            return response.text.strip()
+    except Exception as e:
+        return str(e)
