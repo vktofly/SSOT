@@ -260,7 +260,19 @@ def log_action(message: str):
 
 def render_reconciliation(support_df, finance_df):
     st.title("Reconciliation Agent (HITL Workflow)")
-    st.markdown("Identifies financial discrepancies and drafts explanatory messages for human review (Human-in-the-loop).")
+    
+    col_desc, col_export = st.columns([3, 1])
+    with col_desc:
+        st.markdown("Identifies financial discrepancies and drafts explanatory messages for human review (Human-in-the-loop).")
+    with col_export:
+        csv_data = support_df.to_csv(index=False).encode('utf-8')
+        st.download_button(
+            label="💾 Export Clean SSOT",
+            data=csv_data,
+            file_name="Reconciled_SSOT.csv",
+            mime="text/csv",
+            use_container_width=True
+        )
     
     raw_mismatches = find_mismatches(support_df, finance_df)
     missing_in_finance, missing_in_support = find_orphans(support_df, finance_df)
