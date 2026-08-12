@@ -76,7 +76,7 @@ def render_ingestion():
     st.markdown("---")
     
     # Human Review Queue Section
-    st.subheader("2. Human Review Grid")
+    st.subheader("2. Inbox Zero Review")
     if not st.session_state.review_queue:
         st.info("No tickets awaiting review.")
     else:
@@ -84,14 +84,57 @@ def render_ingestion():
         if low_confidence:
             st.warning("⚠️ Some extractions had low AI confidence. Please review carefully.")
             
-        df_queue = pd.DataFrame(st.session_state.review_queue)
-        edited_df = st.data_editor(df_queue, num_rows="dynamic", use_container_width=True)
+        total_remaining = len(st.session_state.review_queue)
+        st.markdown(f"**{total_remaining} tickets pending review.**")
+
+        # The st.selectbox natively supports type-to-search, so we don't need a separate search bar
+        ticket_options = {f"Queue Index {i+1} | Agent: {r.get('agent_name', 'Unknown')} | Route: {r.get('route', 'Unknown')}": i for i, r in enumerate(st.session_state.review_queue)}
         
-        if st.button("Approve All & Save to SSOT", type="primary"):
-            st.session_state.review_queue = []
-            st.success("Tickets successfully committed to the SSOT database!")
-            st.balloons()
-            st.rerun()
+        selected_label = st.selectbox("Select a ticket to review:", list(ticket_options.keys()), key="ingest_select")
+        selected_index = ticket_options[selected_label]
+        r = st.session_state.review_queue[selected_index]
+        
+        with st.container(border=True):
+            st.subheader(f"🎫 Ingested Ticket #{selected_index + 1}")
+            st.markdown(f"**AI Confidence Score:** `{r.get('confidence_score', 'N/A')}%` — Review the extracted details below.")
+            
+            # Use columns for a more premium, balanced layout similar to the metrics in Reconciliation
+            col1, col2 = st.columns(2)
+            
+            with col1:
+                new_agent = st.text_input("🏢 Agent Name", value=r.get("agent_name", ""), key=f"agent_{selected_index}")
+                
+                intent_options = ["status_update", "new_refund", "other"]
+                current_intent = r.get("intent", "other")
+                if current_intent not in intent_options:
+                    intent_options.append(current_intent)
+                new_intent = st.selectbox("🎯 Intent", options=intent_options, index=intent_options.index(current_intent), key=f"intent_{selected_index}")
+                
+            with col2:
+                new_route = st.text_input("✈️ Route", value=r.get("route", ""), key=f"route_{selected_index}")
+                
+                urgency_options = ["High", "Medium", "Low", "Unknown"]
+                current_urgency = r.get("urgency", "Unknown")
+                if current_urgency not in urgency_options:
+                    urgency_options.append(current_urgency)
+                new_urgency = st.selectbox("🚨 Urgency", options=urgency_options, index=urgency_options.index(current_urgency), key=f"urgency_{selected_index}")
+            
+            st.markdown("---")
+            
+            col_btn, _ = st.columns([1, 3])
+            with col_btn:
+                if st.button("Approve & Save to SSOT", type="primary", key=f"approve_{selected_index}"):
+                    # Update the ticket with the edited fields
+                    r['agent_name'] = new_agent
+                    r['route'] = new_route
+                    r['intent'] = new_intent
+                    r['urgency'] = new_urgency
+                    
+                    # Remove from queue
+                    st.session_state.review_queue.pop(selected_index)
+                    st.success("Ticket successfully committed to the SSOT database!")
+                    st.balloons()
+                    st.rerun()
 
 def init_reconciliation_state(mismatches):
     """Initializes session state to track resolved tickets."""
@@ -116,10 +159,18 @@ def render_reconciliation(support_df, finance_df):
     pending_mismatches = [m for m in raw_mismatches if m['Ticket ID'] not in st.session_state.resolved_tickets]
     
     if pending_mismatches:
-        st.markdown(f"**Found {len(pending_mismatches)} discrepancies requiring review.**")
+        total_mismatches = len(raw_mismatches)
+        pending_count = len(pending_mismatches)
+        resolved_count = total_mismatches - pending_count
         
-        # Display the top mismatch for HITL review
-        m = pending_mismatches[0]
+        progress = resolved_count / total_mismatches
+        st.progress(progress, text=f"Resolved {resolved_count} of {total_mismatches} tickets")
+        
+        # Allow the user to select which ticket to review to prioritize high-value items (selectbox is natively searchable)
+        ticket_options = {f"Ticket {m['Ticket ID']} | Agent: {m['Agent']} | Deduction: ₹{m['Deduction']}": m for m in pending_mismatches}
+        
+        selected_label = st.selectbox("Select a ticket to review:", list(ticket_options.keys()))
+        m = ticket_options[selected_label]
         
         with st.container(border=True):
             st.subheader(f"Ticket: {m['Ticket ID']} | Agent: {m['Agent']}")
@@ -146,7 +197,7 @@ def render_reconciliation(support_df, finance_df):
                     st.rerun()
                     
             if st.session_state[draft_key]:
-                edited_draft = st.text_area("Review Message:", value=st.session_state[draft_key], height=150)
+                edited_draft = st.text_area("Review Message:", value=st.session_state[draft_key], height=150, key=f"text_{m['Ticket ID']}")
                 
                 col1, col2 = st.columns([1, 4])
                 with col1:
