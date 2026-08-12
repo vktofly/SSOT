@@ -36,3 +36,9 @@ The findings above necessitated a system redesign. The prototype presented in th
 1. Using an **AI Ingestion Agent** to structure the WhatsApp leakage.
 2. Using a **Unified SSOT Database** to completely eliminate the 100 dropped handoffs.
 3. Using a **Reconciliation Agent** to auto-draft explanatory emails for the 149 short-payment mismatches before they escalate.
+
+**Enterprise Hardening & Operational Safety:**
+To ensure this solution is deployable in a real-world financial environment, we also implemented:
+* **Identity Gateway & RBAC:** Dual-role authorization separating Manager and Operator privileges.
+* **PII Data Masking:** Dynamic redaction of sensitive identifiers in the UI and during LLM extraction to ensure compliance.
+* **Granular Workflow Control:** Added individual ingestion triggers for operators to cherry-pick high-priority escalations instead of relying solely on batch processing.
