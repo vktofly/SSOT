@@ -2,61 +2,55 @@
 PROMPT HISTORY: BHARATTRIP SSOT TASK
 ==================================================
 
-Below is the structured prompt engineering workflow used to architect, analyze, and build the Single Source of Truth (SSOT) prototype.
+Below is the structured prompt engineering workflow used to architect, analyze, and build the Single Source of Truth (SSOT) prototype, including the initial build phase and the subsequent enterprise hardening phase.
 
 --------------------------------------------------
+PHASE 1: Core Architecture & Data Reconciliation
+--------------------------------------------------
+
 USER PROMPT 1: Data Reconciliation & Root Cause Analysis
---------------------------------------------------
-Context: I have three datasets from a travel company (BharatTrip):
-1. Support_Tracker (Refund requests taken by support).
-2. Finance_Tracker (Payouts executed by finance).
-3. Escalations (Client complaints regarding delayed/incorrect refunds).
-4. Unstructured text (Informal WhatsApp/Email refund requests).
+Task: Perform a strict data reconciliation to find the root cause of the rising refund escalations. Use an ID-to-ID Database Join to identify "Dropped Handoffs", "Deduction Mismatches", and "Off-Tracker Leaks". Output the exact integer counts for each failure point.
 
-Task: Perform a strict data reconciliation to find the root cause of the rising refund escalations. Do not just subtract the total rows. 
-Constraints:
-- Use an ID-to-ID Database Join (Left Anti-Join and Inner Join) on the `Booking_ID`.
-- Identify "Dropped Handoffs" (In Support, missing in Finance).
-- Identify "Deduction Mismatches" (Present in both, but Support Refund Amount > Finance Payout Amount).
-- Identify "Off-Tracker Leaks" (Cross-reference Escalations 'No Ref' with unstructured WhatsApp text).
-Output the exact integer counts for each failure point and summarize the operational bottleneck.
-
---------------------------------------------------
 USER PROMPT 2: Multi-Agent Architecture Design
---------------------------------------------------
-Context: Based on the data analysis, the operational bottlenecks are WhatsApp leakage and manual sheet-to-sheet handoff drops.
+Task: Design a system architecture for a Unified Single Source of Truth (SSOT) driven by LLM Agents. Must include an AI Ingestion Agent, a Reconciliation Agent with HITL approval, and mitigate financial compliance risks.
 
-Task: Design a system architecture for a Unified Single Source of Truth (SSOT) driven by LLM Agents.
-Constraints:
-- Must include an "AI Ingestion Agent" to parse messy unstructured text into structured JSON.
-- Must include a "Reconciliation Agent" with a Human-In-The-Loop (HITL) approval UI.
-- Must mitigate financial compliance risks and API key exposure (reference MCP - Model Context Protocol).
-Format the output as a Markdown table mapping the "Operational Failure" to the "AI Engineering Solution".
-
---------------------------------------------------
 USER PROMPT 3: Streamlit Prototype Development & LLM Routing
---------------------------------------------------
-Role: You are a Senior AI Operations Engineer.
-Task: Write a production-ready `app.py` using Streamlit to prototype the SSOT architecture we just designed.
-Requirements:
-- Build an Operations Telemetry Dashboard tracking "Active Escalations", "Missing Handoffs", and "Reconciliation Mismatches".
-- Implement the AI Ingestion Agent using `google-genai` (gemini-3.5-flash). 
-- Add hallucination mitigation: If the LLM hallucinates an invalid travel route (e.g. DEL to NYC instead of valid domestic routes), the UI must flag it.
-- **Dynamic API Key Routing**: Build the app so it accepts BOTH an OpenAI API key (`sk-...`) or a Google Gemini API Key (`AIzaSy...`) via the Streamlit sidebar. If OpenAI is provided, fallback to the REST API without requiring the `openai` python package to keep dependencies ultra-lightweight.
+Task: Write a production-ready app.py using Streamlit to prototype the SSOT architecture. Build an Operations Telemetry Dashboard, implement the AI Ingestion Agent, and add hallucination mitigation for invalid travel routes.
 
---------------------------------------------------
 USER PROMPT 4: Streamlit Cloud Deployment Optimization
---------------------------------------------------
-Task: Create the necessary deployment files to host this Streamlit app on Streamlit Community Cloud.
-Constraints:
-- Write a `requirements.txt`. Do NOT strictly pin the versions (use `>=`) to prevent Debian C-compiler failures in the cloud environment.
-- Create a `packages.txt` file including `zlib1g-dev` and `libjpeg-dev` to ensure Pillow and Pandas compile correctly if the cloud container defaults to a newer Python version without pre-built wheels.
-- Create an industry-standard Python `.gitignore` that rigorously excludes `.venv`, `.env`, and `__pycache__` to ensure API keys never touch the public repo.
+Task: Create the necessary deployment files to host this Streamlit app. Write a requirements.txt, a packages.txt (zlib1g-dev, libjpeg-dev), and a secure .gitignore to ensure API keys never touch the public repo.
+
+USER PROMPT 5: Academic-Grade Visualizations & LaTeX Write-Up
+Task: Write a Python script using matplotlib to generate two graphs (Escalation Root Causes and SSOT Architecture) using a muted academic color palette. Write a LaTeX document (write_up.tex) incorporating the data findings and Multi-Agent logic.
 
 --------------------------------------------------
-USER PROMPT 5: Academic-Grade Visualizations & LaTeX Write-Up
+PHASE 2: Enterprise Hardening & Iterative UI/UX 
 --------------------------------------------------
-Task: Generate the final business case deliverables.
-1. Write a Python script using `matplotlib` to generate two graphs: a bar chart for "Escalation Root Causes" and a flowchart for the "SSOT Architecture". Use the `seaborn-v0_8-paper` style, `serif` font, and a muted academic color palette (Deep Blue and Grey). Output at 300 DPI.
-2. Write a LaTeX document (`write_up.tex`) adhering to a strict 3-page limit. Use the `geometry` package to set 1-inch margins.
-3. Incorporate the data findings, the Multi-Agent architecture logic, and the "Measuring Success" metrics directly addressing the constraints of the original BharatTrip brief.
+
+USER PROMPT 6: UI Cohesiveness
+"ingestion ui no matching the rest of site ui."
+Result: Directed the AI to overhaul the Ingestion Agent UI layout to match the enterprise-grade dashboard, migrating from informal chat bubbles to a strict, bordered data-grid.
+
+USER PROMPT 7: Granular Workflow Control
+"we can give human to process one message at time option as well. just right of the message. what do you think."
+Result: Prompted the AI to add individual "Ingest" buttons next to each unstructured Webhook message, allowing for cherry-picking high-priority escalations rather than relying solely on batch processing.
+
+USER PROMPT 8: Automated E2E Testing
+"test major feature and buttons and their derired output. before we push into production."
+Result: Triggered a browser automation subagent to perform end-to-end (E2E) visual testing of the Streamlit app on localhost, verifying the RBAC login and Ingestion flows.
+
+USER PROMPT 9: Bug Resolution (Data Masking)
+"TypeError: object of type 'float' has no len() ... File 'app.py', line 101"
+Result: Provided a live stack trace to the AI, which successfully identified a NaN float issue in the Pandas PII-redaction lambda function and deployed a hotfix.
+
+USER PROMPT 10: Submission Strategy & Professionalism
+"why submit SSOT_Parser.zip when we have deployed out app and giving github link?"
+Result: Corrected the AI's submission strategy, shifting from an outdated ZIP file attachment to a modern GitHub Repository and Live Streamlit Cloud URL for the hiring manager.
+
+USER PROMPT 11: Research-Grade Diagrams
+"architecture.png this needs improvement. a research grade architecture not just naive. dont make it shine with colors. metrics.png like."
+Result: Directed the AI to discard generic flowcharting tools and write a strict Matplotlib script to generate an IEEE/ACM academic-style block diagram with muted grayscale colors and strict layer hierarchies.
+
+USER PROMPT 12: Remote Compilation (No Local Dependencies)
+"generate pdf. try agin. priviously you gneerated this pdf."
+Result: Directed the AI to bypass local environment restrictions (no pdflatex) by packaging the LaTeX project into a tarball and executing a cURL POST request to a remote LaTeX compilation API (latexonline.cc) to generate the final PDF.
