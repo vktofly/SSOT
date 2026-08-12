@@ -413,9 +413,47 @@ def render_reconciliation(support_df, finance_df):
                     chunk_size = 10
                     for i in range(0, len(missing_in_finance), chunk_size):
                         chunk = missing_in_finance[i:i+chunk_size]
-                        matches = batch_fuzzy_match_metadata(chunk, missing_in_support)
-                        if matches:
-                            all_matches.extend(matches)
+                        
+                        # Pre-filter Finance candidates for this chunk to save tokens
+                        filtered_finance = []
+                        for f_cand in missing_in_support:
+                            try:
+                                f_amt = float(str(f_cand.get('Amount Paid (INR)', '0')).replace(',', ''))
+                            except ValueError:
+                                f_amt = 0.0
+                            
+                            f_agent = str(f_cand.get('Agent Name', '')).lower()
+                            f_words = set(w for w in f_agent.split() if len(w) > 2)
+                            
+                            keep = False
+                            for s_cand in chunk:
+                                try:
+                                    s_amt = float(str(s_cand.get('Refund Amount (INR)', '0')).replace(',', ''))
+                                except ValueError:
+                                    s_amt = 0.0
+                                
+                                s_agent = str(s_cand.get('Agent', '')).lower()
+                                s_words = set(w for w in s_agent.split() if len(w) > 2)
+                                
+                                # Condition 1: Amount is within 20%
+                                if s_amt > 0 and f_amt > 0:
+                                    if abs(s_amt - f_amt) <= max(s_amt, f_amt) * 0.20:
+                                        keep = True
+                                        break
+                                
+                                # Condition 2: Agent name has overlapping words
+                                if f_words and s_words and len(f_words & s_words) > 0:
+                                    keep = True
+                                    break
+                            
+                            if keep:
+                                filtered_finance.append(f_cand)
+                        
+                        # Only call LLM if there are plausible candidates
+                        if filtered_finance:
+                            matches = batch_fuzzy_match_metadata(chunk, filtered_finance)
+                            if matches:
+                                all_matches.extend(matches)
                             
                     if all_matches:
                         st.session_state.batch_matches = all_matches
@@ -479,9 +517,13 @@ def render_reconciliation(support_df, finance_df):
                                 
                             st.info(f"**AI Reasoning:** {match.get('reasoning')}")
                             
+                            score = match.get('confidence_score', 0)
+                            color = "🟢 High" if score >= 90 else "🟡 Medium" if score >= 70 else "🔴 Low"
+                            st.progress(score / 100, text=f"**Confidence:** {score}% ({color})")
+                            
                             c_btn1, c_btn2, _ = st.columns([1, 1, 3])
                             with c_btn1:
-                                if st.button("✅ Approve", key=f"app_{i}_{s_id}"):
+                                if st.button("✅ Approve & Merge", key=f"app_{i}_{s_id}"):
                                     update_ticket_id(s_id, f_id)
                                     idx = st.session_state.support_df.index[st.session_state.support_df['Ticket ID'] == s_id].tolist()
                                     if idx:
@@ -496,7 +538,7 @@ def render_reconciliation(support_df, finance_df):
                                     st.rerun()
                                     
                     st.markdown("---")
-                    if filtered_matches and st.button(f"✅ Approve All Filtered Linkages ({len(filtered_matches)})", type="primary"):
+                    if filtered_matches and st.button(f"✅ Approve & Merge All Filtered Linkages ({len(filtered_matches)})", type="primary"):
                         for match in filtered_matches:
                             s_id = match['support_ticket_id']
                             f_id = match['finance_ref_no']

@@ -305,15 +305,16 @@ def batch_fuzzy_match_metadata(support_orphans: list[Dict[str, Any]], finance_ca
     Candidate Finance Tickets:
     {json.dumps(finance_candidates, indent=2)}
     
-    Your task is to determine if any of the Support tickets match a Candidate Finance ticket based on metadata like Agent Name, Sector/Route, and Amounts (allowing for some deduction).
-    Only link a ticket if you are >95% confident (e.g. typos in ID, but amounts and agent match).
+    Your task is to determine if any of the Support tickets match a Candidate Finance ticket based on metadata like Agent Name, Sector/Route, Dates, and Amounts (allowing for some deduction).
+    Only link a ticket if you believe there is a plausible match (e.g. typos in ID, but amounts, dates, and agent match).
     
     Return a JSON object with a single key "matches", which is a list of objects. Each object should have:
     - "support_ticket_id": string
     - "finance_ref_no": string
-    - "reasoning": string (a short 1-sentence explanation of why they match and your confidence)
+    - "reasoning": string (a short 1-sentence explanation of why they match)
+    - "confidence_score": integer (between 0 and 100 representing how certain you are of this match)
     
-    Do NOT include support tickets that have no confident match.
+    Do NOT include support tickets that have no plausible match (confidence under 50).
     """
     
     try:
