@@ -53,9 +53,19 @@ def render_ingestion():
     else:
         with st.container(border=True):
             for i, msg in enumerate(st.session_state.webhook_inbox):
-                st.markdown(f"💬 **WhatsApp ID-{1042 + i}:** *{msg}*")
+                msg_col, btn_col = st.columns([5, 1])
+                with msg_col:
+                    st.markdown(f"💬 **WhatsApp ID-{1042 + i}:** *{msg}*")
+                with btn_col:
+                    if st.button("Ingest", key=f"ingest_single_{i}", use_container_width=True):
+                        with st.spinner("..."):
+                            result = parse_informal_message(msg)
+                            st.session_state.review_queue.append(result)
+                            st.session_state.webhook_inbox.pop(i)
+                            st.rerun()
+                st.divider()
                 
-        if st.button("▶️ Run AI Auto-Ingestion (Batch Process)", type="primary"):
+        if st.button("▶️ Run AI Auto-Ingestion (Batch Process All)", type="primary"):
             with st.spinner("Processing via LLM and redacting PII..."):
                 for msg in st.session_state.webhook_inbox:
                     result = parse_informal_message(msg)
