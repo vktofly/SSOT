@@ -164,3 +164,34 @@ def render_reconciliation(support_df, finance_df):
         with st.expander("🛠️ System Activity Logs", expanded=True):
             for log in st.session_state.system_logs:
                 st.text(log)
+
+def render_database_explorer(support_df, finance_df, escalations_df):
+    st.title("🗄️ Database Explorer")
+    st.markdown("Global view of all underlying CSV databases in the Single Source of Truth.")
+    
+    # Global Ticket Search
+    search_query = st.text_input("🔍 Global Ticket Search (Enter Ticket ID, Agent Name, etc.)").strip()
+    
+    if search_query:
+        # Filter all dataframes dynamically
+        support_view = support_df[support_df.astype(str).apply(lambda x: x.str.contains(search_query, case=False, na=False)).any(axis=1)]
+        finance_view = finance_df[finance_df.astype(str).apply(lambda x: x.str.contains(search_query, case=False, na=False)).any(axis=1)]
+        escalations_view = escalations_df[escalations_df.astype(str).apply(lambda x: x.str.contains(search_query, case=False, na=False)).any(axis=1)]
+    else:
+        support_view = support_df
+        finance_view = finance_df
+        escalations_view = escalations_df
+
+    tab1, tab2, tab3 = st.tabs(["Support Tracker", "Finance Tracker", "Escalations"])
+    
+    with tab1:
+        st.subheader("Support Tracker (B2B Agent Bookings)")
+        st.dataframe(support_view, use_container_width=True)
+        
+    with tab2:
+        st.subheader("Finance Tracker (Actuals & Deductions)")
+        st.dataframe(finance_view, use_container_width=True)
+        
+    with tab3:
+        st.subheader("Escalations & Anomalies")
+        st.dataframe(escalations_view, use_container_width=True)
