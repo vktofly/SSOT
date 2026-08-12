@@ -6,12 +6,13 @@ Please find attached my submission for the AI Operations Associate take-home tas
 
 Attached you will find:
 1. **write_up.pdf**: My analysis of the data, the core problem definition (100 dropped tickets and 149 mismatches), and the proposed operational solution.
-2. **SSOT_Parser.zip**: The working AI prototype source code.
+
+You can access my working AI prototype here:
+* **Live Web App**: [https://vktoflyss.streamlit.app/](https://vktoflyss.streamlit.app/)
+* **GitHub Repository**: [https://github.com/vktofly/SSOT.git](https://github.com/vktofly/SSOT.git)
 
 ### How to Run and Test the Prototype
-To run the Streamlit application locally, please follow the instructions in the `README.md`. 
-
-**Important:** To demonstrate enterprise-grade security and Role-Based Access Control (RBAC), the application sits behind an Identity Gateway. You can log in using the following test credentials to experience the different UI states:
+To test the live application directly in your browser, please use the following mock credentials. The application sits behind an Identity Gateway to demonstrate enterprise-grade Role-Based Access Control (RBAC) and Data Masking:
 * **Manager Role** (Full Access & Unmasked Data): 
   * Username: `manager` 
   * Password: `admin123`
