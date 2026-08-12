@@ -35,8 +35,18 @@ def render_ingestion():
         with st.spinner("Processing via AI Ingestion Agent..."):
             result = parse_informal_message(text_input)
             st.success("Extraction Complete!")
-            st.json(result)
-            st.button("Confirm & Save to SSOT (Mock)")
+            
+            confidence = result.get("confidence_score", 100)
+            if confidence < 80:
+                st.warning(f"⚠️ Low AI Confidence ({confidence}%). Human review required before saving.")
+            
+            st.markdown("**Extracted Data (Editable):**")
+            df_result = pd.DataFrame([result])
+            edited_df = st.data_editor(df_result, num_rows="dynamic", use_container_width=True)
+            
+            if st.button("Confirm & Save to SSOT (Mock)"):
+                st.success("Data saved successfully!")
+                st.balloons()
 
 def init_reconciliation_state(mismatches):
     """Initializes session state to track resolved tickets."""
@@ -113,6 +123,16 @@ def render_reconciliation(support_df, finance_df):
     # Render System Logs
     if st.session_state.system_logs:
         st.markdown("---")
+        
+        # Audit Log CSV Export
+        csv_data = "Log_Entry\n" + "\n".join([f'"{log}"' for log in st.session_state.system_logs])
+        st.download_button(
+            label="📥 Download Audit Log (CSV)",
+            data=csv_data,
+            file_name=f"audit_log_{datetime.now().strftime('%Y%m%d')}.csv",
+            mime="text/csv"
+        )
+        
         with st.expander("🛠️ System Activity Logs", expanded=True):
             for log in st.session_state.system_logs:
                 st.text(log)

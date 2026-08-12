@@ -1,13 +1,27 @@
 import json
+import re
 import requests
 from typing import Dict, Any
 from google.genai import types
 from src.config import HAS_API_KEY, API_KEY, CLIENT
 
+def redact_pii(text: str) -> str:
+    """Masks phone numbers, emails, and credit cards to ensure Data Privacy."""
+    # Mask 10+ digit phone numbers
+    text = re.sub(r'\b\d{10,12}\b', '[REDACTED_PHONE]', text)
+    # Mask email addresses
+    text = re.sub(r'\S+@\S+\.\S+', '[REDACTED_EMAIL]', text)
+    # Mask 16-digit credit cards (with or without spaces/dashes)
+    text = re.sub(r'\b(?:\d[ -]*?){13,16}\b', '[REDACTED_CARD]', text)
+    return text
+
 def parse_informal_message(text: str) -> Dict[str, Any]:
     """
     Ingestion Agent: Extracts structured entities from informal complaints.
     """
+    # Security: Redact PII before processing
+    safe_text = redact_pii(text)
+    
     if not HAS_API_KEY:
         return {
             "agent_name": "Peak Journeys",
@@ -15,6 +29,7 @@ def parse_informal_message(text: str) -> Dict[str, Any]:
             "missing_reference": True,
             "urgency": "High",
             "intent": "status_update",
+            "confidence_score": 70,
             "_mocked": True
         }
 
@@ -28,8 +43,9 @@ def parse_informal_message(text: str) -> Dict[str, Any]:
     - "missing_reference": Boolean, true if they mention missing a ref number or PNR.
     - "urgency": "High", "Medium", or "Low" based on the tone and wait time.
     - "intent": "status_update" or "new_refund"
+    - "confidence_score": Integer (0-100) representing how confident you are in the extracted route and agent_name.
     
-    Message: "{text}"
+    Message: "{safe_text}"
     """
     
     try:
