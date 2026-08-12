@@ -1,8 +1,8 @@
 import streamlit as st
 import pandas as pd
 from datetime import datetime
-from src.agents import parse_informal_message, draft_reconciliation_message, analyze_escalations, fuzzy_match_metadata, draft_escalation_response
-from src.db import delete_escalation, update_support_status, insert_support_record
+from src.agents import parse_informal_message, draft_reconciliation_message, analyze_escalations, fuzzy_match_metadata, batch_fuzzy_match_metadata, draft_escalation_response
+from src.db import delete_escalation, update_support_status, insert_support_record, update_ticket_id
 from src.data_manager import load_data, find_mismatches, find_orphans
 from src.config import HAS_API_KEY
 
@@ -383,23 +383,109 @@ def render_reconciliation(support_df, finance_df):
         st.markdown("If a ticket ID was typed incorrectly (and failed exact/fuzzy text match), use the LLM to find the most probable match based on metadata (Agent Name, Route, Amount).")
         
         if missing_in_finance and missing_in_support:
-            ticket_to_match = st.selectbox("Select a Support Ticket to match:", [m['Ticket ID'] for m in missing_in_finance])
-            if st.button("Run AI Linkage", type="primary"):
-                with st.spinner("Analyzing metadata across orphaned tickets..."):
-                    support_row = next(m for m in missing_in_finance if m['Ticket ID'] == ticket_to_match)
-                    # Pass the orphaned finance tickets as candidates
-                    matched_ref = fuzzy_match_metadata(support_row, missing_in_support)
-                    
-                    if matched_ref:
-                        st.success(f"🎉 High confidence match found! Support Ticket **{ticket_to_match}** corresponds to Finance Record **{matched_ref}**.")
-                        log_action(f"AI Entity Resolution linked Support Ticket {ticket_to_match} to Finance Ref {matched_ref}.")
-                        
-                        # Apply match to SSOT (simulate write-back in memory)
-                        idx = st.session_state.support_df.index[st.session_state.support_df['Ticket ID'] == ticket_to_match].tolist()[0]
-                        st.session_state.support_df.at[idx, 'Ticket ID'] = matched_ref # Align IDs
+            if st.button("🚀 Run Batch AI Linkage", type="primary"):
+                with st.spinner("Analyzing metadata across orphaned tickets in batches..."):
+                    all_matches = []
+                    # Process in chunks of 10 to avoid token limits
+                    chunk_size = 10
+                    for i in range(0, len(missing_in_finance), chunk_size):
+                        chunk = missing_in_finance[i:i+chunk_size]
+                        matches = batch_fuzzy_match_metadata(chunk, missing_in_support)
+                        if matches:
+                            all_matches.extend(matches)
+                            
+                    if all_matches:
+                        st.session_state.batch_matches = all_matches
                         st.rerun()
                     else:
-                        st.error("No confident match found among the orphaned Finance tickets.")
+                        st.error("No confident matches found across all orphans.")
+                        
+            if st.session_state.get('batch_matches'):
+                st.subheader("🤖 Proposed Linkages (Awaiting Approval)")
+                
+                if 'acted_matches' not in st.session_state:
+                    st.session_state.acted_matches = set()
+                
+                # Filter matches to ones not acted upon
+                pending_matches = [m for m in st.session_state.batch_matches if m['support_ticket_id'] not in st.session_state.acted_matches]
+                
+                if not pending_matches:
+                    st.success("All proposed linkages have been reviewed.")
+                    if st.button("Clear Proposals"):
+                        st.session_state.batch_matches = None
+                        st.session_state.acted_matches.clear()
+                        st.rerun()
+                else:
+                    # Collect agent names for filtering
+                    agent_names = set()
+                    for match in pending_matches:
+                        s_id = match['support_ticket_id']
+                        s_row = next((r for r in missing_in_finance if r['Ticket ID'] == s_id), None)
+                        if s_row and s_row.get('Agent'):
+                            agent_names.add(s_row['Agent'])
+                    
+                    selected_agents = st.multiselect("Filter by Support Agent Name:", list(agent_names), default=[])
+                    
+                    # Apply filter
+                    filtered_matches = pending_matches
+                    if selected_agents:
+                        filtered_matches = []
+                        for match in pending_matches:
+                            s_id = match['support_ticket_id']
+                            s_row = next((r for r in missing_in_finance if r['Ticket ID'] == s_id), None)
+                            if s_row and s_row.get('Agent') in selected_agents:
+                                filtered_matches.append(match)
+                                
+                    st.write(f"Showing {len(filtered_matches)} of {len(pending_matches)} remaining proposals.")
+                    
+                    for match in filtered_matches:
+                        s_id = match['support_ticket_id']
+                        f_id = match['finance_ref_no']
+                        
+                        s_row = next((r for r in missing_in_finance if r['Ticket ID'] == s_id), {})
+                        f_row = next((r for r in missing_in_support if r['Ref No'] == f_id), {})
+                        
+                        with st.container(border=True):
+                            col1, col2 = st.columns(2)
+                            with col1:
+                                st.markdown(f"**Support Ticket (Missing in Finance):** `{s_id}`")
+                                st.write(f"Agent: {s_row.get('Agent', 'Unknown')} | Amount: ₹{s_row.get('Refund Amount (INR)', '0')} | Route: {s_row.get('Sector', 'Unknown')}")
+                            with col2:
+                                st.markdown(f"**Proposed Finance Record:** `{f_id}`")
+                                st.write(f"Agent: {f_row.get('Agent Name', 'Unknown')} | Amount: ₹{f_row.get('Amount Paid (INR)', '0')} | Route: {f_row.get('Route', 'Unknown')}")
+                                
+                            st.info(f"**AI Reasoning:** {match.get('reasoning')}")
+                            
+                            c_btn1, c_btn2, _ = st.columns([1, 1, 3])
+                            with c_btn1:
+                                if st.button("✅ Approve", key=f"app_{s_id}"):
+                                    update_ticket_id(s_id, f_id)
+                                    idx = st.session_state.support_df.index[st.session_state.support_df['Ticket ID'] == s_id].tolist()
+                                    if idx:
+                                        st.session_state.support_df.at[idx[0], 'Ticket ID'] = f_id
+                                    st.session_state.acted_matches.add(s_id)
+                                    log_action(f"Approved AI Linkage: {s_id} -> {f_id}")
+                                    st.rerun()
+                            with c_btn2:
+                                if st.button("❌ Reject", type="secondary", key=f"rej_{s_id}"):
+                                    st.session_state.acted_matches.add(s_id)
+                                    log_action(f"Rejected AI Linkage: {s_id} -> {f_id}")
+                                    st.rerun()
+                                    
+                    st.markdown("---")
+                    if filtered_matches and st.button(f"✅ Approve All Filtered Linkages ({len(filtered_matches)})", type="primary"):
+                        for match in filtered_matches:
+                            s_id = match['support_ticket_id']
+                            f_id = match['finance_ref_no']
+                            update_ticket_id(s_id, f_id)
+                            idx = st.session_state.support_df.index[st.session_state.support_df['Ticket ID'] == s_id].tolist()
+                            if idx:
+                                st.session_state.support_df.at[idx[0], 'Ticket ID'] = f_id
+                            st.session_state.acted_matches.add(s_id)
+                            
+                        st.success(f"Successfully linked {len(filtered_matches)} tickets! SSOT updated permanently.")
+                        log_action(f"Batch AI Linkage approved for {len(filtered_matches)} tickets.")
+                        st.rerun()
         else:
             st.success("No orphaned tickets to match!")
             

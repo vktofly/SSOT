@@ -55,3 +55,17 @@ def delete_escalation(ticket_id: str, message: str):
         print(f"Error deleting record: {e}")
     finally:
         conn.close()
+
+def update_ticket_id(old_id: str, new_id: str):
+    """Updates the Ticket ID across the support_tracker to match Finance."""
+    conn = get_connection()
+    cursor = conn.cursor()
+    
+    query = 'UPDATE support_tracker SET "Ticket ID" = ? WHERE "Ticket ID" = ?'
+    try:
+        cursor.execute(query, (new_id, old_id))
+        conn.commit()
+    except Exception as e:
+        print(f"Error updating ticket ID: {e}")
+    finally:
+        conn.close()

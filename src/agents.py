@@ -284,6 +284,74 @@ def fuzzy_match_metadata(support_row: Dict[str, Any], finance_candidates: list[D
     except Exception:
         return None
 
+def batch_fuzzy_match_metadata(support_orphans: list[Dict[str, Any]], finance_candidates: list[Dict[str, Any]]) -> list[Dict[str, Any]]:
+    """
+    LLM Fallback for fuzzy matching a batch of orphaned tickets based on metadata.
+    Returns a list of dicts: [{"support_ticket_id": "...", "finance_ref_no": "...", "reasoning": "..."}]
+    """
+    if not support_orphans or not finance_candidates:
+        return []
+        
+    if not HAS_API_KEY:
+        return []
+        
+    prompt = f"""
+    You are an intelligent data reconciliation agent. 
+    I have a batch of Support tickets that are missing a matching Finance record.
+    
+    Support Tickets:
+    {json.dumps(support_orphans, indent=2)}
+    
+    Candidate Finance Tickets:
+    {json.dumps(finance_candidates, indent=2)}
+    
+    Your task is to determine if any of the Support tickets match a Candidate Finance ticket based on metadata like Agent Name, Sector/Route, and Amounts (allowing for some deduction).
+    Only link a ticket if you are >95% confident (e.g. typos in ID, but amounts and agent match).
+    
+    Return a JSON object with a single key "matches", which is a list of objects. Each object should have:
+    - "support_ticket_id": string
+    - "finance_ref_no": string
+    - "reasoning": string (a short 1-sentence explanation of why they match and your confidence)
+    
+    Do NOT include support tickets that have no confident match.
+    """
+    
+    try:
+        if API_KEY.startswith("sk-"):
+            headers = {"Authorization": f"Bearer {API_KEY}", "Content-Type": "application/json"}
+            payload = {
+                "model": "gpt-4o-mini",
+                "messages": [{"role": "user", "content": prompt}],
+                "temperature": 0.0,
+                "response_format": {"type": "json_object"}
+            }
+            resp = requests.post("https://api.openai.com/v1/chat/completions", headers=headers, json=payload)
+            resp.raise_for_status()
+            raw_output = resp.json()["choices"][0]["message"]["content"]
+        else:
+            response = CLIENT.models.generate_content(
+                model='gemini-3.5-flash',
+                contents=prompt,
+                config=types.GenerateContentConfig(
+                    response_mime_type="application/json",
+                    temperature=0.0,
+                ),
+            )
+            raw_output = response.text
+            
+        cleaned = raw_output.strip()
+        start = cleaned.find('{')
+        end = cleaned.rfind('}')
+        if start != -1 and end != -1:
+            cleaned = cleaned[start:end+1]
+            
+        parsed = json.loads(cleaned)
+        return parsed.get("matches", [])
+        
+    except Exception as e:
+        print(f"Batch Match Error: {e}")
+        return []
+
 def draft_escalation_response(escalation_text: str, support_status: dict) -> str:
     """
     Drafts a personalized response to an escalated complaint based on SSOT data.
