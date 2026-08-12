@@ -96,13 +96,20 @@ def render_ingestion():
         
         with st.container(border=True):
             st.subheader(f"🎫 Ingested Ticket #{selected_index + 1}")
-            st.markdown(f"**AI Confidence Score:** `{r.get('confidence_score', 'N/A')}%` — Review the extracted details below.")
+            
+            if "error" in r:
+                st.error(f"⚠️ AI Parsing Failed: {r['error']}")
+            else:
+                st.markdown(f"**AI Confidence Score:** `{r.get('confidence_score', 'N/A')}%` — Review the extracted details below.")
             
             # Use columns for a more premium, balanced layout similar to the metrics in Reconciliation
             col1, col2 = st.columns(2)
             
             with col1:
-                new_agent = st.text_input("🏢 Agent Name", value=r.get("agent_name", ""), key=f"agent_{selected_index}")
+                # Ensure we handle None if the LLM explicitly returns null
+                agent_val = r.get("agent_name")
+                agent_val = agent_val if agent_val is not None else ""
+                new_agent = st.text_input("🏢 Agent Name", value=agent_val, key=f"agent_{selected_index}")
                 
                 intent_options = ["status_update", "new_refund", "other"]
                 current_intent = r.get("intent", "other")
@@ -111,13 +118,17 @@ def render_ingestion():
                 new_intent = st.selectbox("🎯 Intent", options=intent_options, index=intent_options.index(current_intent), key=f"intent_{selected_index}")
                 
             with col2:
-                new_route = st.text_input("✈️ Route", value=r.get("route", ""), key=f"route_{selected_index}")
+                route_val = r.get("route")
+                route_val = route_val if route_val is not None else ""
+                new_route = st.text_input("✈️ Route", value=route_val, key=f"route_{selected_index}")
                 
                 urgency_options = ["High", "Medium", "Low", "Unknown"]
                 current_urgency = r.get("urgency", "Unknown")
                 if current_urgency not in urgency_options:
                     urgency_options.append(current_urgency)
                 new_urgency = st.selectbox("🚨 Urgency", options=urgency_options, index=urgency_options.index(current_urgency), key=f"urgency_{selected_index}")
+            
+            new_missing_ref = st.checkbox("Missing Reference Number / PNR", value=bool(r.get("missing_reference", False)), key=f"ref_{selected_index}")
             
             st.markdown("---")
             
@@ -129,6 +140,7 @@ def render_ingestion():
                     r['route'] = new_route
                     r['intent'] = new_intent
                     r['urgency'] = new_urgency
+                    r['missing_reference'] = new_missing_ref
                     
                     # Remove from queue
                     st.session_state.review_queue.pop(selected_index)
