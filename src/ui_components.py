@@ -102,45 +102,109 @@ def render_ingestion():
             else:
                 st.markdown(f"**AI Confidence Score:** `{r.get('confidence_score', 'N/A')}%` — Review the extracted details below.")
             
+            # Database lookup
+            support_db = st.session_state.get('support_db', pd.DataFrame())
+            db_record = None
+            ref_id_val = r.get("reference_id")
+            ref_id_val = ref_id_val if ref_id_val is not None else ""
+            agent_val = r.get("agent_name")
+            agent_val = agent_val if agent_val is not None else ""
+            route_val = r.get("route")
+            route_val = route_val if route_val is not None else ""
+            
+            if ref_id_val and 'Ticket ID' in support_db.columns:
+                matches = support_db[support_db['Ticket ID'] == ref_id_val]
+                if not matches.empty:
+                    db_record = matches.iloc[0]
+            elif agent_val and route_val and 'Agent' in support_db.columns and 'Route' in support_db.columns:
+                matches = support_db[(support_db['Agent'].str.contains(agent_val, case=False, na=False)) & 
+                                     (support_db['Route'].str.contains(route_val, case=False, na=False))]
+                if not matches.empty:
+                    db_record = matches.iloc[0]
+            
             # Use columns for a more premium, balanced layout similar to the metrics in Reconciliation
             col1, col2 = st.columns(2)
             
             with col1:
                 # Ensure we handle None if the LLM explicitly returns null
-                agent_val = r.get("agent_name")
-                agent_val = agent_val if agent_val is not None else ""
-                new_agent = st.text_input("🏢 Agent Name", value=agent_val, key=f"agent_{selected_index}")
+                new_agent = st.text_input(f"🏢 Agent Name{' ✨' if agent_val else ''}", value=agent_val, key=f"agent_{selected_index}")
                 
                 intent_options = ["status_update", "new_refund", "other"]
                 current_intent = r.get("intent", "other")
                 if current_intent not in intent_options:
                     intent_options.append(current_intent)
-                new_intent = st.selectbox("🎯 Intent", options=intent_options, index=intent_options.index(current_intent), key=f"intent_{selected_index}")
+                new_intent = st.selectbox(f"🎯 Intent{' ✨' if current_intent != 'other' else ''}", options=intent_options, index=intent_options.index(current_intent), key=f"intent_{selected_index}")
+                
+                new_ref_id = st.text_input(f"🏷️ Reference ID / PNR{' ✨' if ref_id_val else ''}", value=ref_id_val, key=f"ref_id_{selected_index}")
+                
+                wait_time_val = r.get("elapsed_wait_time")
+                wait_time_val = wait_time_val if wait_time_val is not None else ""
+                new_wait_time = st.text_input(f"⏱️ Elapsed Wait Time{' ✨' if wait_time_val else ''}", value=wait_time_val, key=f"wait_{selected_index}")
                 
             with col2:
-                route_val = r.get("route")
-                route_val = route_val if route_val is not None else ""
-                new_route = st.text_input("✈️ Route", value=route_val, key=f"route_{selected_index}")
+                new_route = st.text_input(f"✈️ Route{' ✨' if route_val else ''}", value=route_val, key=f"route_{selected_index}")
                 
                 urgency_options = ["High", "Medium", "Low", "Unknown"]
                 current_urgency = r.get("urgency", "Unknown")
                 if current_urgency not in urgency_options:
                     urgency_options.append(current_urgency)
-                new_urgency = st.selectbox("🚨 Urgency", options=urgency_options, index=urgency_options.index(current_urgency), key=f"urgency_{selected_index}")
+                new_urgency = st.selectbox(f"🚨 Urgency{' ✨' if current_urgency != 'Unknown' else ''}", options=urgency_options, index=urgency_options.index(current_urgency), key=f"urgency_{selected_index}")
+                
+                refund_val = r.get("expected_refund_amount")
+                refund_val = str(refund_val) if refund_val is not None else ""
+                new_refund = st.text_input(f"💰 Expected Refund (₹){' ✨' if refund_val else ''}", value=refund_val, key=f"refund_{selected_index}")
+                
+                channel_options = ["WhatsApp", "Email", "Phone", "Unknown"]
+                current_channel = r.get("source_channel", "Unknown")
+                if current_channel not in channel_options:
+                    channel_options.append(current_channel)
+                new_channel = st.selectbox(f"📡 Source Channel{' ✨' if current_channel != 'Unknown' else ''}", options=channel_options, index=channel_options.index(current_channel), key=f"channel_{selected_index}")
             
-            new_missing_ref = st.checkbox("Missing Reference Number / PNR", value=bool(r.get("missing_reference", False)), key=f"ref_{selected_index}")
+            new_missing_ref = st.checkbox(f"Missing Reference Number / PNR{' ✨' if 'missing_reference' in r else ''}", value=bool(r.get("missing_reference", False)), key=f"ref_{selected_index}")
+            
+            st.markdown("---")
+            
+            with st.expander("More Fields (Database Linked)", expanded=True):
+                if db_record is not None:
+                    st.success("✅ Match found in database.")
+                    col3, col4 = st.columns(2)
+                    with col3:
+                        st.text_input("📅 Request Date", value=str(db_record.get('Request Date', '')), disabled=True)
+                        st.text_input("💳 Status", value=str(db_record.get('Status', '')), disabled=True)
+                    with col4:
+                        st.text_input("📝 Notes", value=str(db_record.get('Notes', '')), disabled=True)
+                        st.text_input("👨‍💼 Handled By", value=str(db_record.get('Handled By', '')), disabled=True)
+                else:
+                    st.info("No matching record found in the SSOT Database. These fields will be generated when approved.")
             
             st.markdown("---")
             
             col_btn, _ = st.columns([1, 3])
             with col_btn:
-                if st.button("Approve & Save to SSOT", type="primary", key=f"approve_{selected_index}"):
-                    # Update the ticket with the edited fields
-                    r['agent_name'] = new_agent
-                    r['route'] = new_route
-                    r['intent'] = new_intent
-                    r['urgency'] = new_urgency
-                    r['missing_reference'] = new_missing_ref
+                if st.button("Approve & Save to SSOT", type="primary", key=f"approve_{selected_index}", width="stretch"):
+                    # Append or update in support_db
+                    support_db = st.session_state.support_db
+                    
+                    new_row = {
+                        'Ticket ID': new_ref_id,
+                        'Agent': new_agent,
+                        'Route': new_route,
+                        'Refund Amount (INR)': new_refund,
+                        'Request Date': datetime.now().strftime("%d-%b-%Y"),
+                        'Last Updated': datetime.now().strftime("%d-%b-%Y"),
+                        'Status': 'Processing',
+                        'Handled By': 'AI Ingestion',
+                        'Channel': new_channel,
+                        'Notes': f"Intent: {new_intent}, Urgency: {new_urgency}"
+                    }
+                    
+                    if new_ref_id and 'Ticket ID' in support_db.columns and new_ref_id in support_db['Ticket ID'].values:
+                        idx = support_db.index[support_db['Ticket ID'] == new_ref_id].tolist()[0]
+                        for k, v in new_row.items():
+                            support_db.at[idx, k] = v
+                    else:
+                        new_df = pd.DataFrame([new_row])
+                        st.session_state.support_db = pd.concat([support_db, new_df], ignore_index=True)
                     
                     # Remove from queue
                     st.session_state.review_queue.pop(selected_index)

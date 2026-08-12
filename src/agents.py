@@ -26,6 +26,10 @@ def parse_informal_message(text: str) -> Dict[str, Any]:
         return {
             "agent_name": "Peak Journeys",
             "route": "DEL-DXB",
+            "reference_id": None,
+            "expected_refund_amount": None,
+            "elapsed_wait_time": "last week",
+            "source_channel": "WhatsApp",
             "missing_reference": True,
             "urgency": "High",
             "intent": "status_update",
@@ -40,10 +44,14 @@ def parse_informal_message(text: str) -> Dict[str, Any]:
     Extract these keys:
     - "agent_name": The name of the agency if identifiable, else null.
     - "route": The flight/travel route (e.g., BLR-MAA, DEL-DXB), else null.
+    - "reference_id": The booking reference or PNR mentioned (e.g., RF-1099, XYZ123), else null.
+    - "expected_refund_amount": Any monetary amount mentioned, as a number, else null.
+    - "elapsed_wait_time": The wait time mentioned (e.g., "last week", "2 weeks", "14 days"), else null.
+    - "source_channel": The channel of the message (e.g., "WhatsApp", "Email"). Infer if not explicitly stated, else "Unknown".
     - "missing_reference": Boolean, true if they mention missing a ref number or PNR.
     - "urgency": "High", "Medium", or "Low" based on the tone and wait time.
     - "intent": "status_update" or "new_refund"
-    - "confidence_score": Integer (0-100) representing how confident you are in the extracted route and agent_name.
+    - "confidence_score": Integer (0-100) representing how confident you are in the extracted details.
     
     Message: "{safe_text}"
     """
@@ -59,7 +67,7 @@ def parse_informal_message(text: str) -> Dict[str, Any]:
             }
             resp = requests.post("https://api.openai.com/v1/chat/completions", headers=headers, json=payload)
             resp.raise_for_status()
-            parsed = json.loads(resp.json()["choices"][0]["message"]["content"])
+            raw_output = resp.json()["choices"][0]["message"]["content"]
         else:
             response = CLIENT.models.generate_content(
                 model='gemini-3.5-flash',
@@ -69,7 +77,16 @@ def parse_informal_message(text: str) -> Dict[str, Any]:
                     temperature=0.0,
                 ),
             )
-            parsed = json.loads(response.text)
+            raw_output = response.text
+            
+        # Robustly extract JSON block to prevent "extra data" errors from markdown or trailing text
+        cleaned = raw_output.strip()
+        start = cleaned.find('{')
+        end = cleaned.rfind('}')
+        if start != -1 and end != -1:
+            cleaned = cleaned[start:end+1]
+            
+        parsed = json.loads(cleaned)
         
         # --- UNHAPPY PATH HANDLING ---
         valid_sectors = ["DEL-SIN", "DEL-KUL", "HYD-BKK", "DEL-CCU", "DEL-BOM", "COK-DXB", "GOI-BOM", "MAA-CMB", "BOM-BKK", "BLR-DXB", "PNQ-DEL", "DEL-KTM", "BLR-MAA"]

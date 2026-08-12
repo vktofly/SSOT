@@ -84,8 +84,16 @@ def main():
     if not HAS_API_KEY:
         st.sidebar.warning("⚠️ `GEMINI_API_KEY` not found. Using mocked AI responses for demonstration.")
     
-    # Load data once at the entrypoint level
-    support_df, finance_df, escalations_df = load_data()
+    # Load data into session state for mutability
+    if 'support_df' not in st.session_state:
+        sup, fin, esc = load_data()
+        st.session_state.support_df = sup.copy()
+        st.session_state.finance_df = fin.copy()
+        st.session_state.escalations_df = esc.copy()
+        
+    support_df = st.session_state.support_df
+    finance_df = st.session_state.finance_df
+    escalations_df = st.session_state.escalations_df
 
     # Route to the appropriate modular UI component
     if page == "📊 Metrics Dashboard":
