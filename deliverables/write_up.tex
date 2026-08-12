@@ -116,10 +116,10 @@ Customer and agent escalations regarding refunds are rising. The core underlying
 
 By cross-referencing the \texttt{Support\_Tracker}, \texttt{Finance\_Tracker}, and \texttt{Escalations} logs via a deep database join, we identified the specific patterns driving the \textbf{155 total escalations}.
 
-\begin{figure}
-\centering
-\pandocbounded{\includegraphics[keepaspectratio,alt={Metrics Data Leakage Visualization}]{c:/Users/vikash/Documents/SSOT_Parser/deliverables/metrics.png}}
-\caption{Metrics Data Leakage Visualization}
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=\textwidth]{metrics.png}
+    \caption{Visual breakdown of current support processing inefficiencies highlighting the 100 dropped handoffs and 149 mismatches.}
 \end{figure}
 
 \subsubsection{The Discrepancy Breakdown}\label{the-discrepancy-breakdown}
@@ -178,9 +178,9 @@ To permanently bring escalations down without adding headcount, BharatTrip must 
 To deliver a production-ready solution, I developed a \textbf{Streamlit Web Application} showcasing an advanced Multi-Agent architecture powered by \texttt{gemini-3.5-flash}. Rather than building a simple LLM script, I engineered a secure, deployable enterprise tool.
 
 \begin{figure}[htbp]
-\centering
-\pandocbounded{\includegraphics[keepaspectratio,alt={System Architecture Flowchart}]{c:/Users/vikash/Documents/SSOT_Parser/deliverables/architecture.png}}
-\caption{System Architecture Flowchart}
+    \centering
+    \includegraphics[width=\textwidth]{architecture.png}
+    \caption{Proposed Multi-Agent System Architecture Flowchart}
 \end{figure}
 
 \subsubsection{Key Enterprise Features \& Security Mitigations}\label{operational-safety-risks-mitigations}
