@@ -1,8 +1,6 @@
 ==================================================
-PROMPT ENGINEERING HISTORY: BHARATTRIP SSOT TASK
+PROMPT HISTORY: BHARATTRIP SSOT TASK
 ==================================================
-
-As requested in the Task Brief, below is the structured prompt history demonstrating the advanced prompt engineering techniques used to guide the LLM in analyzing the data, designing the architecture, and building the SSOT prototype. The history includes a mix of heavily structured architectural prompts and iterative, conversational debugging prompts.
 
 --------------------------------------------------
 PROMPT 1: Chain-of-Thought (CoT) & Role-Playing for Data Reconciliation
@@ -42,7 +40,7 @@ Requirements:
 4. Dynamic API Key Routing: Build the app so it accepts BOTH an OpenAI API key or a Google Gemini API Key via the Streamlit sidebar. If OpenAI is provided, fallback to the REST API without requiring the `openai` python package to keep dependencies ultra-lightweight."
 
 --------------------------------------------------
-PROMPT 4: Iterative UI Refinement (Generic Follow-up)
+PROMPT 4: Iterative UI Refinement
 --------------------------------------------------
 TECHNIQUE: Conversational Steering, Zero-Shot Vague Prompt.
 

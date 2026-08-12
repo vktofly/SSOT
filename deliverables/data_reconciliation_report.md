@@ -42,3 +42,9 @@ To ensure this solution is deployable in a real-world financial environment, we 
 * **Identity Gateway & RBAC:** Dual-role authorization separating Manager and Operator privileges.
 * **PII Data Masking:** Dynamic redaction of sensitive identifiers in the UI and during LLM extraction to ensure compliance.
 * **Granular Workflow Control:** Added individual ingestion triggers for operators to cherry-pick high-priority escalations instead of relying solely on batch processing.
+
+## Future Validations (With More Time/Access)
+To further refine the SSOT and AI architecture, having more time and access would allow us to validate:
+1. **The Source of Asynchronous Closures:** We need to investigate why Finance processed 47 tickets that Support never logged. Does the Sales or Account Management team have a backdoor process for rushing refunds? Validating this would allow us to route all departments through the AI Ingestion Agent.
+2. **Finance Deduction Rule Engine:** We currently assume the 149 mismatches are due to valid policy deductions. With access to Finance SOPs, we could validate the exact calculation (e.g., 10% airline cancellation fee). We could then upgrade the AI Reconciliation Agent to proactively calculate expected payouts and set accurate expectations with the agent on day one.
+3. **Raw Escalation Text Analysis:** If we had access to the raw email/call transcripts of the escalations rather than just the tracker metadata, we could validate whether "Short Payments" or "Total Non-Payments" drive higher customer churn, allowing us to dynamically prioritize the AI's processing queue based on churn risk.
