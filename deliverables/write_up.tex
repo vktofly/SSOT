@@ -156,20 +156,19 @@ Description
 
 \subsection{3. Designing a Zero-Headcount Solution}\label{designing-a-zero-headcount-solution}
 
-To permanently bring escalations down without adding headcount, BharatTrip must establish a unified \textbf{Single Source of Truth (SSOT)} and automate the communication loop. 
+To permanently bring escalations down without adding headcount, BharatTrip must establish a unified \textbf{Single Source of Truth (SSOT)} and redesign the workflow.
 
-\subsubsection{The Proposed Workflow (Digital Workforce):}\label{the-proposed-workflow}
+\subsubsection{The Single Source of Truth}\label{the-single-source-of-truth}
+The SSOT is a centralized database that completely replaces the individual Support and Finance Excel trackers. The two teams stay in sync by operating off the exact same rows in real-time through a shared web portal. When Finance applies a payout deduction, the SSOT updates immediately, ensuring Support always sees the true financial status of the ticket before communicating with the agent.
 
-\begin{enumerate}
-\def\labelenumi{\arabic{enumi}.}
+\subsubsection{Trade-Offs: Automation vs. Manual Verification}\label{trade-offs-automation-vs-manual}
+Given the compliance risks associated with financial payouts, we cannot automate the entire pipeline. We must strike a deliberate balance:
+\begin{itemize}
 \tightlist
-\item
-  \textbf{Unified SSOT Tracking}: Migrate both teams onto a single shared database.
-\item
-  \textbf{AI-Powered Ingestion}: Deploy an AI agent to monitor Support Email and WhatsApp. The AI acts as a digital clerk, parsing unstructured messages and logging them as structured tickets, eliminating ``no ref'' leakage entirely.
-\item
-  \textbf{Automated Reconciliation}: A system trigger automatically cross-references Finance payouts with Support quotes. If a deduction occurs, the AI drafts an explanatory email for the agent, preventing short-payment shock.
-\end{enumerate}
+\item \textbf{Automate (Data Ingestion):} We deploy an AI Agent to parse messy, unstructured WhatsApp and Email requests into structured SSOT rows. \textit{Why?} This is high-volume, low-risk administrative work. Automating it entirely eliminates the 24 "Off-Tracker Leaks."
+\item \textbf{Automate (Reconciliation Detection):} The system automatically flags when Finance payouts are lower than Support quotes. \textit{Why?} Math is deterministic; automation catches the 149 mismatches instantly without human error.
+\item \textbf{Deliberately Keep Manual (Approval \& Payout):} The AI is only permitted to \textit{draft} the explanatory emails explaining the short-payments to the agents. A human operator must review the AI's draft and click "Approve \& Send". Furthermore, the actual financial disbursement remains strictly manual. \textit{Why?} AI hallucinations in customer communication or automated banking APIs pose severe reputational and compliance risks. A Human-in-the-Loop (HITL) architecture ensures strict accountability.
+\end{itemize}
 
 \begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
 
@@ -216,5 +215,18 @@ As the brief was deliberately incomplete, I proceeded with the following assumpt
 \item \textbf{Finance is the ultimate authority on payout amounts}: If Support quotes 5000 INR but Finance pays 4500 INR, I assumed the 500 INR deduction is legitimate (cancellation fee) rather than a Finance error, meaning the fix requires better communication to the agent rather than a refund correction. 
 \item \textbf{WhatsApp/Email formats are unpredictable}: I assumed agents will not follow a strict template, necessitating an LLM to dynamically extract the \texttt{agent\_name}, \texttt{route}, and intent from informal natural language.
 \end{itemize}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\subsection{7. Future Validations (With More Time/Access)}\label{future-validations}
+
+To further refine the SSOT and AI architecture, having more time and access would allow us to validate the following:
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item \textbf{The Source of Asynchronous Closures:} We need to investigate why Finance processed 47 tickets that Support never logged. Does the Sales or Account Management team have a backdoor process for rushing refunds? Validating this would allow us to route all departments through the AI Ingestion Agent.
+\item \textbf{Finance Deduction Rule Engine:} We currently assume the 149 mismatches are due to valid policy deductions. With access to Finance SOPs, we could validate the exact calculation (e.g., 10\% airline cancellation fee). We could then upgrade the AI Reconciliation Agent to proactively calculate expected payouts and set accurate expectations with the agent on day one.
+\item \textbf{Raw Escalation Text Analysis:} If we had access to the raw email/call transcripts of the escalations rather than just the tracker metadata, we could validate whether "Short Payments" or "Total Non-Payments" drive higher customer churn, allowing us to dynamically prioritize the AI's processing queue based on churn risk.
+\end{enumerate}
 
 \end{document}
