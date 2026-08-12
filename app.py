@@ -102,7 +102,15 @@ def main():
         st.rerun()
         
     st.sidebar.markdown("---")
-    page = st.sidebar.radio("Navigate", ["📊 Metrics Dashboard", "📥 Ingestion Agent", "⚖️ Reconciliation (HITL)", "🚨 Escalation Triage", "🗄️ Database Explorer"])
+    
+    # Role-Based Access Control (RBAC) Navigation
+    if st.session_state.role == "Manager":
+        pages = ["📊 Metrics Dashboard", "📥 Ingestion Agent", "⚖️ Reconciliation (HITL)", "🚨 Escalation Triage", "🗄️ Database Explorer"]
+    else:
+        # Junior Role restrictions
+        pages = ["🚨 Escalation Triage"]
+        
+    page = st.sidebar.radio("Navigate", pages)
     
     if not HAS_API_KEY:
         st.sidebar.warning("⚠️ `GEMINI_API_KEY` not found. Using mocked AI responses for demonstration.")

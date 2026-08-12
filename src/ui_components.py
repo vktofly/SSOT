@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 from datetime import datetime
 from src.agents import parse_informal_message, draft_reconciliation_message, analyze_escalations, fuzzy_match_metadata, draft_escalation_response
+from src.db import delete_escalation, update_support_status, insert_support_record
 from src.data_manager import load_data, find_mismatches, find_orphans
 from src.config import HAS_API_KEY
 
@@ -238,6 +239,9 @@ def render_ingestion():
                         new_df = pd.DataFrame([new_row])
                         st.session_state.support_df = pd.concat([support_df, new_df], ignore_index=True)
                     
+                    # Persist to SQLite
+                    insert_support_record(new_row)
+                    
                     st.session_state.processed_today += 1
                     
                     # Remove from queue
@@ -299,6 +303,8 @@ def render_reconciliation(support_df, finance_df):
             m = ticket_options[selected_label]
             
             with st.container(border=True):
+                if m.get('Risk Level') == 'High':
+                    st.error("🚨 HIGH RISK (Difference > 20%)")
                 st.subheader(f"Ticket: {m['Ticket ID']} | Agent: {m['Agent']}")
                 colA, colB, colC = st.columns(3)
                 colA.metric("Support Quoted", f"₹{m['Support Amount']}")
@@ -338,7 +344,11 @@ def render_reconciliation(support_df, finance_df):
                                 current_notes = support_df.at[idx, 'Notes']
                                 if pd.isna(current_notes):
                                     current_notes = ""
-                                support_df.at[idx, 'Notes'] = f"{current_notes} | Finance Deduction: {m['Reason']}".strip(" |")
+                                new_notes = f"{current_notes} | Finance Deduction: {m['Reason']}".strip(" |")
+                                support_df.at[idx, 'Notes'] = new_notes
+                                
+                                # Persist to SQLite
+                                update_support_status(m['Ticket ID'], 'Client Notified', new_notes)
                             
                         log_action(f"Email dispatched to {m['Agent']} regarding Ticket {m['Ticket ID']}. SSOT Status updated to 'Client_Notified'.")
                         # We use balloons internally within the click, then rerun
@@ -350,6 +360,13 @@ def render_reconciliation(support_df, finance_df):
     with tab2:
         st.subheader("Orphaned Tickets")
         st.markdown("These tickets exist in one tracker but are missing in the other.")
+        
+        # Display High-Risk Agent Warnings
+        high_risk_agents = set([m.get('Risk Note') for m in missing_in_finance if m.get('Risk Level') == 'High'])
+        for note in high_risk_agents:
+            if note:
+                st.warning(f"🚨 **High-Risk Agent Detected:** {note}")
+        
         
         col_s, col_f = st.columns(2)
         with col_s:
@@ -547,6 +564,9 @@ def render_escalation_triage(escalations_df, support_df):
                 
                 # Drop from active queue (session state)
                 st.session_state.escalations_df = st.session_state.escalations_df.drop(selected_index)
+                
+                # Persist to SQLite
+                delete_escalation(str(row.get('Ticket ID', '')), str(row.get('Message', '')))
                 
                 # Clear draft
                 st.session_state[draft_key] = ""
