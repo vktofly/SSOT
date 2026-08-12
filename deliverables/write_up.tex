@@ -173,22 +173,26 @@ To permanently bring escalations down without adding headcount, BharatTrip must 
 
 \begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
 
-\subsection{4. The AI Prototype: Advanced Multi-Agent Architecture}\label{the-ai-prototype-advanced-multi-agent-architecture}
+\subsection{4. The AI Prototype: Enterprise-Ready Architecture}\label{the-ai-prototype-advanced-multi-agent-architecture}
 
-To deliver a production-ready solution, I developed \texttt{app.py}, a \textbf{Streamlit Web Application} showcasing an advanced Multi-Agent architecture powered by \texttt{gemini-3.5-flash}.
+To deliver a production-ready solution, I developed a \textbf{Streamlit Web Application} showcasing an advanced Multi-Agent architecture powered by \texttt{gemini-3.5-flash}. Rather than building a simple LLM script, I engineered a secure, deployable enterprise tool.
 
-\begin{figure}
+\begin{figure}[htbp]
 \centering
 \pandocbounded{\includegraphics[keepaspectratio,alt={System Architecture Flowchart}]{c:/Users/vikash/Documents/SSOT_Parser/deliverables/architecture.png}}
 \caption{System Architecture Flowchart}
 \end{figure}
 
-\subsubsection{Operational Safety: Risks \& Mitigations}\label{operational-safety-risks-mitigations}
-Deploying AI in financial workflows carries inherent risks (e.g., hallucinated refund amounts or improper authorizations). Our architecture mitigates this using a \textbf{Human-In-The-Loop (HITL) Design}:
+\subsubsection{Key Enterprise Features \& Security Mitigations}\label{operational-safety-risks-mitigations}
+Deploying AI in financial workflows carries inherent risks (e.g., hallucinated refund amounts, unauthorized access, or PII leaks). Our architecture mitigates this using a \textbf{Defense-in-Depth} approach:
 \begin{itemize}
 \tightlist
-\item \textbf{Financial Compliance}: The AI is strictly limited to \textit{drafting} explanatory emails and structuring incoming data. It cannot authorize payouts. A human Support representative must click "Approve \& Send" on the AI's drafted email before any external communication occurs.
-\item \textbf{Secure Integration (MCP)}: In production, the LLM will bridge with the internal SSOT database via the \textbf{Model Context Protocol (MCP)}. This guarantees that raw database credentials are never exposed to the LLM's context window.
+\item \textbf{Identity Gateway \& RBAC}: The application enforces dual-role authorization. Managers have full access, while Operators are restricted.
+\item \textbf{Data Privacy (PII Redaction)}: Sensitive identifiers in unstructured messages are automatically redacted via RegEx prior to ingestion. Furthermore, Operator roles see dynamically masked UI views.
+\item \textbf{Data Loss Prevention (DLP)}: UI-level CSS injection prevents text selection and copying of sensitive fields.
+\item \textbf{AI Confidence Guardrails}: The ingestion agent scores its own extractions and flags low-confidence data for mandatory human review.
+\item \textbf{Human-In-The-Loop (HITL) \& Auditability}: The AI is strictly limited to \textit{drafting} emails and structuring data. A human must click "Approve \& Send", and every action is logged to a secure CSV for financial compliance.
+\item \textbf{Unified Database Explorer}: A global search interface completely breaks down the silos between Support and Finance, serving as the ultimate Single Source of Truth.
 \end{itemize}
 
 \begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
