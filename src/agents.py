@@ -1,6 +1,7 @@
 import json
 import re
 import requests
+import pandas as pd
 from typing import Dict, Any
 from google.genai import types
 from src.config import HAS_API_KEY, API_KEY, CLIENT
@@ -154,19 +155,47 @@ def analyze_escalations(escalations_df) -> str:
     if not HAS_API_KEY:
         return "*(Mocked Summary)*: Analysis indicates that 80% of escalations are due to missing reference numbers and delayed finance responses, predominantly affecting 'GoFly Holidays'."
         
-    # Convert DataFrame to a CSV string
-    csv_data = escalations_df.to_csv(index=False)
+    # Calculate aggregated statistics using Pandas to avoid sending raw data to the LLM
+    total_escalations = len(escalations_df)
+    
+    # Check for 'Agent' column to aggregate
+    if 'Agent' in escalations_df.columns:
+        top_agencies = escalations_df['Agent'].value_counts().head(3).to_dict()
+    else:
+        top_agencies = "Data unavailable"
+        
+    if 'Status' in escalations_df.columns:
+        status_counts = escalations_df['Status'].value_counts().to_dict()
+    else:
+        status_counts = "Data unavailable"
+        
+    if 'Days Open' in escalations_df.columns:
+        # Try to convert to numeric, dropping NaNs
+        days_open = pd.to_numeric(escalations_df['Days Open'], errors='coerce').dropna()
+        avg_days_open = round(days_open.mean(), 1) if not days_open.empty else "N/A"
+    else:
+        avg_days_open = "Data unavailable"
+        
+    agg_stats = f"""
+    - Total Escalations: {total_escalations}
+    - Top Agencies Involved: {top_agencies}
+    - Status Breakdown: {status_counts}
+    - Average Days Open: {avg_days_open}
+    """
     
     prompt = f"""
-    You are an Operations Analyst for a travel company. I am providing you with the recent Escalations data in CSV format.
+    You are an Operations Analyst for a travel company.
     
-    Please provide a concise, bulleted Executive Summary (max 4-5 bullet points) highlighting:
-    1. The top reasons why complaints are spiking.
+    I have aggregated our recent Escalations data to ensure data privacy (no raw customer data is included).
+    Please provide a concise, bulleted Executive Summary (max 4-5 bullet points) highlighting the key insights from these statistics:
+    
+    Aggregated Statistics:
+    {agg_stats}
+    
+    Focus on:
+    1. The volume and general status of complaints.
     2. Which agencies or teams are most frequently involved.
-    3. Any other notable patterns (e.g., average resolution delays or common channels).
-    
-    Here is the CSV data:
-    {csv_data}
+    3. Any other notable patterns (e.g., average resolution delays).
     """
     
     try:
@@ -182,10 +211,117 @@ def analyze_escalations(escalations_df) -> str:
             return resp.json()["choices"][0]["message"]["content"].strip()
         else:
             response = CLIENT.models.generate_content(
-                model='gemini-2.5-flash',
+                model='gemini-3.5-flash',
                 contents=prompt,
                 config=types.GenerateContentConfig(temperature=0.3),
             )
             return response.text.strip()
     except Exception as e:
         return f"Failed to generate summary: {str(e)}"
+
+def fuzzy_match_metadata(support_row: Dict[str, Any], finance_candidates: list[Dict[str, Any]]) -> str | None:
+    """
+    LLM Fallback for fuzzy matching orphaned tickets based on metadata 
+    (Agent, Route, Amount, Date) when Ticket ID fails.
+    Returns the matching 'Ref No' from finance_candidates if a high-confidence match is found, else None.
+    """
+    if not finance_candidates:
+        return None
+        
+    if not HAS_API_KEY:
+        # Mock behavior for prototype without API key
+        return None
+        
+    prompt = f"""
+    You are an intelligent data reconciliation agent. 
+    I have a Support ticket that is missing a matching Finance record based on exact ID match.
+    
+    Support Ticket Details:
+    {json.dumps(support_row, indent=2)}
+    
+    Here is a list of candidate Finance tickets that were also unmatched:
+    {json.dumps(finance_candidates, indent=2)}
+    
+    Your task is to determine if any of the candidate Finance tickets strongly match the Support ticket based on metadata like Agent Name, Sector/Route, and Amounts (allowing for some deduction).
+    Return a JSON object with two keys:
+    - "match_found": boolean (true if a strong match is found, else false)
+    - "matched_ref_no": string (the 'Ref No' of the matched Finance ticket, or null if no match)
+    """
+    
+    try:
+        if API_KEY.startswith("sk-"):
+            headers = {"Authorization": f"Bearer {API_KEY}", "Content-Type": "application/json"}
+            payload = {
+                "model": "gpt-4o-mini",
+                "messages": [{"role": "user", "content": prompt}],
+                "temperature": 0.0,
+                "response_format": {"type": "json_object"}
+            }
+            resp = requests.post("https://api.openai.com/v1/chat/completions", headers=headers, json=payload)
+            resp.raise_for_status()
+            raw_output = resp.json()["choices"][0]["message"]["content"]
+        else:
+            response = CLIENT.models.generate_content(
+                model='gemini-3.5-flash',
+                contents=prompt,
+                config=types.GenerateContentConfig(
+                    response_mime_type="application/json",
+                    temperature=0.0,
+                ),
+            )
+            raw_output = response.text
+            
+        cleaned = raw_output.strip()
+        start = cleaned.find('{')
+        end = cleaned.rfind('}')
+        if start != -1 and end != -1:
+            cleaned = cleaned[start:end+1]
+            
+        parsed = json.loads(cleaned)
+        if parsed.get("match_found"):
+            return parsed.get("matched_ref_no")
+        return None
+    except Exception:
+        return None
+
+def draft_escalation_response(escalation_text: str, support_status: dict) -> str:
+    """
+    Drafts a personalized response to an escalated complaint based on SSOT data.
+    """
+    if not HAS_API_KEY:
+        return f"Dear Agent,\n\nWe apologize for the delay. According to our system, your refund is currently {support_status.get('Status', 'Pending')}. The notes show: {support_status.get('Notes', 'No notes')}.\n\nBest, Operations"
+        
+    prompt = f"""
+    You are a customer service agent handling an escalated refund complaint.
+    
+    Complaint from Agent: "{escalation_text}"
+    
+    Our internal SSOT shows the following status for this ticket:
+    {json.dumps(support_status, indent=2)}
+    
+    Draft a polite, empathetic email (max 3 sentences) replying to the agent.
+    If the status is 'Refund Done' or 'Closed', reassure them it is processed. 
+    If it is 'Pending', apologize and state the reason from the notes if available.
+    Do not invent facts not present in the SSOT.
+    """
+    try:
+        if API_KEY.startswith("sk-"):
+            headers = {"Authorization": f"Bearer {API_KEY}", "Content-Type": "application/json"}
+            payload = {
+                "model": "gpt-4o-mini",
+                "messages": [{"role": "user", "content": prompt}],
+                "temperature": 0.3
+            }
+            resp = requests.post("https://api.openai.com/v1/chat/completions", headers=headers, json=payload)
+            resp.raise_for_status()
+            return resp.json()["choices"][0]["message"]["content"].strip()
+        else:
+            response = CLIENT.models.generate_content(
+                model='gemini-3.5-flash',
+                contents=prompt,
+                config=types.GenerateContentConfig(temperature=0.3),
+            )
+            return response.text.strip()
+    except Exception as e:
+        return str(e)
+

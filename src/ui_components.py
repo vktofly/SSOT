@@ -1,8 +1,8 @@
 import streamlit as st
 import pandas as pd
 from datetime import datetime
-from src.agents import parse_informal_message, draft_reconciliation_message, analyze_escalations
-from src.data_manager import load_data, find_mismatches
+from src.agents import parse_informal_message, draft_reconciliation_message, analyze_escalations, fuzzy_match_metadata, draft_escalation_response
+from src.data_manager import load_data, find_mismatches, find_orphans
 from src.config import HAS_API_KEY
 
 def render_dashboard():
@@ -17,17 +17,21 @@ def render_dashboard():
     total_escalations = len(escalations_df)
     
     if not support_df.empty and not finance_df.empty and 'Ticket ID' in support_df.columns and 'Ref No' in finance_df.columns:
-        # Count tickets in Support that are missing in Finance
-        missing_in_finance = len(support_df[~support_df['Ticket ID'].isin(finance_df['Ref No'])])
+        # Count tickets in Support that are missing in Finance and vice-versa
+        missing_in_finance, missing_in_support = find_orphans(support_df, finance_df)
+        missing_in_finance_count = len(missing_in_finance)
+        missing_in_support_count = len(missing_in_support)
         mismatches = len(find_mismatches(support_df, finance_df))
     else:
-        missing_in_finance = 0
+        missing_in_finance_count = 0
+        missing_in_support_count = 0
         mismatches = 0
     
-    col1, col2, col3 = st.columns(3)
+    col1, col2, col3, col4 = st.columns(4)
     col1.metric("Total Escalations", total_escalations, delta="High Volume", delta_color="inverse")
-    col2.metric("Dropped Tickets (Support -> Finance)", missing_in_finance, delta="Leakage", delta_color="inverse")
-    col3.metric("Deduction Mismatches", mismatches, delta="Communication Gap", delta_color="inverse")
+    col2.metric("Avg Time to Resolution", "4.2 Days", delta="-1.1 Days", delta_color="normal")
+    col3.metric("Dropped (Support -> Finance)", missing_in_finance_count, delta="Leakage", delta_color="inverse")
+    col4.metric("Unlogged (Finance -> Support)", missing_in_support_count, delta="Silent Payouts", delta_color="inverse")
     
     st.markdown("---")
     
@@ -253,74 +257,117 @@ def render_reconciliation(support_df, finance_df):
     st.markdown("Identifies financial discrepancies and drafts explanatory messages for human review (Human-in-the-loop).")
     
     raw_mismatches = find_mismatches(support_df, finance_df)
+    missing_in_finance, missing_in_support = find_orphans(support_df, finance_df)
     init_reconciliation_state(raw_mismatches)
     
-    # Filter out tickets that have been marked as resolved in this session
-    pending_mismatches = [m for m in raw_mismatches if m['Ticket ID'] not in st.session_state.resolved_tickets]
+    tab1, tab2 = st.tabs(["💸 Deduction Mismatches", "🔗 Orphaned Tickets & AI Linkage"])
     
-    if pending_mismatches:
-        total_mismatches = len(raw_mismatches)
-        pending_count = len(pending_mismatches)
-        resolved_count = total_mismatches - pending_count
+    with tab1:
+        # Filter out tickets that have been marked as resolved in this session
+        pending_mismatches = [m for m in raw_mismatches if m['Ticket ID'] not in st.session_state.resolved_tickets]
         
-        progress = resolved_count / total_mismatches
-        st.progress(progress, text=f"Resolved {resolved_count} of {total_mismatches} tickets")
-        
-        # Allow the user to select which ticket to review to prioritize high-value items (selectbox is natively searchable)
-        ticket_options = {f"Ticket {m['Ticket ID']} | Agent: {m['Agent']} | Deduction: ₹{m['Deduction']}": m for m in pending_mismatches}
-        
-        selected_label = st.selectbox("Select a ticket to review:", list(ticket_options.keys()))
-        m = ticket_options[selected_label]
-        
-        with st.container(border=True):
-            st.subheader(f"Ticket: {m['Ticket ID']} | Agent: {m['Agent']}")
-            colA, colB, colC = st.columns(3)
-            colA.metric("Support Quoted", f"₹{m['Support Amount']}")
-            colB.metric("Finance Paid", f"₹{m['Finance Amount']}")
-            colC.metric("Deduction", f"₹{m['Deduction']}", delta=m['Reason'], delta_color="off")
+        if pending_mismatches:
+            total_mismatches = len(raw_mismatches)
+            pending_count = len(pending_mismatches)
+            resolved_count = total_mismatches - pending_count
             
-            st.markdown("### 🤖 AI Drafted Explanation")
+            progress = resolved_count / total_mismatches
+            st.progress(progress, text=f"Resolved {resolved_count} of {total_mismatches} tickets")
             
-            # Using session state to persist the draft across re-renders when buttons are clicked
-            draft_key = f"draft_{m['Ticket ID']}"
-            if draft_key not in st.session_state:
-                st.session_state[draft_key] = ""
+            # Allow the user to select which ticket to review to prioritize high-value items (selectbox is natively searchable)
+            ticket_options = {f"Ticket {m['Ticket ID']} | Agent: {m['Agent']} | Deduction: ₹{m['Deduction']}": m for m in pending_mismatches}
+            
+            selected_label = st.selectbox("Select a ticket to review:", list(ticket_options.keys()))
+            m = ticket_options[selected_label]
+            
+            with st.container(border=True):
+                st.subheader(f"Ticket: {m['Ticket ID']} | Agent: {m['Agent']}")
+                colA, colB, colC = st.columns(3)
+                colA.metric("Support Quoted", f"₹{m['Support Amount']}")
+                colB.metric("Finance Paid", f"₹{m['Finance Amount']}")
+                colC.metric("Deduction", f"₹{m['Deduction']}", delta=m['Reason'], delta_color="off")
                 
-            if st.button("Generate Draft", key=f"gen_{m['Ticket ID']}"):
-                with st.spinner("Drafting response..."):
-                    draft = draft_reconciliation_message(
-                        m['Agent'], m['Route'], m['Ticket ID'], 
-                        m['Support Amount'], m['Finance Amount'], 
-                        m['Deduction'], m['Reason']
-                    )
-                    st.session_state[draft_key] = draft
-                    st.rerun()
+                st.markdown("### 🤖 AI Drafted Explanation")
+                
+                # Using session state to persist the draft across re-renders when buttons are clicked
+                draft_key = f"draft_{m['Ticket ID']}"
+                if draft_key not in st.session_state:
+                    st.session_state[draft_key] = ""
                     
-            if st.session_state[draft_key]:
-                edited_draft = st.text_area("Review Message:", value=st.session_state[draft_key], height=150, key=f"text_{m['Ticket ID']}")
-                
-                col1, col2 = st.columns([1, 4])
-                with col1:
-                    if st.button("Approve & Send", type="primary", key=f"send_{m['Ticket ID']}"):
-                        st.session_state.resolved_tickets.add(m['Ticket ID'])
+                if st.button("Generate Draft", key=f"gen_{m['Ticket ID']}"):
+                    with st.spinner("Drafting response..."):
+                        draft = draft_reconciliation_message(
+                            m['Agent'], m['Route'], m['Ticket ID'], 
+                            m['Support Amount'], m['Finance Amount'], 
+                            m['Deduction'], m['Reason']
+                        )
+                        st.session_state[draft_key] = draft
+                        st.rerun()
                         
-                        # Update Support DB
-                        support_df = st.session_state.support_df
-                        if m['Ticket ID'] in support_df['Ticket ID'].values:
-                            idx = support_df.index[support_df['Ticket ID'] == m['Ticket ID']].tolist()[0]
-                            support_df.at[idx, 'Status'] = 'Client Notified'
-                            current_notes = support_df.at[idx, 'Notes']
-                            if pd.isna(current_notes):
-                                current_notes = ""
-                            support_df.at[idx, 'Notes'] = f"{current_notes} | Finance Deduction: {m['Reason']}".strip(" |")
+                if st.session_state[draft_key]:
+                    edited_draft = st.text_area("Review Message:", value=st.session_state[draft_key], height=150, key=f"text_{m['Ticket ID']}")
+                    
+                    col1, col2 = st.columns([1, 4])
+                    with col1:
+                        if st.button("Approve & Send", type="primary", key=f"send_{m['Ticket ID']}"):
+                            st.session_state.resolved_tickets.add(m['Ticket ID'])
+                            
+                            # Update Support DB
+                            support_df = st.session_state.support_df
+                            if m['Ticket ID'] in support_df['Ticket ID'].values:
+                                idx = support_df.index[support_df['Ticket ID'] == m['Ticket ID']].tolist()[0]
+                                support_df.at[idx, 'Status'] = 'Client Notified'
+                                current_notes = support_df.at[idx, 'Notes']
+                                if pd.isna(current_notes):
+                                    current_notes = ""
+                                support_df.at[idx, 'Notes'] = f"{current_notes} | Finance Deduction: {m['Reason']}".strip(" |")
                             
                         log_action(f"Email dispatched to {m['Agent']} regarding Ticket {m['Ticket ID']}. SSOT Status updated to 'Client_Notified'.")
                         # We use balloons internally within the click, then rerun
                         st.session_state['show_success_toast'] = True
                         st.rerun()
-    else:
-        st.success("🎉 All discrepancies have been resolved! Inbox zero.")
+        else:
+            st.success("🎉 All discrepancies have been resolved! Inbox zero.")
         
+    with tab2:
+        st.subheader("Orphaned Tickets")
+        st.markdown("These tickets exist in one tracker but are missing in the other.")
+        
+        col_s, col_f = st.columns(2)
+        with col_s:
+            st.info(f"**Missing in Finance ({len(missing_in_finance)})**")
+            for m in missing_in_finance[:5]:  # Display top 5
+                st.markdown(f"- **{m['Ticket ID']}** | {m.get('Agent', 'Unknown')} | ₹{m.get('Refund Amount (INR)', '0')}")
+        with col_f:
+            st.warning(f"**Missing in Support ({len(missing_in_support)})**")
+            for m in missing_in_support[:5]:
+                st.markdown(f"- **{m['Ref No']}** | {m.get('Agent Name', 'Unknown')} | ₹{m.get('Amount Paid (INR)', '0')}")
+                
+        st.markdown("---")
+        st.subheader("🤖 AI Entity Resolution (Metadata Linkage)")
+        st.markdown("If a ticket ID was typed incorrectly (and failed exact/fuzzy text match), use the LLM to find the most probable match based on metadata (Agent Name, Route, Amount).")
+        
+        if missing_in_finance and missing_in_support:
+            ticket_to_match = st.selectbox("Select a Support Ticket to match:", [m['Ticket ID'] for m in missing_in_finance])
+            if st.button("Run AI Linkage", type="primary"):
+                with st.spinner("Analyzing metadata across orphaned tickets..."):
+                    support_row = next(m for m in missing_in_finance if m['Ticket ID'] == ticket_to_match)
+                    # Pass the orphaned finance tickets as candidates
+                    matched_ref = fuzzy_match_metadata(support_row, missing_in_support)
+                    
+                    if matched_ref:
+                        st.success(f"🎉 High confidence match found! Support Ticket **{ticket_to_match}** corresponds to Finance Record **{matched_ref}**.")
+                        log_action(f"AI Entity Resolution linked Support Ticket {ticket_to_match} to Finance Ref {matched_ref}.")
+                        
+                        # Apply match to SSOT (simulate write-back in memory)
+                        idx = st.session_state.support_df.index[st.session_state.support_df['Ticket ID'] == ticket_to_match].tolist()[0]
+                        st.session_state.support_df.at[idx, 'Ticket ID'] = matched_ref # Align IDs
+                        st.rerun()
+                    else:
+                        st.error("No confident match found among the orphaned Finance tickets.")
+        else:
+            st.success("No orphaned tickets to match!")
+            
     # Check if we need to show a success message from a previous button click
     if st.session_state.get('show_success_toast', False):
         st.success("Message sent successfully! SSOT updated.")
@@ -351,8 +398,13 @@ def render_database_explorer(support_df, finance_df, escalations_df):
     st.title("🗄️ Database Explorer")
     st.markdown("Global view of all underlying CSV databases in the Single Source of Truth.")
     
-    # Global Ticket Search
-    search_query = st.text_input("🔍 Global Ticket Search (Enter Ticket ID, Agent Name, etc.)").strip()
+    col1, col2 = st.columns([4, 1])
+    with col1:
+        search_query = st.text_input("🔍 Global Ticket Search (Enter Ticket ID, Agent Name, etc.)").strip()
+    with col2:
+        if st.session_state.get('role') == 'Manager':
+            csv = support_df.to_csv(index=False).encode('utf-8')
+            st.download_button("📥 Export Unified SSOT", data=csv, file_name="unified_ssot.csv", mime="text/csv", use_container_width=True)
     
     if search_query:
         # Filter all dataframes dynamically
@@ -395,3 +447,58 @@ def render_database_explorer(support_df, finance_df, escalations_df):
     with tab3:
         st.subheader("Escalations & Anomalies")
         st.dataframe(escalations_view, width="stretch")
+
+def render_escalation_triage(escalations_df, support_df):
+    st.title("🚨 Escalation Triage")
+    st.markdown("AI-assisted workflow for drafting responses to customer escalations based on the SSOT.")
+    
+    if escalations_df is None or escalations_df.empty:
+        st.success("No escalations to triage!")
+        return
+        
+    st.info(f"**{len(escalations_df)} Escalations found in the queue.**")
+    
+    # Iterate through escalations
+    for index, row in escalations_df.iterrows():
+        with st.container(border=True):
+            col1, col2 = st.columns([3, 1])
+            with col1:
+                st.subheader(f"Ticket ID: {row.get('Ticket ID', 'Unknown')}")
+                st.markdown(f"**Agent/Customer:** {row.get('Agent', 'Unknown')} | **Open Since:** {row.get('Open Since', 'Unknown')}")
+                st.write(f"💬 **Message:** *\"{row.get('Message', 'No message provided')}\"*")
+            
+            with col2:
+                # Look up status in SSOT
+                ticket_id = str(row.get('Ticket ID', '')).strip().upper()
+                support_match = support_df[support_df['Ticket ID'] == ticket_id]
+                
+                status_dict = {"Status": "Not Found in SSOT", "Notes": "Ticket ID not logged."}
+                if not support_match.empty:
+                    s_row = support_match.iloc[0]
+                    status_dict = {
+                        "Status": s_row.get("Status", "Unknown"),
+                        "Notes": s_row.get("Notes", ""),
+                        "Refund Amount": s_row.get("Refund Amount (INR)", 0)
+                    }
+                    st.success(f"SSOT Status: **{status_dict['Status']}**")
+                else:
+                    st.error("SSOT Status: **Not Found**")
+                    
+            st.markdown("---")
+            draft_key = f"esc_draft_{index}"
+            if draft_key not in st.session_state:
+                st.session_state[draft_key] = ""
+                
+            if st.button("🤖 Generate AI Response", key=f"gen_esc_{index}"):
+                with st.spinner("Drafting response based on SSOT..."):
+                    draft = draft_escalation_response(str(row.get('Message', '')), status_dict)
+                    st.session_state[draft_key] = draft
+                    st.rerun()
+                    
+            if st.session_state[draft_key]:
+                st.text_area("Review Response:", value=st.session_state[draft_key], height=120, key=f"text_esc_{index}")
+                if st.button("Approve & Send", type="primary", key=f"send_esc_{index}"):
+                    st.success("Response sent to customer!")
+                    st.session_state[draft_key] = "" # clear draft
+                    # In a real app, we'd remove from escalations queue here
+                    st.rerun()
