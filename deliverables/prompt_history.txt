@@ -2,7 +2,7 @@
 PROMPT ENGINEERING HISTORY: BHARATTRIP SSOT TASK
 ==================================================
 
-As requested in the Task Brief, below is the structured prompt history demonstrating the advanced prompt engineering techniques used to guide the LLM in analyzing the data, designing the architecture, and building the SSOT prototype.
+As requested in the Task Brief, below is the structured prompt history demonstrating the advanced prompt engineering techniques used to guide the LLM in analyzing the data, designing the architecture, and building the SSOT prototype. The history includes a mix of heavily structured architectural prompts and iterative, conversational debugging prompts.
 
 --------------------------------------------------
 PROMPT 1: Chain-of-Thought (CoT) & Role-Playing for Data Reconciliation
@@ -42,19 +42,32 @@ Requirements:
 4. Dynamic API Key Routing: Build the app so it accepts BOTH an OpenAI API key or a Google Gemini API Key via the Streamlit sidebar. If OpenAI is provided, fallback to the REST API without requiring the `openai` python package to keep dependencies ultra-lightweight."
 
 --------------------------------------------------
-PROMPT 4: Iterative Refinement & Error Handling
+PROMPT 4: Iterative UI Refinement (Generic Follow-up)
 --------------------------------------------------
-TECHNIQUE: Live Debugging, Context Window Refreshing, Code Patching.
+TECHNIQUE: Conversational Steering, Zero-Shot Vague Prompt.
 
-"I am getting the following error when running your previous code:
-`TypeError: object of type 'float' has no len() ... File 'app.py', line 101`
-This is occurring during the PII Data Masking function. The dataset contains NaN float values in the Agent column. Rewrite the lambda function to enforce a strict string cast `str(x)` before calculating the length, ensuring it doesn't crash on empty rows. Do not rewrite the entire file, provide only the patched function."
+"the ingestion ui is not matching the rest of site ui. it looks kinda ugly with the chat bubbles. change it to look more like an enterprise data grid."
 
 --------------------------------------------------
-PROMPT 5: Aesthetic Constraint & Academic Formatting
+PROMPT 5: Iterative UI Refinement (Feature Addition)
 --------------------------------------------------
-TECHNIQUE: Style Prompting, Negative Constraints, Domain-Specific Language.
+TECHNIQUE: Conversational Steering.
 
-"Write a Python script using Matplotlib to generate a system architecture diagram for our SSOT. 
-Negative Constraint: Do not make it shiny, colorful, or use naive flowcharting. 
-It must be a Research-Grade Block Diagram (IEEE/ACM style). Use a muted, monochrome/grayscale palette (whites, light grays, dark borders). Divide the diagram into 3 explicitly labeled hierarchical dashed bounding boxes (Layer 1: Interfaces, Layer 2: Processing, Layer 3: Persistence). Draw the AI agents as clean rectangles with orthogonal data-flow arrows."
+"we can give human to process one message at time option as well. just right of the message. what do you think."
+
+--------------------------------------------------
+PROMPT 6: Live Debugging & Error Handling
+--------------------------------------------------
+TECHNIQUE: Stack-Trace Dumping, Constraint Enforcement.
+
+"it crashed when I logged in as operator. 
+TypeError: object of type 'float' has no len() 
+File 'app.py', line 101. 
+This is occurring during the PII Data Masking function because of empty rows. Rewrite the lambda function to enforce a strict string cast `str(x)` before calculating the length. Do not rewrite the entire file, provide only the patched function."
+
+--------------------------------------------------
+PROMPT 7: Aesthetic Constraint (Generic Feedback)
+--------------------------------------------------
+TECHNIQUE: Negative Constraints, Style Prompting.
+
+"architecture.png this needs improvement. a research grade architecture not just naive. dont make it shine with colors. metrics.png like. make it look like an IEEE/ACM paper with strict layers and boxes, no fancy flowchart tools."
