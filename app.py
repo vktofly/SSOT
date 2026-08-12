@@ -1,4 +1,6 @@
 import streamlit as st
+import json
+import os
 from src.config import HAS_API_KEY
 from src.data_manager import load_data
 from src.ui_components import render_dashboard, render_ingestion, render_reconciliation, render_database_explorer, render_escalation_triage
@@ -41,6 +43,19 @@ def check_password():
         st.session_state.logged_in = False
         st.session_state.role = None
         st.session_state.username = None
+        
+        # Check for remember me file
+        if os.path.exists(".remember.json"):
+            try:
+                with open(".remember.json", "r") as f:
+                    saved_creds = json.load(f)
+                    if saved_creds.get("username") in MOCK_USERS and MOCK_USERS[saved_creds["username"]]["password"] == saved_creds.get("password"):
+                        st.session_state.logged_in = True
+                        st.session_state.role = MOCK_USERS[saved_creds["username"]]["role"]
+                        st.session_state.username = saved_creds["username"]
+                        return True
+            except:
+                pass
 
     if st.session_state.logged_in:
         return True
@@ -53,13 +68,19 @@ def check_password():
         with st.form("login_form"):
             username = st.text_input("Username").strip()
             password = st.text_input("Password", type="password").strip()
-            submit = st.form_submit_button("Log In", type="primary", width="stretch")
+            remember_me = st.checkbox("Remember Me")
+            submit = st.form_submit_button("Log In", type="primary", use_container_width=True)
             
             if submit:
                 if username in MOCK_USERS and MOCK_USERS[username]["password"] == password:
                     st.session_state.logged_in = True
                     st.session_state.role = MOCK_USERS[username]["role"]
                     st.session_state.username = username
+                    
+                    if remember_me:
+                        with open(".remember.json", "w") as f:
+                            json.dump({"username": username, "password": password}, f)
+                            
                     st.rerun()
                 else:
                     st.error("😕 Invalid username or password")
@@ -76,6 +97,8 @@ def main():
         st.session_state.logged_in = False
         st.session_state.role = None
         st.session_state.username = None
+        if os.path.exists(".remember.json"):
+            os.remove(".remember.json")
         st.rerun()
         
     st.sidebar.markdown("---")
