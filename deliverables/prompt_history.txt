@@ -1,56 +1,60 @@
 ==================================================
-PROMPT HISTORY: BHARATTRIP SSOT TASK
+PROMPT ENGINEERING HISTORY: BHARATTRIP SSOT TASK
 ==================================================
 
-Below is the structured prompt engineering workflow used to architect, analyze, and build the Single Source of Truth (SSOT) prototype, including the initial build phase and the subsequent enterprise hardening phase.
+As requested in the Task Brief, below is the structured prompt history demonstrating the advanced prompt engineering techniques used to guide the LLM in analyzing the data, designing the architecture, and building the SSOT prototype.
 
 --------------------------------------------------
-PHASE 1: Core Architecture & Data Reconciliation
+PROMPT 1: Chain-of-Thought (CoT) & Role-Playing for Data Reconciliation
 --------------------------------------------------
+TECHNIQUE: Persona Assignment, Step-by-Step Reasoning, Constraint Enforcement.
 
-USER PROMPT 1: Data Reconciliation & Root Cause Analysis
-Task: Perform a strict data reconciliation to find the root cause of the rising refund escalations. Use an ID-to-ID Database Join to identify "Dropped Handoffs", "Deduction Mismatches", and "Off-Tracker Leaks". Output the exact integer counts for each failure point.
-
-USER PROMPT 2: Multi-Agent Architecture Design
-Task: Design a system architecture for a Unified Single Source of Truth (SSOT) driven by LLM Agents. Must include an AI Ingestion Agent, a Reconciliation Agent with HITL approval, and mitigate financial compliance risks.
-
-USER PROMPT 3: Streamlit Prototype Development & LLM Routing
-Task: Write a production-ready app.py using Streamlit to prototype the SSOT architecture. Build an Operations Telemetry Dashboard, implement the AI Ingestion Agent, and add hallucination mitigation for invalid travel routes.
-
-USER PROMPT 4: Streamlit Cloud Deployment Optimization
-Task: Create the necessary deployment files to host this Streamlit app. Write a requirements.txt, a packages.txt (zlib1g-dev, libjpeg-dev), and a secure .gitignore to ensure API keys never touch the public repo.
-
-USER PROMPT 5: Academic-Grade Visualizations & LaTeX Write-Up
-Task: Write a Python script using matplotlib to generate two graphs (Escalation Root Causes and SSOT Architecture) using a muted academic color palette. Write a LaTeX document (write_up.tex) incorporating the data findings and Multi-Agent logic.
+"Act as a Senior Data Analyst at BharatTrip. I am providing you with three datasets: Support_Tracker (refunds requested), Finance_Tracker (payouts processed), and Escalations (customer complaints). 
+Do not just calculate the net difference. Think step-by-step:
+1. Perform an ID-to-ID Database Join on `Booking_ID` across all three tables.
+2. Identify 'Dropped Handoffs' (Present in Support, missing in Finance).
+3. Identify 'Deduction Mismatches' (Support Refund Amount > Finance Payout Amount).
+4. Identify 'Off-Tracker Leaks' by checking the Escalations for 'No Ref'.
+Output only the exact integer counts for each failure point, followed by a 1-paragraph summary of the operational bottleneck."
 
 --------------------------------------------------
-PHASE 2: Enterprise Hardening & Iterative UI/UX 
+PROMPT 2: Context Injection & Architecture Design
 --------------------------------------------------
+TECHNIQUE: Contextual Anchoring, Zero-Shot Generation, Output Formatting.
 
-USER PROMPT 6: UI Cohesiveness
-"ingestion ui no matching the rest of site ui."
-Result: Directed the AI to overhaul the Ingestion Agent UI layout to match the enterprise-grade dashboard, migrating from informal chat bubbles to a strict, bordered data-grid.
+"Based on your previous analysis, the bottlenecks are WhatsApp leakage and manual handoff drops. Design a system architecture for a Unified Single Source of Truth (SSOT) driven by LLM Agents to solve this.
+Constraints:
+- You must include an 'AI Ingestion Agent' to parse messy unstructured text.
+- You must include a 'Reconciliation Agent' with a Human-In-The-Loop (HITL) approval UI.
+- Ensure the design mitigates financial compliance risks.
+Output format: A Markdown table mapping the 'Operational Failure' directly to your proposed 'AI Engineering Solution'."
 
-USER PROMPT 7: Granular Workflow Control
-"we can give human to process one message at time option as well. just right of the message. what do you think."
-Result: Prompted the AI to add individual "Ingest" buttons next to each unstructured Webhook message, allowing for cherry-picking high-priority escalations rather than relying solely on batch processing.
+--------------------------------------------------
+PROMPT 3: Complex Code Generation & Dynamic Routing
+--------------------------------------------------
+TECHNIQUE: System Instructions, Dependency Constraint, Fallback Logic.
 
-USER PROMPT 8: Automated E2E Testing
-"test major feature and buttons and their derired output. before we push into production."
-Result: Triggered a browser automation subagent to perform end-to-end (E2E) visual testing of the Streamlit app on localhost, verifying the RBAC login and Ingestion flows.
+"You are now a Senior AI Operations Engineer. Write a production-ready `app.py` using Streamlit to prototype the SSOT architecture we just designed. 
+Requirements:
+1. Build an Operations Telemetry Dashboard tracking active escalations.
+2. Implement the AI Ingestion Agent using `google-genai` (gemini-3.5-flash). 
+3. Hallucination Mitigation: If the LLM hallucinates an invalid travel route, the UI must explicitly flag it.
+4. Dynamic API Key Routing: Build the app so it accepts BOTH an OpenAI API key or a Google Gemini API Key via the Streamlit sidebar. If OpenAI is provided, fallback to the REST API without requiring the `openai` python package to keep dependencies ultra-lightweight."
 
-USER PROMPT 9: Bug Resolution (Data Masking)
-"TypeError: object of type 'float' has no len() ... File 'app.py', line 101"
-Result: Provided a live stack trace to the AI, which successfully identified a NaN float issue in the Pandas PII-redaction lambda function and deployed a hotfix.
+--------------------------------------------------
+PROMPT 4: Iterative Refinement & Error Handling
+--------------------------------------------------
+TECHNIQUE: Live Debugging, Context Window Refreshing, Code Patching.
 
-USER PROMPT 10: Submission Strategy & Professionalism
-"why submit SSOT_Parser.zip when we have deployed out app and giving github link?"
-Result: Corrected the AI's submission strategy, shifting from an outdated ZIP file attachment to a modern GitHub Repository and Live Streamlit Cloud URL for the hiring manager.
+"I am getting the following error when running your previous code:
+`TypeError: object of type 'float' has no len() ... File 'app.py', line 101`
+This is occurring during the PII Data Masking function. The dataset contains NaN float values in the Agent column. Rewrite the lambda function to enforce a strict string cast `str(x)` before calculating the length, ensuring it doesn't crash on empty rows. Do not rewrite the entire file, provide only the patched function."
 
-USER PROMPT 11: Research-Grade Diagrams
-"architecture.png this needs improvement. a research grade architecture not just naive. dont make it shine with colors. metrics.png like."
-Result: Directed the AI to discard generic flowcharting tools and write a strict Matplotlib script to generate an IEEE/ACM academic-style block diagram with muted grayscale colors and strict layer hierarchies.
+--------------------------------------------------
+PROMPT 5: Aesthetic Constraint & Academic Formatting
+--------------------------------------------------
+TECHNIQUE: Style Prompting, Negative Constraints, Domain-Specific Language.
 
-USER PROMPT 12: Remote Compilation (No Local Dependencies)
-"generate pdf. try agin. priviously you gneerated this pdf."
-Result: Directed the AI to bypass local environment restrictions (no pdflatex) by packaging the LaTeX project into a tarball and executing a cURL POST request to a remote LaTeX compilation API (latexonline.cc) to generate the final PDF.
+"Write a Python script using Matplotlib to generate a system architecture diagram for our SSOT. 
+Negative Constraint: Do not make it shiny, colorful, or use naive flowcharting. 
+It must be a Research-Grade Block Diagram (IEEE/ACM style). Use a muted, monochrome/grayscale palette (whites, light grays, dark borders). Divide the diagram into 3 explicitly labeled hierarchical dashed bounding boxes (Layer 1: Interfaces, Layer 2: Processing, Layer 3: Persistence). Draw the AI agents as clean rectangles with orthogonal data-flow arrows."
