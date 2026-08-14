@@ -128,3 +128,17 @@
   - Moved deep AI LLM synthesis into on-demand collapsible expander
   - Tightened chart captions and typography for a crisp 5-second glance test
 - [x] Verified full unit test pass suite (5/5 tests passing in 0.947s)
+
+## Milestone 20: High-End Visual Design & Double-Bezel Architecture
+- [x] Integrated `high-end-visual-design` principles in [`src/views/dashboard.py`](file:///c:/Users/vikash/Documents/SSOT_Parser/src/views/dashboard.py):
+  - Micro-eyebrow badges on major sections (`OPERATIONS TELEMETRY`, `SETTLEMENT CORRIDOR`, `RISK RADAR & TRAJECTORY`)
+  - Double-Bezel nested containers for all metric islands and chart panels
+  - Ethereal spatial rhythm with high-contrast text metrics
+- [x] Verified full unit test pass suite (5/5 tests passing in 1.414s)
+
+## Milestone 21: Animated SVG Health Gauge & Carrier Health Radar
+- [x] Implemented telemetry widgets in [`src/views/dashboard.py`](file:///c:/Users/vikash/Documents/SSOT_Parser/src/views/dashboard.py):
+  - Hardware-accelerated circular SVG pipeline balance gauge with live percentage readout
+  - 4-carrier health radar cards (*IndiGo [6E]*, *Air India [AI]*, *SpiceJet [SG]*, *Emirates [EK]*) with sector fees, SLAs, and reconciliation rates
+  - Double-Bezel action buttons for rapid dispute reconciliation and triage
+- [x] Verified full unit test pass suite (5/5 tests passing in 1.524s)
