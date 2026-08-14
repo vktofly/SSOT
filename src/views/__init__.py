@@ -1,7 +1,4 @@
-"""
-UI Components Module for BharatTrip Operations.
-Clean re-export layer delegating to modularized page views in src/views/.
-"""
+# Views package for BharatTrip AI Operations
 from src.views.dashboard import render_dashboard
 from src.views.ingestion import render_ingestion
 from src.views.reconciliation import render_reconciliation

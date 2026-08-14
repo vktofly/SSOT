@@ -1,36 +1,50 @@
-import streamlit as st
-import pandas as pd
+"""
+Data Manager Module for BharatTrip Operations.
+Handles SQLite data hydration, CSV ingestion/seeding, discrepancy analysis, and orphan matching.
+"""
+import os
 import difflib
-from typing import Dict, Any, List
-from src.agents import fuzzy_match_metadata
-
 import sqlite3
+import logging
+from collections import Counter
+from typing import Dict, Any, List, Tuple
+import pandas as pd
+import streamlit as st
 from src.db import DB_PATH, get_connection
 
+logger = logging.getLogger(__name__)
+
+# Standardized Constants
+DEFAULT_DIFFLIB_CUTOFF: float = 0.7
+HIGH_RISK_DIFF_RATIO: float = 0.20
+HIGH_RISK_UNLOGGED_AGENT_THRESHOLD: int = 2
+
+def clean_money_string(value: Any) -> str:
+    """Sanitizes monetary string representations removing currency symbols, commas, and whitespace."""
+    if pd.isna(value):
+        return ""
+    return str(value).replace(',', '').replace('₹', '').replace('INR', '').strip()
+
 @st.cache_data(show_spinner=False)
-def load_data() -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
-    """Loads data from SQLite, seeding it from CSVs on first run."""
+def load_data() -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
+    """Loads all 3 operational datasets from SQLite, automatically seeding from CSVs on first run."""
     try:
-        # Check if DB exists
-        import os
         needs_init = not os.path.exists(DB_PATH)
-        
         if needs_init:
             seed_from_csv()
             
-        conn = get_connection()
-        support = pd.read_sql("SELECT * FROM support_tracker", conn)
-        finance = pd.read_sql("SELECT * FROM finance_tracker", conn)
-        escalations = pd.read_sql("SELECT * FROM escalations", conn)
-        conn.close()
-        
+        with get_connection() as conn:
+            support = pd.read_sql("SELECT * FROM support_tracker", conn)
+            finance = pd.read_sql("SELECT * FROM finance_tracker", conn)
+            escalations = pd.read_sql("SELECT * FROM escalations", conn)
+            
         return support, finance, escalations
-    except Exception as e:
-        st.error(f"Failed to load datasets: {e}")
+    except Exception as err:
+        logger.error("Failed to load datasets: %s", err)
         return pd.DataFrame(), pd.DataFrame(), pd.DataFrame()
 
-def seed_from_csv():
-    """Seeds the SQLite database from the raw CSV files."""
+def seed_from_csv() -> None:
+    """Seeds the SQLite database from raw baseline CSV files."""
     try:
         support = pd.read_csv("data/Support_Tracker.csv", skiprows=1)
         if 'Ticket ID' not in support.columns:
@@ -47,7 +61,6 @@ def seed_from_csv():
             escalations.columns = escalations.iloc[0]
             escalations = escalations.drop(0)
             
-        # Standardize escalation column names for UI
         if 'Related Ticket / Ref' in escalations.columns:
             escalations = escalations.rename(columns={
                 'Related Ticket / Ref': 'Ticket ID',
@@ -55,33 +68,32 @@ def seed_from_csv():
                 'Complaint': 'Message'
             })
         
-        # Clean Data
-        def clean_money(val):
-            if pd.isna(val): return val
-            return str(val).replace(',', '').replace('₹', '').replace('INR', '').strip()
-            
+        # Clean currency columns
         if 'Refund Amount (INR)' in support.columns:
-            support['Refund Amount (INR)'] = support['Refund Amount (INR)'].apply(clean_money)
+            support['Refund Amount (INR)'] = support['Refund Amount (INR)'].apply(clean_money_string)
         if 'Amount Paid (INR)' in finance.columns:
-            finance['Amount Paid (INR)'] = finance['Amount Paid (INR)'].apply(clean_money)
+            finance['Amount Paid (INR)'] = finance['Amount Paid (INR)'].apply(clean_money_string)
         if 'Deduction (INR)' in finance.columns:
-            finance['Deduction (INR)'] = finance['Deduction (INR)'].apply(clean_money)
+            finance['Deduction (INR)'] = finance['Deduction (INR)'].apply(clean_money_string)
             
         support['Ticket ID'] = support['Ticket ID'].astype(str).str.strip().str.upper()
         finance['Ref No'] = finance['Ref No'].astype(str).str.strip().str.upper()
         
-        conn = sqlite3.connect(DB_PATH)
-        support.to_sql("support_tracker", conn, if_exists="replace", index=False)
-        finance.to_sql("finance_tracker", conn, if_exists="replace", index=False)
-        escalations.to_sql("escalations", conn, if_exists="replace", index=False)
-        conn.close()
-        
-    except Exception as e:
-        print(f"Error seeding DB: {e}")
+        with sqlite3.connect(DB_PATH) as conn:
+            support.to_sql("support_tracker", conn, if_exists="replace", index=False)
+            finance.to_sql("finance_tracker", conn, if_exists="replace", index=False)
+            escalations.to_sql("escalations", conn, if_exists="replace", index=False)
+            
+        logger.info("Successfully seeded database from baseline CSVs.")
+    except Exception as err:
+        logger.error("Error seeding DB: %s", err)
 
 def find_mismatches(support: pd.DataFrame, finance: pd.DataFrame) -> List[Dict[str, Any]]:
-    """Analyzes datasets to find discrepancies between Support and Finance amounts, using difflib for ID matching."""
-    mismatches = []
+    """Analyzes datasets to identify financial discrepancies between Support and Finance amounts."""
+    if support.empty or finance.empty:
+        return []
+        
+    mismatches: List[Dict[str, Any]] = []
     support_ids = support['Ticket ID'].dropna().astype(str).tolist()
     
     for _, f_row in finance.iterrows():
@@ -93,31 +105,28 @@ def find_mismatches(support: pd.DataFrame, finance: pd.DataFrame) -> List[Dict[s
         if not exact_matches.empty:
             s_row = exact_matches.iloc[0]
         else:
-            # 2. Difflib Fuzzy Match on ID (Lexical matching for typos like RF-1099 vs 1099)
-            close_matches = difflib.get_close_matches(ref, support_ids, n=1, cutoff=0.7)
+            # 2. Fuzzy Match on Ticket ID (Lexical matching for typos)
+            close_matches = difflib.get_close_matches(ref, support_ids, n=1, cutoff=DEFAULT_DIFFLIB_CUTOFF)
             if close_matches:
                 s_row = support[support['Ticket ID'] == close_matches[0]].iloc[0]
                 
         if s_row is not None:
             try:
-                # Clean strings before casting to float
-                s_amt_str = str(s_row['Refund Amount (INR)']).replace(',', '').strip()
-                f_amt_str = str(f_row['Amount Paid (INR)']).replace(',', '').strip()
-                deduction_str = str(f_row.get('Deduction (INR)', '0')).replace(',', '').strip()
+                s_amt_str = clean_money_string(s_row.get('Refund Amount (INR)', '0'))
+                f_amt_str = clean_money_string(f_row.get('Amount Paid (INR)', '0'))
+                deduction_str = clean_money_string(f_row.get('Deduction (INR)', '0'))
                 
                 s_amt = float(s_amt_str) if s_amt_str and s_amt_str.lower() != 'nan' else 0.0
                 f_amt = float(f_amt_str) if f_amt_str and f_amt_str.lower() != 'nan' else 0.0
                 deduction = float(deduction_str) if deduction_str and deduction_str.lower() != 'nan' else 0.0
                 
                 if s_amt != f_amt:
-                    # Calculate percentage difference based on Support Amount
                     risk_level = "Normal"
                     if s_amt > 0:
                         pct_diff = abs(s_amt - f_amt) / s_amt
-                        if pct_diff > 0.2:
+                        if pct_diff > HIGH_RISK_DIFF_RATIO:
                             risk_level = "High"
                     elif f_amt > 0:
-                        # If Support amount is 0 but finance amount is > 0, that's infinite difference
                         risk_level = "High"
                         
                     mismatches.append({
@@ -131,30 +140,27 @@ def find_mismatches(support: pd.DataFrame, finance: pd.DataFrame) -> List[Dict[s
                         "Reason": f_row.get('Remarks', 'No reason given'),
                         "Risk Level": risk_level
                     })
-            except ValueError:
+            except (ValueError, TypeError):
                 continue
+                
     return mismatches
 
-def find_orphans(support: pd.DataFrame, finance: pd.DataFrame) -> tuple[List[Dict[str, Any]], List[Dict[str, Any]]]:
-    """
-    Finds tickets that exist in Support but not Finance, and vice-versa.
-    Also returns them as lists of dicts for the UI.
-    """
+def find_orphans(support: pd.DataFrame, finance: pd.DataFrame) -> Tuple[List[Dict[str, Any]], List[Dict[str, Any]]]:
+    """Identifies orphaned records missing in Support or missing in Finance."""
+    if support.empty or finance.empty:
+        return [], []
+        
     support_ids = support['Ticket ID'].dropna().astype(str).tolist()
     finance_ids = finance['Ref No'].dropna().astype(str).tolist()
     
-    # We use exact match + difflib here to consider a ticket "found"
-    # To be fast, we'll build sets
-    
-    missing_in_finance = []
-    missing_in_support = []
+    missing_in_finance: List[Dict[str, Any]] = []
+    missing_in_support: List[Dict[str, Any]] = []
     
     # Check Support tickets missing in Finance
     for _, s_row in support.iterrows():
         sid = str(s_row['Ticket ID'])
         if sid not in finance_ids:
-            # Try fuzzy
-            close = difflib.get_close_matches(sid, finance_ids, n=1, cutoff=0.7)
+            close = difflib.get_close_matches(sid, finance_ids, n=1, cutoff=DEFAULT_DIFFLIB_CUTOFF)
             if not close:
                 missing_in_finance.append(s_row.to_dict())
                 
@@ -162,22 +168,21 @@ def find_orphans(support: pd.DataFrame, finance: pd.DataFrame) -> tuple[List[Dic
     for _, f_row in finance.iterrows():
         ref = str(f_row['Ref No'])
         if ref not in support_ids:
-            # Let's see if difflib finds it
-            close_matches = difflib.get_close_matches(ref, support_ids, n=1, cutoff=0.7)
+            close_matches = difflib.get_close_matches(ref, support_ids, n=1, cutoff=DEFAULT_DIFFLIB_CUTOFF)
             if not close_matches:
                 missing_in_support.append({
                     "Ref No": ref,
                     "Finance Amount": f_row.get('Amount Paid (INR)', 0),
-                    "Remarks": f_row.get('Remarks', 'No info')
+                    "Remarks": f_row.get('Remarks', 'No info'),
+                    "Agent Name": f_row.get('Agent Name', 'Unknown'),
+                    "Route": f_row.get('Route', 'Unknown')
                 })
                 
     # Evaluate Agent Risk for unlogged payouts
-    from collections import Counter
-    agent_counts = Counter([m['Agent'] for m in missing_in_finance])
-    
+    agent_counts = Counter([str(m.get('Agent', 'Unknown')) for m in missing_in_finance])
     for m in missing_in_finance:
-        agent = m['Agent']
-        if agent_counts[agent] > 2:
+        agent = str(m.get('Agent', 'Unknown'))
+        if agent_counts[agent] > HIGH_RISK_UNLOGGED_AGENT_THRESHOLD:
             m['Risk Level'] = 'High'
             m['Risk Note'] = f"Agent '{agent}' has {agent_counts[agent]} unlogged payouts."
         else:

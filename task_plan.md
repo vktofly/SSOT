@@ -1,0 +1,63 @@
+# 📋 BharatTrip Project Task Plan
+
+## Milestone 1: Problem Definition & Data Audit
+- [x] Extract and reconcile `Support_Tracker.csv` (600 rows) against `Finance_Tracker.csv` (500 rows)
+- [x] Identify root causes: 100 dropped handoffs, 149 deduction mismatches, off-tracker messaging leaks
+- [x] Benchmark escalation resolution time (Avg: 16.4 days)
+
+## Milestone 2: Solution Architecture & Operating Model
+- [x] Design Single Source of Truth (SSOT) SQLite/PostgreSQL schema with unified `Global_Ticket_ID`
+- [x] Define Human-In-The-Loop (HITL) boundary: AI parses and drafts, humans approve payouts/actions
+- [x] Establish Role-Based Access Control (RBAC) & Data Loss Prevention (DLP) specifications
+
+## Milestone 3: AI Prototype Implementation
+- [x] Build Operations Telemetry Dashboard with dynamic KPI cards
+- [x] Build Event-Driven Ingestion Agent with PII redaction and route validation guardrails
+- [x] Build Automated Reconciliation Agent with short-payment email drafting
+- [x] Build Cross-Department Database Explorer with global search
+- [x] Implement Audit Logging for all operator approvals
+
+## Milestone 4: Deliverables & Verification
+- [x] Finalize 3-page Business Case & Solution Proposal (`deliverables/write_up.pdf`)
+- [x] Generate System Architecture and Telemetry Visuals (`deliverables/architecture.png`, `deliverables/metrics.png`)
+- [x] Export Complete Prompt History (`deliverables/prompt_history.txt`)
+- [x] End-to-end user acceptance testing across both `Manager` and `Operator` personas
+- [x] Pre-flight shipping checklist & deployment configuration verified
+
+## Milestone 5: Future Expansion Roadmap
+- [x] 1. Proactive Agent Notification Bot (Bi-directional WhatsApp/Email status pusher)
+- [x] 2. Predictive SLA Breach Forecaster ($\ge 72$h latency early warning)
+- [x] 3. Airline Policy RAG Engine (Carrier penalty tier lookup)
+- [x] 4. Direct Banking Gateway Bridge (B2B RazorpayX / Cashfree webhook)
+- [x] 5. Partner Frustration & Priority Scoring (NLP urgency classifier)
+## Milestone 6: Multi-Page Operations Suite
+- [x] Modern `st.navigation` Declarative URL Router (`/dashboard`, `/partners`, `/database`, `/ingestion`, `/reconciliation`, `/triage`)
+- [x] Partner Health & Churn Risk Matrix (`/partners`) with VIP retention radar and outreach dispatch
+## Milestone 7: Codebase Modularization & Architecture
+- [x] Extracted 1,000+ line monolithic `ui_components.py` into dedicated `src/views/` package:
+  - [`src/views/dashboard.py`](file:///c:/Users/vikash/Documents/SSOT_Parser/src/views/dashboard.py)
+  - [`src/views/ingestion.py`](file:///c:/Users/vikash/Documents/SSOT_Parser/src/views/ingestion.py)
+  - [`src/views/reconciliation.py`](file:///c:/Users/vikash/Documents/SSOT_Parser/src/views/reconciliation.py)
+  - [`src/views/database_explorer.py`](file:///c:/Users/vikash/Documents/SSOT_Parser/src/views/database_explorer.py)
+  - [`src/views/escalation_triage.py`](file:///c:/Users/vikash/Documents/SSOT_Parser/src/views/escalation_triage.py)
+  - [`src/views/partner_matrix.py`](file:///c:/Users/vikash/Documents/SSOT_Parser/src/views/partner_matrix.py)
+## Milestone 8: Coding Standards Enforcement
+- [x] Standardized `src/db.py` with context managers, parameterized execution, and typing
+- [x] Standardized `src/data_manager.py` with named constants, type annotations, and immutability
+- [x] Verified full unit test pass suite (5/5 tests passing in 1.012s)
+
+## Milestone 9: Frontend UI & Accessibility Engineering
+- [x] Refactored [`src/views/ingestion.py`](file:///c:/Users/vikash/Documents/SSOT_Parser/src/views/ingestion.py) to meet `frontend-ui-engineering` standards:
+  - Eliminated arbitrary inline CSS for native Streamlit design tokens
+  - Structured HITL form into grouped containers with field tooltips
+  - Replaced text-only confidence scores with visual progress meters
+  - Enhanced queue empty states and guarded against accidental item discard
+- [x] Verified full unit test pass suite (5/5 tests passing in 0.894s)
+
+## Milestone 10: Frontend Patterns & Reactive Ingestion Playground
+- [x] Upgraded [`src/views/ingestion.py`](file:///c:/Users/vikash/Documents/SSOT_Parser/src/views/ingestion.py) with modern `frontend-patterns`:
+  - Interactive Custom Payload Injector with live JSON extraction preview
+  - Multi-channel stream filtering (`WhatsApp`, `Email`, `Portal`, `Phone`, `OTA API`)
+  - Optimistic toast notifications on batch parsing, single ingest, and SSOT commits
+  - Normalized container data flow with distinct ID tracking across streams
+- [x] Verified full unit test pass suite (5/5 tests passing in 1.170s)

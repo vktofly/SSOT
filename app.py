@@ -3,7 +3,10 @@ import json
 import os
 from src.config import HAS_API_KEY
 from src.data_manager import load_data
-from src.ui_components import render_dashboard, render_ingestion, render_reconciliation, render_database_explorer, render_escalation_triage
+from src.views import (
+    render_dashboard, render_ingestion, render_reconciliation,
+    render_database_explorer, render_escalation_triage, render_partner_matrix
+)
 
 # -----------------------------------------------------------------------------
 # Configuration & Setup
@@ -21,10 +24,66 @@ st.set_page_config(
 # Inject CSS to prevent text selection (Data Loss Prevention)
 st.markdown("""
     <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+    
+    html, body, [class*="css"] {
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+    
+    code, pre, .stCodeBlock {
+        font-family: 'JetBrains Mono', monospace !important;
+    }
+
+    /* DLP text selection lock */
     body {
         user-select: none;
         -webkit-user-select: none;
         -ms-user-select: none;
+    }
+
+    /* Enterprise Glassmorphism KPI cards */
+    div[data-testid="stMetric"] {
+        background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.02) 100%);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-top: 2px solid rgba(14, 165, 233, 0.6);
+        border-radius: 10px;
+        padding: 14px 18px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    div[data-testid="stMetric"]:hover {
+        transform: translateY(-2px);
+        border-color: rgba(14, 165, 233, 0.8);
+        box-shadow: 0 8px 24px rgba(14, 165, 233, 0.15);
+    }
+
+    /* Polished Interactive Buttons */
+    div.stButton > button {
+        border-radius: 8px;
+        font-weight: 500;
+        letter-spacing: 0.01em;
+        transition: all 0.2s ease-in-out;
+    }
+    div.stButton > button:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Modern Tabs Navigation */
+    .stTabs [data-baseweb="tab-list"] {
+        gap: 8px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        padding-bottom: 4px;
+    }
+    .stTabs [data-baseweb="tab"] {
+        border-radius: 6px 6px 0 0;
+        padding: 8px 16px;
+        font-weight: 500;
+    }
+
+    /* Subtle Glassmorphism for Containers & Expanders */
+    div[data-testid="stExpander"], div[data-testid="stContainer"] {
+        border-radius: 8px;
     }
     </style>
 """, unsafe_allow_html=True)
@@ -93,7 +152,7 @@ def main():
     st.sidebar.title("✈️ BharatTrip Operations")
     
     st.sidebar.markdown(f"**Logged in as:** {st.session_state.username} ({st.session_state.role})")
-    if st.sidebar.button("Log Out"):
+    if st.sidebar.button("Log Out", use_container_width=True):
         st.session_state.logged_in = False
         st.session_state.role = None
         st.session_state.username = None
@@ -102,26 +161,6 @@ def main():
         st.rerun()
         
     st.sidebar.markdown("---")
-    
-    # Role-Based Access Control (RBAC) Navigation
-    if st.session_state.role == "Manager":
-        pages = ["📊 Metrics Dashboard", "📥 Ingestion Agent", "⚖️ Reconciliation (HITL)", "🚨 Escalation Triage", "🗄️ Database Explorer"]
-    else:
-        # Junior Role restrictions
-        pages = ["🚨 Escalation Triage"]
-        
-    # Track navigation via our own session state (never a widget key)
-    if "_current_page" not in st.session_state:
-        st.session_state._current_page = pages[0]
-    
-    # Ensure current page is valid for the user's role
-    if st.session_state._current_page not in pages:
-        st.session_state._current_page = pages[0]
-    
-    default_idx = pages.index(st.session_state._current_page)
-    nav_version = st.session_state.get("_nav_version", 0)
-    page = st.sidebar.radio("Navigate", pages, index=default_idx, key=f"nav_v{nav_version}")
-    st.session_state._current_page = page
     
     if not HAS_API_KEY:
         st.sidebar.warning("⚠️ `GEMINI_API_KEY` not found. Using mocked AI responses for demonstration.")
@@ -132,22 +171,48 @@ def main():
         st.session_state.support_df = sup.copy()
         st.session_state.finance_df = fin.copy()
         st.session_state.escalations_df = esc.copy()
-        
-    support_df = st.session_state.support_df
-    finance_df = st.session_state.finance_df
-    escalations_df = st.session_state.escalations_df
 
-    # Route to the appropriate modular UI component
-    if page == "📊 Metrics Dashboard":
+    # Page wrappers ensuring dynamic session state passing
+    def page_dashboard():
         render_dashboard()
-    elif page == "📥 Ingestion Agent":
+
+    def page_ingestion():
         render_ingestion()
-    elif page == "⚖️ Reconciliation (HITL)":
-        render_reconciliation(support_df, finance_df)
-    elif page == "🚨 Escalation Triage":
-        render_escalation_triage(escalations_df, support_df)
-    elif page == "🗄️ Database Explorer":
-        render_database_explorer(support_df, finance_df, escalations_df)
+
+    def page_reconciliation():
+        render_reconciliation(st.session_state.support_df, st.session_state.finance_df)
+
+    def page_triage():
+        render_escalation_triage(st.session_state.escalations_df, st.session_state.support_df)
+
+    def page_database():
+        render_database_explorer(st.session_state.support_df, st.session_state.finance_df, st.session_state.escalations_df)
+
+    def page_partners():
+        render_partner_matrix(st.session_state.escalations_df, st.session_state.support_df)
+
+    # Declarative Multi-Page Declarations with clean URL paths
+    dashboard_p = st.Page(page_dashboard, title="Metrics Dashboard", icon="📊", url_path="dashboard", default=True)
+    partners_p = st.Page(page_partners, title="Partner Health Matrix", icon="📈", url_path="partners")
+    database_p = st.Page(page_database, title="Database Explorer", icon="🗄️", url_path="database")
+    ingestion_p = st.Page(page_ingestion, title="Ingestion Agent", icon="📥", url_path="ingestion")
+    reconciliation_p = st.Page(page_reconciliation, title="Reconciliation (HITL)", icon="⚖️", url_path="reconciliation")
+    triage_p = st.Page(page_triage, title="Escalation Triage", icon="🚨", url_path="triage", default=(st.session_state.role != "Manager"))
+
+    # Role-Based Sectioned Navigation
+    if st.session_state.role == "Manager":
+        nav_dict = {
+            "Operations Cockpit": [dashboard_p, partners_p, database_p],
+            "AI Workflows & HITL": [ingestion_p, reconciliation_p, triage_p]
+        }
+    else:
+        nav_dict = {
+            "Operator Workspace": [ingestion_p, triage_p]
+        }
+
+    pg = st.navigation(nav_dict)
+    pg.run()
 
 if __name__ == "__main__":
     main()
+

@@ -394,3 +394,231 @@ def draft_escalation_response(escalation_text: str, support_status: dict) -> str
     except Exception as e:
         return str(e)
 
+def generate_proactive_notification(
+    ticket_id: str,
+    agent_name: str,
+    route: str,
+    stage: str,
+    amount: str = None,
+    deduction: str = None,
+    channel: str = "WhatsApp"
+) -> Dict[str, str]:
+    """
+    Proactive Agent Notification Bot: Generates milestone-driven status alerts
+    for travel agents across WhatsApp and Email.
+    """
+    safe_agent = agent_name or "Valued Partner"
+    safe_route = route or "your sector"
+    safe_id = ticket_id or "Pending Reference"
+    
+    if stage == "logged":
+        headline = "Refund Request Logged"
+        if channel == "WhatsApp":
+            body = f"Hi {safe_agent}, cancellation for {safe_route} is logged under Ref: *{safe_id}*. Expected SLA: 48h. We will notify you once Finance verifies payout."
+        else:
+            body = f"Dear {safe_agent},\n\nYour cancellation request for {safe_route} has been recorded under Reference ID: {safe_id}.\nOur Finance team is currently validating the airline fare rules. Expected turnaround time is 48 business hours.\n\nRegards,\nBharatTrip Operations"
+            
+    elif stage == "verified":
+        headline = "Finance Approval Completed"
+        if channel == "WhatsApp":
+            body = f"Update for {safe_agent}: Refund *{safe_id}* ({safe_route}) has been verified and approved by Finance. Payout dispatch is in progress."
+        else:
+            body = f"Dear {safe_agent},\n\nGood news: Refund {safe_id} for sector {safe_route} has completed Finance sign-off. Payout release is currently in queue.\n\nRegards,\nBharatTrip Operations"
+            
+    elif stage == "payout_done":
+        headline = "Refund Dispatched"
+        amt_str = f"₹{amount}" if amount else "the requested amount"
+        ded_str = f" (Airline fee deducted: ₹{deduction})" if deduction and str(deduction) not in ['0', '0.0', 'None', 'nan'] else ""
+        if channel == "WhatsApp":
+            body = f"Done! {amt_str} for Ref *{safe_id}* ({safe_route}) has been transferred to your account{ded_str}. Bank receipt available in your portal."
+        else:
+            body = f"Dear {safe_agent},\n\nWe have completed the refund payout of {amt_str} for Reference {safe_id} ({safe_route}){ded_str}.\nFunds should reflect in your registered bank account shortly.\n\nThank you for choosing BharatTrip,\nOperations Team"
+            
+    else:
+        headline = "Refund Status Update"
+        body = f"Hello {safe_agent}, your refund for {safe_id} ({safe_route}) is currently under active review. We will provide updates shortly."
+        
+    return {
+        "headline": headline,
+        "channel": channel,
+        "recipient": safe_agent,
+        "message": body
+    }
+
+def analyze_partner_sentiment(text: str, agency_tier: str = "Standard") -> Dict[str, Any]:
+    """
+    Partner Frustration & Priority Scoring Agent: Real-time NLP sentiment analyzer
+    classifying incoming complaints by urgency, churn risk, and agency revenue tier.
+    """
+    safe_text = redact_pii(text)
+    lower = safe_text.lower()
+    
+    # Rule-based / Offline NLP Fallback
+    critical_keywords = ["legal", "court", "threat", "fraud", "police", "consumer", "2 hafte", "two weeks", "weeks", "lawyer", "loss"]
+    high_keywords = ["urgent", "immediately", "angry", "escalat", "unacceptable", "client is asking", "waiting"]
+    
+    is_critical = any(kw in lower for kw in critical_keywords)
+    is_high = any(kw in lower for kw in high_keywords) or is_critical
+    
+    if is_critical:
+        urgency = "Critical"
+        frustration_cat = "Legal / Severe Churn Risk"
+        sentiment_score = -0.85
+    elif is_high:
+        urgency = "High"
+        frustration_cat = "Prolonged Delay / Frustration"
+        sentiment_score = -0.55
+    elif "?" in lower or "status" in lower or "update" in lower:
+        urgency = "Medium"
+        frustration_cat = "Information Request"
+        sentiment_score = -0.15
+    else:
+        urgency = "Low"
+        frustration_cat = "Routine Inquiry"
+        sentiment_score = 0.10
+        
+    # Priority matrix combining urgency and agency revenue tier
+    tier_upper = agency_tier.upper()
+    if tier_upper in ["VIP", "STRATEGIC"] and urgency in ["Critical", "High"]:
+        priority_rank = "P0 - Immediate"
+    elif urgency == "Critical":
+        priority_rank = "P0 - Immediate" if tier_upper == "VIP" else "P1 - Urgent"
+    elif urgency == "High":
+        priority_rank = "P1 - Urgent" if tier_upper in ["VIP", "STRATEGIC"] else "P2 - Elevated"
+    elif urgency == "Medium":
+        priority_rank = "P2 - Elevated" if tier_upper in ["VIP", "STRATEGIC"] else "P3 - Standard"
+    else:
+        priority_rank = "P3 - Standard"
+        
+    result = {
+        "sentiment_score": sentiment_score,
+        "urgency_level": urgency,
+        "priority_rank": priority_rank,
+        "frustration_category": frustration_cat,
+        "agency_tier": agency_tier,
+        "recommended_action": "Instant Manager Escalation & Phone Outreach" if "P0" in priority_rank else "Queue in Fast-Track Triage"
+    }
+    
+    if not HAS_API_KEY:
+        return result
+        
+    # Optional LLM refinement when API key is active
+    prompt = f"""
+    Analyze the sentiment and business risk of this travel agent refund escalation:
+    Message: "{safe_text}"
+    Agency Tier: {agency_tier}
+    
+    Return JSON with:
+    - "sentiment_score": float (-1.0 to 1.0)
+    - "urgency_level": "Critical", "High", "Medium", or "Low"
+    - "priority_rank": "P0 - Immediate", "P1 - Urgent", "P2 - Elevated", or "P3 - Standard"
+    - "frustration_category": string
+    - "agency_tier": "{agency_tier}"
+    - "recommended_action": string
+    """
+    try:
+        if API_KEY.startswith("sk-"):
+            headers = {"Authorization": f"Bearer {API_KEY}", "Content-Type": "application/json"}
+            payload = {
+                "model": "gpt-4o-mini",
+                "messages": [{"role": "user", "content": prompt}],
+                "temperature": 0.0,
+                "response_format": {"type": "json_object"}
+            }
+            resp = requests.post("https://api.openai.com/v1/chat/completions", headers=headers, json=payload, timeout=5)
+            if resp.status_code == 200:
+                parsed = json.loads(resp.json()["choices"][0]["message"]["content"])
+                return parsed
+        else:
+            response = CLIENT.models.generate_content(
+                model='gemini-3.5-flash',
+                contents=prompt,
+                config=types.GenerateContentConfig(response_mime_type="application/json", temperature=0.0)
+            )
+            parsed = json.loads(response.text.strip())
+            return parsed
+    except Exception:
+        pass
+        
+    return result
+
+# Airline Policy Knowledge Base (RAG Source)
+AIRLINE_POLICY_KB = {
+    "DEL-DXB": {"carrier": "Emirates", "cancellation_fee": 3500, "policy_notes": "Flat ₹3,500 international sector cancellation fee if cancelled >24h before departure.", "sla_hours": 48},
+    "BLR-MAA": {"carrier": "IndiGo", "cancellation_fee": 1500, "policy_notes": "Standard domestic fee ₹1,500 per pax. Non-refundable convenience fee.", "sla_hours": 24},
+    "DEL-SIN": {"carrier": "Singapore Airlines", "cancellation_fee": 4000, "policy_notes": "Tier-1 International: ₹4,000 fee. Tax refunded in full.", "sla_hours": 48},
+    "DEL-BOM": {"carrier": "Air India", "cancellation_fee": 2000, "policy_notes": "Metro trunk route: ₹2,000 standard fee for Flex fares.", "sla_hours": 24},
+    "COK-DXB": {"carrier": "Air India Express", "cancellation_fee": 3000, "policy_notes": "Gulf sector flat fee ₹3,000 + GST.", "sla_hours": 48},
+    "MAA-CMB": {"carrier": "SriLankan Airlines", "cancellation_fee": 2500, "policy_notes": "Regional international: ₹2,500 deduction.", "sla_hours": 48}
+}
+
+def lookup_airline_penalty(route: str, carrier: str = None) -> Dict[str, Any]:
+    """
+    Airline Policy RAG Engine: Looks up published carrier fare rules and cancellation fees.
+    """
+    safe_route = (route or "").strip().upper()
+    
+    if safe_route in AIRLINE_POLICY_KB:
+        policy = AIRLINE_POLICY_KB[safe_route].copy()
+        if carrier:
+            policy["carrier"] = carrier
+        return policy
+        
+    # Heuristic fallback for unknown sectors
+    is_intl = any(code in safe_route for code in ["DXB", "SIN", "BKK", "KUL", "CMB", "KTM", "LHR", "JFK"])
+    default_carrier = carrier or ("Emirates / Air India" if is_intl else "IndiGo / Air India")
+    default_fee = 3500 if is_intl else 2000
+    
+    return {
+        "carrier": default_carrier,
+        "cancellation_fee": default_fee,
+        "policy_notes": f"Standard {'International' if is_intl else 'Domestic'} sector fare policy: flat ₹{default_fee} deduction per passenger.",
+        "sla_hours": 48 if is_intl else 24
+    }
+
+def predict_sla_breach(ticket: Dict[str, Any], current_date: str = "2026-06-30") -> Dict[str, Any]:
+    """
+    Predictive SLA Breach Forecaster: Detects tickets with >=72h latency between
+    request logging and finance resolution before escalation happens.
+    """
+    ticket_id = ticket.get("Ticket ID", "Unknown")
+    logged_date_str = ticket.get("Logged Date") or ticket.get("Date") or ticket.get("Open Since")
+    status = str(ticket.get("Status", "Pending")).lower()
+    
+    # If already resolved or closed, zero breach risk
+    if any(s in status for s in ["resolved", "closed", "refund done", "client notified"]):
+        return {
+            "ticket_id": ticket_id,
+            "is_breached": False,
+            "hours_elapsed": 0,
+            "risk_level": "Resolved",
+            "warning": "Ticket already closed or notified."
+        }
+        
+    try:
+        cur_dt = pd.to_datetime(current_date)
+        if logged_date_str:
+            log_dt = pd.to_datetime(logged_date_str, errors='coerce')
+            if pd.isna(log_dt):
+                log_dt = cur_dt - pd.Timedelta(days=4)
+        else:
+            log_dt = cur_dt - pd.Timedelta(days=4)
+            
+        elapsed_hours = int((cur_dt - log_dt).total_seconds() / 3600)
+    except Exception:
+        elapsed_hours = 96
+        
+    is_breached = elapsed_hours >= 72
+    risk_level = "High" if elapsed_hours >= 72 else "Medium" if elapsed_hours >= 48 else "Low"
+    
+    return {
+        "ticket_id": ticket_id,
+        "is_breached": is_breached,
+        "hours_elapsed": elapsed_hours,
+        "risk_level": risk_level,
+        "warning": f"⚠️ Latency {elapsed_hours}h exceeds 72h threshold! High risk of imminent agent escalation." if is_breached else "Within standard SLA window."
+    }
+
+
+
+

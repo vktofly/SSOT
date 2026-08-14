@@ -1,71 +1,82 @@
+"""
+Database persistence layer for BharatTrip SSOT.
+Encapsulates SQLite connection management, parameterized queries, and transactional updates.
+"""
 import sqlite3
-import pandas as pd
 import os
-import streamlit as st
+import logging
+from typing import Dict, Any
 
-DB_PATH = "data/ssot.db"
+logger = logging.getLogger(__name__)
 
-def get_connection():
+DB_PATH: str = "data/ssot.db"
+
+def get_connection() -> sqlite3.Connection:
+    """Returns a new SQLite database connection."""
+    os.makedirs(os.path.dirname(DB_PATH), exist_ok=True)
     return sqlite3.connect(DB_PATH)
 
-def insert_support_record(record: dict):
-    """Inserts a single new record into the support_tracker table."""
-    conn = get_connection()
-    cursor = conn.cursor()
-    
+def insert_support_record(record: Dict[str, Any]) -> bool:
+    """Inserts a single new record into the support_tracker table using parameterized SQL."""
+    if not record:
+        return False
+        
     columns = ', '.join(f'"{k}"' for k in record.keys())
     placeholders = ', '.join('?' for _ in record.values())
     values = tuple(record.values())
-    
     query = f"INSERT INTO support_tracker ({columns}) VALUES ({placeholders})"
-    try:
-        cursor.execute(query, values)
-        conn.commit()
-    except Exception as e:
-        print(f"Error inserting record: {e}")
-    finally:
-        conn.close()
-
-def update_support_status(ticket_id: str, new_status: str, appended_notes: str):
-    """Updates the status and notes of a specific support ticket."""
-    conn = get_connection()
-    cursor = conn.cursor()
     
-    # We update the fields where `Ticket ID` matches
+    try:
+        with get_connection() as conn:
+            cursor = conn.cursor()
+            cursor.execute(query, values)
+            conn.commit()
+        return True
+    except sqlite3.Error as err:
+        logger.error("Failed to insert support record: %s", err)
+        return False
+
+def update_support_status(ticket_id: str, new_status: str, appended_notes: str) -> bool:
+    """Updates the status and notes of a specific support ticket."""
+    if not ticket_id:
+        return False
+        
     query = 'UPDATE support_tracker SET "Status" = ?, "Notes" = ? WHERE "Ticket ID" = ?'
     try:
-        cursor.execute(query, (new_status, appended_notes, ticket_id))
-        conn.commit()
-    except Exception as e:
-        print(f"Error updating record: {e}")
-    finally:
-        conn.close()
+        with get_connection() as conn:
+            cursor = conn.cursor()
+            cursor.execute(query, (new_status, appended_notes, ticket_id))
+            conn.commit()
+        return True
+    except sqlite3.Error as err:
+        logger.error("Failed to update support status for ticket %s: %s", ticket_id, err)
+        return False
 
-def delete_escalation(ticket_id: str, message: str):
-    """Deletes an escalation from the active queue using Ticket ID and Message."""
-    conn = get_connection()
-    cursor = conn.cursor()
-    
-    # Use exact match or coalesce for nulls depending on data
+def delete_escalation(ticket_id: str, message: str) -> bool:
+    """Deletes an escalation from the active queue using parameterized Ticket ID and Message."""
     query = 'DELETE FROM escalations WHERE "Ticket ID" = ? AND "Message" = ?'
     try:
-        cursor.execute(query, (ticket_id, message))
-        conn.commit()
-    except Exception as e:
-        print(f"Error deleting record: {e}")
-    finally:
-        conn.close()
+        with get_connection() as conn:
+            cursor = conn.cursor()
+            cursor.execute(query, (ticket_id, message))
+            conn.commit()
+        return True
+    except sqlite3.Error as err:
+        logger.error("Failed to delete escalation: %s", err)
+        return False
 
-def update_ticket_id(old_id: str, new_id: str):
+def update_ticket_id(old_id: str, new_id: str) -> bool:
     """Updates the Ticket ID across the support_tracker to match Finance."""
-    conn = get_connection()
-    cursor = conn.cursor()
-    
+    if not old_id or not new_id:
+        return False
+        
     query = 'UPDATE support_tracker SET "Ticket ID" = ? WHERE "Ticket ID" = ?'
     try:
-        cursor.execute(query, (new_id, old_id))
-        conn.commit()
-    except Exception as e:
-        print(f"Error updating ticket ID: {e}")
-    finally:
-        conn.close()
+        with get_connection() as conn:
+            cursor = conn.cursor()
+            cursor.execute(query, (new_id, old_id))
+            conn.commit()
+        return True
+    except sqlite3.Error as err:
+        logger.error("Failed to update ticket ID from %s to %s: %s", old_id, new_id, err)
+        return False
