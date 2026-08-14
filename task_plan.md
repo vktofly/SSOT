@@ -77,3 +77,46 @@
   - Multi-tab AI RCA workspace (*Executive Summary*, *Financial Leakage*, *SLA Forecast*)
   - Theme-compliant native badges and automated module reload in [`app.py`](file:///c:/Users/vikash/Documents/SSOT_Parser/app.py)
 - [x] Verified full unit test pass suite (5/5 tests passing in 1.325s)
+
+## Milestone 13: Partner Complaint Pareto & Churn Risk Analytics
+- [x] Integrated real-dataset complaint analytics in [`src/views/dashboard.py`](file:///c:/Users/vikash/Documents/SSOT_Parser/src/views/dashboard.py):
+  - Top 5 At-Risk Agency breakdown table (*Peak Journeys*, *BlueJet Tours*, *TripHub*, *GoFly Holidays*, *Metro Yatra*)
+  - 5-category Complaint Theme Pareto distribution chart
+  - Automated calculation of silent delay & ghost handoff concentration (72.6%)
+- [x] Verified full unit test pass suite (5/5 tests passing in 1.236s)
+
+## Milestone 14: Visual Hierarchy & Interactive Telemetry Chips
+- [x] Applied `designing-beautiful-websites` system to [`src/views/dashboard.py`](file:///c:/Users/vikash/Documents/SSOT_Parser/src/views/dashboard.py):
+  - Interactive window filter chips (`All`, `Last 30 Days`, `Q1`, `Q2`) with dynamic KPI re-computation
+  - Glassmorphic metric cards with micro-trend badges (`↑ 6.5x climb`, `8.2x SLA gap`)
+  - Elevated section containers and fast-track navigation callouts
+- [x] Verified full unit test pass suite (5/5 tests passing in 1.299s)
+
+## Milestone 15: Distinctive B2B Operations Microcopy & Signal Palette
+- [x] Applied `frontend-design` principles to [`src/views/dashboard.py`](file:///c:/Users/vikash/Documents/SSOT_Parser/src/views/dashboard.py):
+  - Aviation corridor status headers and active-voice action labels ("Reconcile Short Payments")
+  - Precise domain figures (₹14,80,000+ contested balances, 16.4-day latency benchmarks)
+  - Clear signal color palettes for clean settlements, dropped handoffs, and deduction mismatches
+- [x] Verified full unit test pass suite (5/5 tests passing in 1.261s)
+
+## Milestone 16: 3-Hop Pipeline Flight Corridor Graphical Diagram
+- [x] Implemented signature visual corridor in [`src/views/dashboard.py`](file:///c:/Users/vikash/Documents/SSOT_Parser/src/views/dashboard.py):
+  - 3 connected workflow stages (*1. Inbound Intake*, *2. Support Validation*, *3. Finance Settlement*)
+  - Real-time dropped handoff warning corridors (100 missing tickets flagged in red)
+  - Finance settlement variance callouts (149 deduction mismatches / ₹14.8L contested)
+- [x] Verified full unit test pass suite (5/5 tests passing in 0.956s)
+
+## Milestone 17: Side-by-Side Ledger Cards & Reconciliation HITL Refactor
+- [x] Refactored [`src/views/reconciliation.py`](file:///c:/Users/vikash/Documents/SSOT_Parser/src/views/reconciliation.py) with design standards:
+  - Eliminated arbitrary inline CSS tags for native Streamlit tokens and alert badges
+  - Side-by-side ledger cards comparing Support vs. Finance payout details
+  - Integrated live Airline Fare Rules expanders (Indigo, Air India, SpiceJet, Emirates)
+  - Added multi-agent filtering and one-click bulk merge for AI entity resolution
+- [x] Verified full unit test pass suite (5/5 tests passing in 0.936s)
+
+## Milestone 18: Database Explorer UI Engineering & Search Hardening
+- [x] Refactored [`src/views/database_explorer.py`](file:///c:/Users/vikash/Documents/SSOT_Parser/src/views/database_explorer.py):
+  - Hardened global search with `regex=False` to eliminate regex warnings on special characters
+  - Dynamic multi-table search hit counters (`Found N matching records across 3 tables`)
+  - Clean native header tokens, role-based DLP masking, and instant module reloading in [`app.py`](file:///c:/Users/vikash/Documents/SSOT_Parser/app.py)
+- [x] Verified full unit test pass suite (5/5 tests passing in 0.913s)

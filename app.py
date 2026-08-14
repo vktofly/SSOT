@@ -7,9 +7,17 @@ import importlib
 import src.views
 import src.views.dashboard
 import src.views.ingestion
+import src.views.reconciliation
+import src.views.database_explorer
+import src.views.escalation_triage
+import src.views.partner_matrix
 importlib.reload(src.views)
 importlib.reload(src.views.dashboard)
 importlib.reload(src.views.ingestion)
+importlib.reload(src.views.reconciliation)
+importlib.reload(src.views.database_explorer)
+importlib.reload(src.views.escalation_triage)
+importlib.reload(src.views.partner_matrix)
 from src.views import (
     render_dashboard, render_ingestion, render_reconciliation,
     render_database_explorer, render_escalation_triage, render_partner_matrix
