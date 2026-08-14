@@ -120,3 +120,11 @@
   - Dynamic multi-table search hit counters (`Found N matching records across 3 tables`)
   - Clean native header tokens, role-based DLP masking, and instant module reloading in [`app.py`](file:///c:/Users/vikash/Documents/SSOT_Parser/app.py)
 - [x] Verified full unit test pass suite (5/5 tests passing in 0.913s)
+
+## Milestone 19: Visual-First Dashboard UI/UX Streamlining
+- [x] Redesigned [`src/views/dashboard.py`](file:///c:/Users/vikash/Documents/SSOT_Parser/src/views/dashboard.py) for high glanceability:
+  - Replaced long descriptive paragraphs with 3 compact executive cards (*Core Discrepancy*, *Financial Leakage*, *Recovery Projection*)
+  - Streamlined 3-Hop Pipeline corridor into clean metric badges
+  - Moved deep AI LLM synthesis into on-demand collapsible expander
+  - Tightened chart captions and typography for a crisp 5-second glance test
+- [x] Verified full unit test pass suite (5/5 tests passing in 0.947s)
