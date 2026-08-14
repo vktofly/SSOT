@@ -38,23 +38,29 @@ st.set_page_config(
 # Inject global CSS for typography standardization & DLP text protection
 st.markdown("""
     <style>
-    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,600&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Roboto+Mono:wght@400;500&display=swap');
     
     :root {
-        --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-        --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+        --font-sans: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        --font-mono: 'Roboto Mono', 'Fira Code', monospace;
+        --google-blue: #1a73e8;
+        --google-surface: #ffffff;
+        --google-border: #dadce0;
+        --google-text: #202124;
+        --google-text-secondary: #5f6368;
     }
 
     html, body, [class*="css"], .stMarkdown, .stText, p, div, span, label, input, textarea, select, button {
         font-family: var(--font-sans) !important;
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
+        color: var(--google-text);
     }
 
     h1, h2, h3, h4, h5, h6, [data-testid="stHeading"] {
         font-family: var(--font-sans) !important;
-        font-weight: 700 !important;
-        letter-spacing: -0.02em !important;
+        font-weight: 400 !important;
+        color: var(--google-text) !important;
     }
 
     code, pre, .stCodeBlock, [data-testid="stCode"] {
@@ -64,11 +70,11 @@ st.markdown("""
     /* Standardized Section Labels */
     .dash-section-label, .section-kicker {
         font-family: var(--font-mono) !important;
-        font-size: 11px !important;
-        font-weight: 600 !important;
+        font-size: 12px !important;
+        font-weight: 500 !important;
         letter-spacing: 0.08em !important;
         text-transform: uppercase !important;
-        opacity: 0.55;
+        color: var(--google-text-secondary);
         margin-bottom: 6px;
     }
 
@@ -77,22 +83,20 @@ st.markdown("""
         display: inline-flex;
         align-items: center;
         gap: 6px;
-        font-family: var(--font-mono) !important;
-        font-size: 11px !important;
-        font-weight: 600 !important;
+        font-family: var(--font-sans) !important;
+        font-size: 12px !important;
+        font-weight: 500 !important;
         padding: 4px 12px;
-        border-radius: 9999px;
-        letter-spacing: 0.03em;
+        border-radius: 16px;
+        letter-spacing: 0.01em;
+        border: 1px solid var(--google-border);
+        background: var(--google-surface);
     }
     .status-dot {
         width: 6px;
         height: 6px;
         border-radius: 50%;
-        animation: pulse-dot 2s ease-in-out infinite;
-    }
-    @keyframes pulse-dot {
-        0%, 100% { opacity: 1; }
-        50% { opacity: 0.4; }
+        background-color: var(--google-blue);
     }
 
     /* DLP text selection lock */
@@ -102,70 +106,92 @@ st.markdown("""
         -ms-user-select: none;
     }
 
-    /* Enterprise Glassmorphism KPI cards */
+    /* Material Design KPI cards */
     div[data-testid="stMetric"] {
-        background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.02) 100%);
-        border: 1px solid rgba(255, 255, 255, 0.08);
-        border-top: 2px solid rgba(14, 165, 233, 0.6);
-        border-radius: 10px;
-        padding: 14px 18px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-        transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        background: var(--google-surface);
+        border: 1px solid var(--google-border);
+        border-radius: 8px;
+        padding: 16px 20px;
+        box-shadow: 0 1px 2px 0 rgba(60,64,67,0.3), 0 1px 3px 1px rgba(60,64,67,0.15);
+        transition: box-shadow 0.2s cubic-bezier(0.4, 0.0, 0.2, 1);
     }
     div[data-testid="stMetric"]:hover {
-        transform: translateY(-2px);
-        border-color: rgba(14, 165, 233, 0.8);
-        box-shadow: 0 8px 24px rgba(14, 165, 233, 0.15);
+        box-shadow: 0 1px 3px 0 rgba(60,64,67,0.3), 0 4px 8px 3px rgba(60,64,67,0.15);
     }
     div[data-testid="stMetricLabel"] {
         font-family: var(--font-sans) !important;
-        font-size: 13px !important;
+        font-size: 14px !important;
         font-weight: 500 !important;
-        letter-spacing: 0.01em !important;
+        color: var(--google-text-secondary) !important;
     }
     div[data-testid="stMetricValue"] {
         font-family: var(--font-sans) !important;
-        font-size: 26px !important;
-        font-weight: 800 !important;
-        font-variant-numeric: tabular-nums !important;
+        font-size: 28px !important;
+        font-weight: 400 !important;
+        color: var(--google-text) !important;
     }
     div[data-testid="stMetricDelta"] {
-        font-family: var(--font-mono) !important;
-        font-size: 12px !important;
+        font-family: var(--font-sans) !important;
+        font-size: 13px !important;
         font-weight: 500 !important;
     }
 
     /* Polished Interactive Buttons */
     div.stButton > button {
-        border-radius: 8px;
+        border-radius: 4px;
         font-family: var(--font-sans) !important;
-        font-weight: 600;
+        font-weight: 500;
         letter-spacing: 0.01em;
-        transition: all 0.2s ease-in-out;
+        transition: background-color 0.2s, box-shadow 0.2s;
+        border: 1px solid var(--google-border);
     }
-    div.stButton > button:hover {
-        transform: translateY(-1px);
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    div.stButton > button[kind="primary"] {
+        background-color: var(--google-blue);
+        color: white;
+        border: none;
+    }
+    div.stButton > button[kind="primary"]:hover {
+        background-color: #1765cc;
+        box-shadow: 0 1px 2px 0 rgba(60,64,67,0.3), 0 1px 3px 1px rgba(60,64,67,0.15);
+        color: white;
+    }
+    div.stButton > button[kind="secondary"] {
+        background-color: transparent;
+        color: var(--google-blue);
+        border: 1px solid var(--google-border);
+    }
+    div.stButton > button[kind="secondary"]:hover {
+        background-color: rgba(26, 115, 232, 0.04);
+        border-color: var(--google-border);
+        color: var(--google-blue);
     }
 
     /* Modern Tabs Navigation */
     .stTabs [data-baseweb="tab-list"] {
-        gap: 8px;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        padding-bottom: 4px;
+        gap: 24px;
+        border-bottom: 1px solid var(--google-border);
+        padding-bottom: 0px;
     }
     .stTabs [data-baseweb="tab"] {
-        border-radius: 6px 6px 0 0;
-        padding: 8px 16px;
+        border-radius: 0;
+        padding: 12px 0px;
         font-family: var(--font-sans) !important;
-        font-weight: 600;
-        font-size: 13px;
-        letter-spacing: 0.01em;
+        font-weight: 500;
+        font-size: 14px;
+        color: var(--google-text-secondary);
+        border-bottom: 2px solid transparent;
+        background-color: transparent;
+    }
+    .stTabs [data-baseweb="tab"][aria-selected="true"] {
+        color: var(--google-blue);
+        border-bottom: 2px solid var(--google-blue);
     }
 
-    /* Subtle Glassmorphism for Containers & Expanders */
-    div[data-testid="stExpander"], div[data-testid="stContainer"] {
+    /* Containers & Expanders */
+    div[data-testid="stExpander"] {
+        border: 1px solid var(--google-border);
         border-radius: 8px;
+        background: var(--google-surface);
     }
     </style>
 """, unsafe_allow_html=True)

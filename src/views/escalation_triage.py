@@ -13,8 +13,8 @@ def render_escalation_triage(escalations_df, support_df):
     with status_col2:
         st.markdown("""
             <div style="text-align: right; padding-top: 18px;">
-                <span class="status-pill" style="background: rgba(244, 63, 94, 0.12); border: 1px solid rgba(244, 63, 94, 0.3); color: #f43f5e;">
-                    <span class="status-dot" style="background: #f43f5e;"></span>
+                <span class="status-pill" style="background: rgba(234, 67, 53, 0.12); border: 1px solid rgba(234, 67, 53, 0.3); color: #ea4335;">
+                    <span class="status-dot" style="background: #ea4335;"></span>
                     TRIAGE LIVE
                 </span>
             </div>

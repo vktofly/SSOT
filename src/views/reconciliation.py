@@ -38,9 +38,9 @@ def render_reconciliation_header() -> None:
     with status_col2:
         st.markdown(
             '<div style="text-align: right; padding-top: 18px;">'
-            '<span class="status-pill" style="background: rgba(16,185,129,0.1); '
-            'border: 1px solid rgba(16,185,129,0.25); color: #10b981;">'
-            '<span class="status-dot" style="background: #10b981;"></span>'
+            '<span class="status-pill" style="background: rgba(52,168,83,0.1); border: 1px solid rgba(52,168,83,0.3); color: #34a853;">'
+            '● Active '
+            '<span class="status-dot" style="background: #34a853;"></span>'
             'HITL Recon Active'
             '</span>'
             '</div>',
@@ -143,7 +143,7 @@ def render_mismatch_studio(
                 st.rerun()
 
     st.markdown("---")
-    st.subheader("1. Individual Ticket Ledger Audit")
+    st.subheader("Individual Ticket Ledger Audit")
     
     ticket_options = {
         f"Ticket {m['Ticket ID']} · {m['Agent']} (₹{m['Deduction']} Variance)": m 
@@ -174,8 +174,9 @@ def render_mismatch_studio(
                 st.metric("Customer Promised Refund", f"₹{m.get('Support Amount', '0')}")
 
         with c_mid:
-            st.markdown("<br><br><h3 style='text-align: center; color: #f59e0b;'>VS</h3>", unsafe_allow_html=True)
+            st.markdown("<br><br><h3 style='text-align: center; color: var(--google-text-secondary);'>VS</h3>", unsafe_allow_html=True)
             st.caption(f"<div style='text-align:center;'><b>₹{m.get('Deduction', '0')}</b><br>Deducted</div>", unsafe_allow_html=True)
+
 
         with c_fin:
             with st.container(border=True):
@@ -237,7 +238,7 @@ def render_orphaned_tickets_studio(
     missing_in_support: List[Dict[str, Any]]
 ) -> None:
     """Renders entity resolution and metadata fuzzy matching studio for orphaned records."""
-    st.subheader("2. Orphaned Tickets & Cross-Ledger AI Linkage")
+    st.subheader("Orphaned Tickets & Cross-Ledger AI Linkage")
     st.caption("Resolve records that exist in one tracker but were dropped or mistyped in the other.")
     
     # High-Risk Agent Warnings
@@ -416,7 +417,7 @@ def render_orphaned_tickets_studio(
 
 def render_proactive_notification_bot(support_df: pd.DataFrame) -> None:
     """Renders proactive lifecycle milestone notification studio."""
-    st.subheader("3. Proactive Partner Notification Bot")
+    st.subheader("Proactive Partner Notification Bot")
     st.caption("Dispatch outbound milestone alerts to travel agencies to preempt inbound status chasing.")
     
     col1, col2 = st.columns([1, 1])
@@ -426,10 +427,10 @@ def render_proactive_notification_bot(support_df: pd.DataFrame) -> None:
                 "Lifecycle Milestone Event:",
                 ["logged", "verified", "payout_done", "custom"],
                 format_func=lambda x: {
-                    "logged": "1. Request Logged (48h SLA Notice)",
-                    "verified": "2. Finance Verification Complete",
-                    "payout_done": "3. Payout Dispatched (With Carrier Penalty Breakdown)",
-                    "custom": "4. Custom Active Review Notice"
+                    "logged": "Request Logged (48h SLA Notice)",
+                    "verified": "Finance Verification Complete",
+                    "payout_done": "Payout Dispatched (With Carrier Penalty Breakdown)",
+                    "custom": "Custom Active Review Notice"
                 }[x],
                 key="proactive_stage_select"
             )

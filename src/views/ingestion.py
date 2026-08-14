@@ -57,9 +57,9 @@ def render_ingestion_header() -> None:
     with status_col2:
         st.markdown(
             '<div style="text-align: right; padding-top: 18px;">'
-            '<span class="status-pill" style="background: rgba(16,185,129,0.1); '
-            'border: 1px solid rgba(16,185,129,0.25); color: #10b981;">'
-            '<span class="status-dot" style="background: #10b981;"></span>'
+            '<span class="status-pill" style="background: rgba(52,168,83,0.1); border: 1px solid rgba(52,168,83,0.3); color: #34a853;">'
+            '● Active '
+            '<span class="status-dot" style="background: #34a853;"></span>'
             'Webhook Active'
             '</span>'
             '</div>',
@@ -177,7 +177,7 @@ def render_incoming_queue() -> None:
     """Renders filtered webhook inbox with batch and single parse triggers."""
     q_col1, q_col2 = st.columns([3, 1])
     with q_col1:
-        st.subheader("1. Incoming Unstructured Queue")
+        st.subheader("Incoming Unstructured Queue")
     with q_col2:
         channels = ["All", "WhatsApp", "Email", "Portal", "Phone", "OTA API", "JSON Batch"]
         current_selection = st.session_state.channel_filter
@@ -243,7 +243,7 @@ def render_incoming_queue() -> None:
 def render_review_workspace() -> None:
     """Renders the Human-In-The-Loop review and database commit interface."""
     st.markdown("---")
-    st.subheader("2. Human-In-The-Loop Verification Queue")
+    st.subheader("Human-In-The-Loop Verification Queue")
     
     if not st.session_state.review_queue:
         with st.container(border=True):

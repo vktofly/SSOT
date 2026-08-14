@@ -71,60 +71,62 @@ def inject_dashboard_styles() -> None:
     """Injects the redesigned CSS token system."""
     st.markdown("""
     <style>
-    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
-
     /* ── Design Tokens ── */
     :root {
-        --font-display: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-        --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+        --font-display: var(--font-sans);
+        --font-mono: var(--font-mono);
 
-        --clr-accent: #0ea5e9;
-        --clr-accent-subtle: rgba(14, 165, 233, 0.12);
-        --clr-success: #10b981;
-        --clr-success-subtle: rgba(16, 185, 129, 0.12);
-        --clr-warning: #f59e0b;
-        --clr-warning-subtle: rgba(245, 158, 11, 0.12);
-        --clr-danger: #ef4444;
-        --clr-danger-subtle: rgba(239, 68, 68, 0.12);
+        --clr-accent: #1a73e8;
+        --clr-accent-subtle: rgba(26, 115, 232, 0.12);
+        --clr-success: #34a853;
+        --clr-success-subtle: rgba(52, 168, 83, 0.12);
+        --clr-warning: #fbbc04;
+        --clr-warning-subtle: rgba(251, 188, 4, 0.12);
+        --clr-danger: #ea4335;
+        --clr-danger-subtle: rgba(234, 67, 53, 0.12);
 
-        --radius-sm: 6px;
-        --radius-md: 10px;
-        --radius-lg: 14px;
+        --radius-sm: 4px;
+        --radius-md: 8px;
+        --radius-lg: 12px;
     }
 
     /* ── Section Label ── */
     .dash-section-label {
-        font-family: var(--font-mono);
-        font-size: 11px;
+        font-family: var(--font-sans);
+        font-size: 12px;
         font-weight: 500;
         letter-spacing: 0.06em;
         text-transform: uppercase;
-        opacity: 0.5;
+        color: var(--google-text-secondary);
         margin-bottom: 6px;
         padding-left: 2px;
     }
 
     /* ── KPI Hero Card (Health Gauge) ── */
     .kpi-hero {
-        background: rgba(14, 165, 233, 0.06);
-        border: 1px solid rgba(14, 165, 233, 0.2);
-        border-top: 2px solid var(--clr-accent);
-        border-radius: var(--radius-lg);
+        background: var(--google-surface);
+        border: 1px solid var(--google-border);
+        border-radius: 8px;
         padding: 24px;
         display: flex;
         flex-direction: column;
         align-items: center;
         gap: 12px;
+        box-shadow: 0 1px 2px 0 rgba(60,64,67,0.3), 0 1px 3px 1px rgba(60,64,67,0.15);
     }
 
     /* ── KPI Stat Card ── */
     .kpi-stat {
-        border-radius: var(--radius-md);
-        padding: 18px 20px;
-        transition: transform 0.25s cubic-bezier(0.32, 0.72, 0, 1);
+        background: var(--google-surface);
+        border: 1px solid var(--google-border);
+        border-radius: 8px;
+        box-shadow: 0 1px 2px 0 rgba(60,64,67,0.3), 0 1px 3px 1px rgba(60,64,67,0.15);
+        padding: 16px 20px;
+        transition: transform 0.2s cubic-bezier(0.4, 0.0, 0.2, 1), box-shadow 0.2s cubic-bezier(0.4, 0.0, 0.2, 1);
     }
     .kpi-stat:hover {
         transform: translateY(-1px);
+        box-shadow: 0 1px 3px 0 rgba(60,64,67,0.3), 0 4px 8px 3px rgba(60,64,67,0.15);
     }
     .kpi-stat-label {
         font-family: var(--font-mono);
@@ -138,10 +140,11 @@ def inject_dashboard_styles() -> None:
     .kpi-stat-value {
         font-family: var(--font-display);
         font-size: 28px;
-        font-weight: 800;
+        font-weight: 500;
         font-variant-numeric: tabular-nums;
         line-height: 1.1;
         margin-bottom: 4px;
+        color: var(--google-text);
     }
     .kpi-stat-delta {
         font-family: var(--font-mono);
@@ -150,7 +153,32 @@ def inject_dashboard_styles() -> None:
         opacity: 0.6;
     }
 
-    /* ── Pipeline Nodes ── */
+    /* ── Pipeline Corridor ── */
+    .pipeline-corridor-card {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background: var(--google-surface);
+        border: 1px solid var(--google-border);
+        border-radius: 8px;
+        box-shadow: 0 1px 2px 0 rgba(60,64,67,0.3), 0 1px 3px 1px rgba(60,64,67,0.15);
+        padding: 24px 32px;
+        gap: 16px;
+    }
+    .pipeline-node {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+    }
+    .pipeline-connector {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        color: var(--google-text-secondary);
+        opacity: 0.4;
+        padding: 0 8px;
+    }
     .pipeline-node-label {
         font-family: var(--font-mono);
         font-size: 10px;
@@ -169,9 +197,10 @@ def inject_dashboard_styles() -> None:
     .pipeline-node-metric {
         font-family: var(--font-display);
         font-size: 24px;
-        font-weight: 800;
+        font-weight: 500;
         font-variant-numeric: tabular-nums;
         line-height: 1.2;
+        color: var(--google-text);
     }
     .pipeline-node-sub {
         font-family: var(--font-mono);
@@ -233,9 +262,10 @@ def inject_dashboard_styles() -> None:
 
     /* ── RCA Executive Card ── */
     .rca-card {
-        background: rgba(14, 165, 233, 0.04);
-        border-left: 3px solid var(--clr-accent);
-        border-radius: var(--radius-md);
+        background: var(--google-surface);
+        border: 1px solid var(--google-border);
+        border-radius: 8px;
+        box-shadow: 0 1px 2px 0 rgba(60,64,67,0.3), 0 1px 3px 1px rgba(60,64,67,0.15);
         padding: 24px 28px;
     }
     .rca-item {
@@ -329,9 +359,9 @@ def render_dashboard_header() -> str:
     with status_col:
         st.markdown(
             '<div style="text-align: right; padding-top: 18px;">'
-            '<span class="status-pill" style="background: rgba(16,185,129,0.1); '
-            'border: 1px solid rgba(16,185,129,0.25); color: #10b981;">'
-            '<span class="status-dot" style="background: #10b981;"></span>'
+            '<span class="status-pill" style="background: rgba(52,168,83,0.1); border: 1px solid rgba(52,168,83,0.3); color: #34a853;">'
+            '● Live Stream '
+            '<span class="status-dot" style="background: #34a853;"></span>'
             'SSOT Active'
             '</span>'
             '</div>',
@@ -365,14 +395,14 @@ def render_kpi_cards(metrics: Dict[str, Any]) -> None:
         pct = metrics['health_pct']
         circumference = 283
         stroke_dash = (pct / 100.0) * circumference
-        gauge_color = "#10b981" if pct >= 80 else "#0ea5e9" if pct >= 60 else "#f59e0b"
+        gauge_color = "#34a853" if pct >= 80 else "#1a73e8" if pct >= 60 else "#fbbc04"
         status_text = "Healthy" if pct >= 80 else "Degraded" if pct >= 60 else "At Risk"
 
         st.markdown(f"""
         <div class="kpi-hero">
             <svg width="140" height="140" viewBox="0 0 120 120">
                 <circle cx="60" cy="60" r="45" fill="none"
-                    stroke="rgba(255,255,255,0.05)" stroke-width="8" />
+                    stroke="var(--google-border)" stroke-width="8" />
                 <circle cx="60" cy="60" r="45" fill="none"
                     stroke="{gauge_color}" stroke-width="8"
                     stroke-dasharray="{stroke_dash} {circumference}"
@@ -380,11 +410,11 @@ def render_kpi_cards(metrics: Dict[str, Any]) -> None:
                     transform="rotate(-90 60 60)"
                     style="transition: stroke-dasharray 0.8s cubic-bezier(0.32,0.72,0,1);" />
                 <text x="60" y="55" text-anchor="middle"
-                    font-family="'Plus Jakarta Sans', sans-serif"
-                    font-size="26" font-weight="800" fill="#f1f5f9"
+                    font-family="var(--font-sans)"
+                    font-size="26" font-weight="500" fill="var(--google-text)"
                     style="font-variant-numeric: tabular-nums;">{pct}%</text>
                 <text x="60" y="72" text-anchor="middle"
-                    font-family="'JetBrains Mono', monospace"
+                    font-family="var(--font-mono)"
                     font-size="9" font-weight="500" fill="{gauge_color}"
                     letter-spacing="0.08em">{status_text.upper()}</text>
             </svg>
@@ -440,7 +470,7 @@ def render_kpi_cards(metrics: Dict[str, Any]) -> None:
 def _render_stat_card(label: str, value: str, delta: str, accent_color: str) -> None:
     """Renders a single KPI stat card."""
     st.markdown(f"""
-    <div class="kpi-stat" style="border-top: 2px solid {accent_color};">
+    <div class="kpi-stat">
         <div class="kpi-stat-label">{label}</div>
         <div class="kpi-stat-value">{value}</div>
         <div class="kpi-stat-delta">{delta}</div>
@@ -449,61 +479,48 @@ def _render_stat_card(label: str, value: str, delta: str, accent_color: str) -> 
 
 
 # ---------------------------------------------------------------------------
-# Pipeline Corridor — Horizontal Stepper (Streamlit-native layout)
+# Pipeline Corridor — Unified Google Material Stepper
 # ---------------------------------------------------------------------------
-def _render_pipeline_node(label: str, title: str, metric_val: str, sub: str, note: str, accent_color: str, note_color: str = "") -> None:
-    """Renders a single pipeline hop node using small HTML inside a Streamlit container."""
-    with st.container(border=True):
-        st.markdown(f'<div class="pipeline-node-label">{label}</div>', unsafe_allow_html=True)
-        st.markdown(f'<div class="pipeline-node-title">{title}</div>', unsafe_allow_html=True)
-        st.markdown(f'<div class="pipeline-node-metric">{metric_val}</div>', unsafe_allow_html=True)
-        st.markdown(f'<div class="pipeline-node-sub">{sub}</div>', unsafe_allow_html=True)
-        note_style = f' style="color: {note_color};"' if note_color else ''
-        st.markdown(f'<div class="pipeline-node-note"{note_style}>{note}</div>', unsafe_allow_html=True)
-
-
 def render_pipeline_corridor(metrics: Dict[str, Any]) -> None:
-    """Renders the 3-hop pipeline using Streamlit columns."""
+    """Renders the 3-hop pipeline using a single unified Flexbox card."""
     st.markdown('<div class="section-gap"></div>', unsafe_allow_html=True)
     st.markdown('<div class="dash-section-label">Settlement corridor</div>', unsafe_allow_html=True)
 
     audited = metrics['total_pipeline'] - metrics['dropped_handoffs']
-    hop3_color = '#10b981' if metrics['health_pct'] >= 80 else '#f59e0b' if metrics['health_pct'] >= 60 else '#ef4444'
+    hop3_color = '#34a853' if metrics['health_pct'] >= 80 else '#fbbc04' if metrics['health_pct'] >= 60 else '#ea4335'
+    
+    chevron = '''<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>'''
 
-    hop1, arr1, hop2, arr2, hop3 = st.columns([4, 1, 4, 1, 4])
-
-    with hop1:
-        _render_pipeline_node(
-            label="Hop 01 · Ingestion",
-            title="Inbound Intake",
-            metric_val=str(metrics['total_pipeline']),
-            sub="Total claims",
-            note="WhatsApp · Email · Web intake",
-            accent_color="#10b981"
-        )
-    with arr1:
-        st.markdown('<br><h2 style="text-align: center; color: #f59e0b; margin: 0;">→</h2>', unsafe_allow_html=True)
-    with hop2:
-        _render_pipeline_node(
-            label="Hop 02 · Support Audit",
-            title="Route Validation",
-            metric_val=str(audited),
-            sub="Audited tickets",
-            note=f"−{metrics['dropped_handoffs']} dropped before Finance sync",
-            accent_color="#f59e0b",
-            note_color="#ef4444"
-        )
-    with arr2:
-        st.markdown('<br><h2 style="text-align: center; color: #ef4444; margin: 0;">→</h2>', unsafe_allow_html=True)
-    with hop3:
-        _render_pipeline_node(
-            label="Hop 03 · Settlement",
-            title="Banking Payout",
-            metric_val=str(metrics['healthy_count']),
-            sub="Clean settlements",
-            note=f"{metrics['deduction_mismatches']} mismatches · ₹14.8L variance",
-            accent_color=hop3_color
-        )
+    st.markdown(f"""
+    <div class="pipeline-corridor-card">
+        <!-- Node 1 -->
+        <div class="pipeline-node">
+            <div class="pipeline-node-label">Intake Pipeline</div>
+            <div class="pipeline-node-title">Inbound Intake</div>
+            <div class="pipeline-node-metric" style="color: #34a853;">{metrics['total_pipeline']}</div>
+            <div class="pipeline-node-sub">Total claims</div>
+            <div class="pipeline-node-note">WhatsApp · Email · Web intake</div>
+        </div>
+        <div class="pipeline-connector">{chevron}</div>
+        <!-- Node 2 -->
+        <div class="pipeline-node">
+            <div class="pipeline-node-label">Support Audit</div>
+            <div class="pipeline-node-title">Route Validation</div>
+            <div class="pipeline-node-metric" style="color: #fbbc04;">{audited}</div>
+            <div class="pipeline-node-sub">Audited tickets</div>
+            <div class="pipeline-node-note" style="color: #ea4335;">−{metrics['dropped_handoffs']} dropped before Finance sync</div>
+        </div>
+        <div class="pipeline-connector">{chevron}</div>
+        <!-- Node 3 -->
+        <div class="pipeline-node">
+            <div class="pipeline-node-label">Settlement Corridor</div>
+            <div class="pipeline-node-title">Banking Payout</div>
+            <div class="pipeline-node-metric" style="color: {hop3_color};">{metrics['healthy_count']}</div>
+            <div class="pipeline-node-sub">Clean settlements</div>
+            <div class="pipeline-node-note">{metrics['deduction_mismatches']} mismatches &middot; ₹14.8L variance</div>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
 
 
 # ---------------------------------------------------------------------------
@@ -515,19 +532,19 @@ def render_carrier_health() -> None:
     st.markdown('<div class="dash-section-label">Carrier health</div>', unsafe_allow_html=True)
 
     carriers = [
-        {"name": "IndiGo (6E)", "type": "Domestic", "type_color": "#10b981",
+        {"name": "IndiGo (6E)", "type": "Domestic", "type_color": "#34a853",
          "fee": "₹600", "sla": "24h", "pct": 92},
-        {"name": "SpiceJet (SG)", "type": "Regional", "type_color": "#0ea5e9",
+        {"name": "SpiceJet (SG)", "type": "Regional", "type_color": "#1a73e8",
          "fee": "₹800", "sla": "36h", "pct": 84},
-        {"name": "Air India (AI)", "type": "Mixed", "type_color": "#f59e0b",
+        {"name": "Air India (AI)", "type": "Mixed", "type_color": "#fbbc04",
          "fee": "₹1,200", "sla": "48h", "pct": 78},
-        {"name": "Emirates (EK)", "type": "International", "type_color": "#ef4444",
+        {"name": "Emirates (EK)", "type": "International", "type_color": "#ea4335",
          "fee": "₹1,800", "sla": "72h", "pct": 69},
     ]
 
     with st.container(border=True):
         for c in carriers:
-            bar_color = "#10b981" if c["pct"] >= 85 else "#0ea5e9" if c["pct"] >= 75 else "#f59e0b" if c["pct"] >= 70 else "#ef4444"
+            bar_color = "#34a853" if c["pct"] >= 85 else "#1a73e8" if c["pct"] >= 75 else "#fbbc04" if c["pct"] >= 70 else "#ea4335"
             c_name, c_badge, c_fee, c_sla, c_bar = st.columns([2, 1.5, 1, 1, 2])
             with c_name:
                 st.markdown(f'<div style="font-weight: 600; padding-top: 6px;">{c["name"]}</div>', unsafe_allow_html=True)
@@ -570,7 +587,7 @@ def render_analytics(escalations_df: pd.DataFrame) -> None:
                 "Month": ["Feb", "Mar", "Apr", "May", "Jun"],
                 "Disputes": [12, 28, 41, 56, 78]
             })
-            st.bar_chart(monthly_data, x="Month", y="Disputes", color="#0ea5e9")
+            st.bar_chart(monthly_data, x="Month", y="Disputes", color="#1a73e8")
 
     with col_cause:
         with st.container(border=True):
@@ -582,7 +599,7 @@ def render_analytics(escalations_df: pd.DataFrame) -> None:
                 "Cause": ["Deductions", "Dropped", "Off-Tracker", "Carrier"],
                 "Count": [149, 100, 42, 24]
             }).set_index("Cause")
-            st.bar_chart(discrepancy_data, color="#f59e0b")
+            st.bar_chart(discrepancy_data, color="#fbbc04")
 
     col_agencies, col_pareto = st.columns(2, gap="medium")
 
@@ -620,7 +637,7 @@ def render_analytics(escalations_df: pd.DataFrame) -> None:
                              "Unlogged Msg", "No Reason"],
                 "Count": [61, 32, 21, 17, 5]
             }).set_index("Category")
-            st.bar_chart(pareto_df, color="#ef4444")
+            st.bar_chart(pareto_df, color="#ea4335")
 
 
 # ---------------------------------------------------------------------------
@@ -634,9 +651,9 @@ def render_rca_section(escalations_df: pd.DataFrame) -> None:
     st.markdown("""
     <div class="rca-card">
         <div class="rca-item">
-            <div class="rca-icon" style="background: rgba(239,68,68,0.12); color: var(--clr-danger); font-family: var(--font-mono); font-weight: 700; font-size: 13px;">01</div>
+            <div class="rca-icon" style="background: rgba(234,67,53,0.12); color: var(--clr-danger); font-family: var(--font-mono); font-weight: 700; font-size: 11px;">RCA</div>
             <div>
-                <div class="rca-item-label" style="color: var(--clr-danger);">Root cause 01</div>
+                <div class="rca-item-label" style="color: var(--clr-danger);">Intake Handoff Failure</div>
                 <div class="rca-item-title">100 tickets dropped at handoff</div>
                 <div class="rca-item-desc">
                     Support closed tickets before Finance confirmation,
@@ -645,9 +662,9 @@ def render_rca_section(escalations_df: pd.DataFrame) -> None:
             </div>
         </div>
         <div class="rca-item">
-            <div class="rca-icon" style="background: rgba(245,158,11,0.12); color: var(--clr-warning); font-family: var(--font-mono); font-weight: 700; font-size: 13px;">02</div>
+            <div class="rca-icon" style="background: rgba(251,188,4,0.12); color: var(--clr-warning); font-family: var(--font-mono); font-weight: 700; font-size: 11px;">VAR</div>
             <div>
-                <div class="rca-item-label" style="color: var(--clr-warning);">Root cause 02</div>
+                <div class="rca-item-label" style="color: var(--clr-warning);">Deduction Variance</div>
                 <div class="rca-item-title">₹14.8L in contested deduction variances</div>
                 <div class="rca-item-desc">
                     149 airline penalty deduction mismatches applied without
@@ -656,9 +673,9 @@ def render_rca_section(escalations_df: pd.DataFrame) -> None:
             </div>
         </div>
         <div class="rca-item">
-            <div class="rca-icon" style="background: rgba(14,165,233,0.12); color: var(--clr-accent); font-family: var(--font-mono); font-weight: 700; font-size: 13px;">03</div>
+            <div class="rca-icon" style="background: rgba(26,115,232,0.12); color: var(--clr-accent); font-family: var(--font-mono); font-weight: 700; font-size: 11px;">SLA</div>
             <div>
-                <div class="rca-item-label" style="color: var(--clr-accent);">Projected outcome</div>
+                <div class="rca-item-label" style="color: var(--clr-accent);">Projected Outcome</div>
                 <div class="rca-item-title">&lt; 4h resolution with automated MCP reconciliation</div>
                 <div class="rca-item-desc">
                     8.2× SLA improvement achievable with zero added headcount

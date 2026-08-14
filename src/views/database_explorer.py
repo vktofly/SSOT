@@ -39,9 +39,9 @@ def render_database_explorer_header() -> None:
     with status_col2:
         st.markdown(
             '<div style="text-align: right; padding-top: 18px;">'
-            '<span class="status-pill" style="background: rgba(16,185,129,0.1); '
-            'border: 1px solid rgba(16,185,129,0.25); color: #10b981;">'
-            '<span class="status-dot" style="background: #10b981;"></span>'
+            '<span class="status-pill" style="background: rgba(52,168,83,0.1); border: 1px solid rgba(52,168,83,0.3); color: #34a853;">'
+            '● Active '
+            '<span class="status-dot" style="background: #34a853;"></span>'
             'SQLite Synced'
             '</span>'
             '</div>',
