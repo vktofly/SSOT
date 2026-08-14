@@ -114,6 +114,11 @@ def render_partner_matrix(escalations_df, support_df):
                     st.rerun()
                 if st.button("Jump to Reconciliation Queue", use_container_width=True):
                     try:
-                        st.switch_page("reconciliation")
+                        st.switch_page(st.session_state.pages["reconciliation"])
+                    except Exception:
+                        pass
+                if st.button("Jump to Escalation Triage", use_container_width=True):
+                    try:
+                        st.switch_page(st.session_state.pages["triage"])
                     except Exception:
                         pass

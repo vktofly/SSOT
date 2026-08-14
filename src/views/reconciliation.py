@@ -241,11 +241,18 @@ def render_orphaned_tickets_studio(
     st.subheader("Orphaned Tickets & Cross-Ledger AI Linkage")
     st.caption("Resolve records that exist in one tracker but were dropped or mistyped in the other.")
     
-    # High-Risk Agent Warnings
-    high_risk_agents = set([m.get('Risk Note') for m in missing_in_finance if m.get('Risk Level') == 'High'])
-    for note in high_risk_agents:
-        if note:
-            st.warning(f"**High-Risk Agent Corridor:** {note}")
+    col_orph1, col_orph2 = st.columns([3, 1])
+    with col_orph2:
+        if st.button("Parse Missing Emails (Ingestion)", use_container_width=True, key="btn_jump_ingest"):
+            st.switch_page(st.session_state.pages["ingestion"])
+    
+    with col_orph1:
+    
+        # High-Risk Agent Warnings
+        high_risk_agents = set([m.get('Risk Note') for m in missing_in_finance if m.get('Risk Level') == 'High'])
+        for note in high_risk_agents:
+            if note:
+                st.warning(f"**High-Risk Agent Corridor:** {note}")
     
     col_s, col_f = st.columns(2)
     with col_s:

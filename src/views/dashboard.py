@@ -8,6 +8,7 @@ stepper, carrier data table, and executive RCA summary.
 from typing import Dict, Any, List
 import pandas as pd
 import streamlit as st
+import altair as alt
 from src.agents import analyze_escalations
 from src.data_manager import find_mismatches, find_orphans
 
@@ -459,12 +460,10 @@ def render_kpi_cards(metrics: Dict[str, Any]) -> None:
     _, btn1, btn2, _ = st.columns([2, 1, 1, 1])
     with btn1:
         if st.button("Reconcile", type="primary", use_container_width=True, key="btn_dash_recon"):
-            st.session_state['current_page'] = "Reconciliation Matrix"
-            st.rerun()
+            st.switch_page(st.session_state.pages["reconciliation"])
     with btn2:
         if st.button("Triage", use_container_width=True, key="btn_dash_triage"):
-            st.session_state['current_page'] = "Escalation Triage"
-            st.rerun()
+            st.switch_page(st.session_state.pages["triage"])
 
 
 def _render_stat_card(label: str, value: str, delta: str, accent_color: str) -> None:
@@ -573,42 +572,75 @@ def render_carrier_health() -> None:
 def render_analytics(escalations_df: pd.DataFrame) -> None:
     """Renders escalation trend, root cause, and top agencies in a clean layout."""
     st.markdown('<div class="section-gap"></div>', unsafe_allow_html=True)
-    st.markdown('<div class="dash-section-label">Risk analytics</div>', unsafe_allow_html=True)
+    
+    view_mode = st.pills("Analysis Dimension", ["Volume", "Financial Impact"], default="Volume")
 
     col_trend, col_cause = st.columns([2, 1], gap="medium")
 
     with col_trend:
         with st.container(border=True):
-            st.markdown("""
-            <div class="analytics-card-title">Monthly dispute trajectory</div>
+            st.markdown(f"""
+            <div class="analytics-card-title">Dispute trajectory ({view_mode.lower()})</div>
             <div class="analytics-card-sub">Feb – Jun 2026 · 6.5× acceleration</div>
             """, unsafe_allow_html=True)
-            monthly_data = pd.DataFrame({
-                "Month": ["Feb", "Mar", "Apr", "May", "Jun"],
-                "Disputes": [12, 28, 41, 56, 78]
-            })
-            st.bar_chart(monthly_data, x="Month", y="Disputes", color="#1a73e8")
+            if view_mode == "Volume":
+                df_trend = pd.DataFrame({"Month": ["Feb", "Mar", "Apr", "May", "Jun"], "Metric": [12, 28, 41, 56, 78]})
+                fmt, label = "Q", "Disputes"
+            else:
+                df_trend = pd.DataFrame({"Month": ["Feb", "Mar", "Apr", "May", "Jun"], "Metric": [2.4, 5.6, 8.2, 11.2, 14.8]})
+                fmt, label = "Q", "Value (Lakhs)"
+                
+            bars1 = alt.Chart(df_trend).mark_bar(color="#1a73e8", cornerRadiusTopLeft=3, cornerRadiusTopRight=3).encode(
+                x=alt.X("Month", sort=None, axis=alt.Axis(labelAngle=0, grid=False)),
+                y=alt.Y("Metric", title=label),
+                tooltip=["Month", alt.Tooltip("Metric", title=label, format=".1f" if view_mode=="Financial Impact" else "d")]
+            )
+            text1 = bars1.mark_text(align='center', baseline='bottom', dy=-5).encode(
+                text=alt.Text('Metric:Q', format='.1f' if view_mode=="Financial Impact" else 'd')
+            )
+            c1 = (bars1 + text1).properties(height=300).interactive()
+            st.altair_chart(c1, use_container_width=True)
 
     with col_cause:
         with st.container(border=True):
-            st.markdown("""
-            <div class="analytics-card-title">Root cause breakdown</div>
-            <div class="analytics-card-sub">Top 4 discrepancy categories</div>
-            """, unsafe_allow_html=True)
-            discrepancy_data = pd.DataFrame({
+            cause_h1, cause_h2 = st.columns([3, 1])
+            with cause_h1:
+                st.markdown("""
+                <div class="analytics-card-title">Root cause breakdown</div>
+                <div class="analytics-card-sub">Top 4 discrepancy categories</div>
+                """, unsafe_allow_html=True)
+            with cause_h2:
+                st.page_link(st.session_state.pages["triage"], label="Log", icon="↗️")
+                
+            df_cause = pd.DataFrame({
                 "Cause": ["Deductions", "Dropped", "Off-Tracker", "Carrier"],
-                "Count": [149, 100, 42, 24]
-            }).set_index("Cause")
-            st.bar_chart(discrepancy_data, color="#fbbc04")
+                "Count": [149, 100, 42, 24],
+                "Value": [14.8, 9.2, 3.4, 1.8]
+            })
+            y_col = "Count" if view_mode == "Volume" else "Value"
+            bars2 = alt.Chart(df_cause).mark_bar(color="#fbbc04", cornerRadiusTopLeft=3, cornerRadiusTopRight=3).encode(
+                x=alt.X("Cause", sort="-y", axis=alt.Axis(labelAngle=-45, grid=False)),
+                y=alt.Y(y_col),
+                tooltip=["Cause", y_col]
+            )
+            text2 = bars2.mark_text(align='center', baseline='bottom', dy=-5).encode(
+                text=alt.Text(f'{y_col}:Q', format='.1f' if view_mode=="Financial Impact" else 'd')
+            )
+            c2 = (bars2 + text2).properties(height=300).interactive()
+            st.altair_chart(c2, use_container_width=True)
 
     col_agencies, col_pareto = st.columns(2, gap="medium")
 
     with col_agencies:
         with st.container(border=True):
-            st.markdown("""
-            <div class="analytics-card-title">At-risk partners</div>
-            <div class="analytics-card-sub">Top 5 B2B agencies · 51% of disputes</div>
-            """, unsafe_allow_html=True)
+            ag_h1, ag_h2 = st.columns([4, 1])
+            with ag_h1:
+                st.markdown("""
+                <div class="analytics-card-title">At-risk partners</div>
+                <div class="analytics-card-sub">Top 5 B2B agencies · 51% of disputes</div>
+                """, unsafe_allow_html=True)
+            with ag_h2:
+                st.page_link(st.session_state.pages["partners"], label="View", icon="↗️")
             agency_col = next(
                 (c for c in escalations_df.columns
                  if 'agent' in c.lower() or 'agency' in c.lower()),
@@ -633,20 +665,35 @@ def render_analytics(escalations_df: pd.DataFrame) -> None:
             <div class="analytics-card-sub">Pareto analysis · 72.6% in top 2 categories</div>
             """, unsafe_allow_html=True)
             pareto_df = pd.DataFrame({
-                "Category": ["Silent Delay", "Ghost Ticket", "Short Payout",
-                             "Unlogged Msg", "No Reason"],
+                "Category": ["Silent Delay", "Ghost Ticket", "Short Payout", "Unlogged Msg", "No Reason"],
                 "Count": [61, 32, 21, 17, 5]
-            }).set_index("Category")
-            st.bar_chart(pareto_df, color="#ea4335")
-
+            })
+            bars3 = alt.Chart(pareto_df).mark_bar(color="#ea4335", cornerRadiusTopLeft=3, cornerRadiusTopRight=3).encode(
+                x=alt.X("Category", sort="-y", axis=alt.Axis(labelAngle=-45, grid=False)),
+                y="Count",
+                tooltip=["Category", "Count"]
+            )
+            text3 = bars3.mark_text(align='center', baseline='bottom', dy=-5).encode(
+                text=alt.Text('Count:Q')
+            )
+            c3 = (bars3 + text3).properties(height=250).interactive()
+            st.altair_chart(c3, use_container_width=True)
 
 # ---------------------------------------------------------------------------
-# RCA Section — Executive Summary Card
+# RCA Section — Executive Summary Card & Dialog
 # ---------------------------------------------------------------------------
+@st.dialog("AI Root Cause Synthesis", width="large")
+def run_ai_rca(escalations_df: pd.DataFrame):
+    st.write("Synthesizing operational discrepancies with Gemini...")
+    with st.spinner("Analyzing cross-ledger dependencies..."):
+        summary = analyze_escalations(escalations_df)
+    st.info(summary)
+    if st.button("Close Window", use_container_width=True):
+        st.rerun()
+
 def render_rca_section(escalations_df: pd.DataFrame) -> None:
     """Renders AI root-cause analysis as a single executive summary card."""
     st.markdown('<div class="section-gap"></div>', unsafe_allow_html=True)
-    st.markdown('<div class="dash-section-label">Executive RCA synthesis</div>', unsafe_allow_html=True)
 
     st.markdown("""
     <div class="rca-card">
@@ -686,13 +733,12 @@ def render_rca_section(escalations_df: pd.DataFrame) -> None:
     </div>
     """, unsafe_allow_html=True)
 
-    with st.expander("Run on-demand AI analysis", expanded=False):
-        if st.button("Generate AI RCA summary", type="primary", key="btn_run_rca"):
-            with st.spinner("Analyzing operational discrepancies with Gemini..."):
-                summary = analyze_escalations(escalations_df)
-                st.info(summary)
-        else:
-            st.caption("Triggers live LLM synthesis across all escalation records.")
+    with st.container():
+        st.markdown("<br/>", unsafe_allow_html=True)
+        col1, col2, col3 = st.columns([1, 2, 1])
+        with col2:
+            if st.button("Generate On-Demand AI RCA", type="primary", key="btn_run_rca", use_container_width=True, icon="✨"):
+                run_ai_rca(escalations_df)
 
 
 # ---------------------------------------------------------------------------
@@ -711,6 +757,23 @@ def render_dashboard() -> None:
 
     render_kpi_cards(metrics)
     render_pipeline_corridor(metrics)
-    render_carrier_health()
-    render_analytics(escalations_df)
-    render_rca_section(escalations_df)
+    
+    st.markdown('<div class="section-gap"></div>', unsafe_allow_html=True)
+    
+    # Interactive Tabs wrapper for deep-dive sections
+    t_analytics, t_health, t_rca = st.tabs(["Risk Analytics", "Carrier SLA Health", "Executive RCA Synthesis"])
+    
+    with t_analytics:
+        render_analytics(escalations_df)
+        
+    with t_health:
+        render_carrier_health()
+        
+    with t_rca:
+        render_rca_section(escalations_df)
+
+    st.markdown("<br/><br/>", unsafe_allow_html=True)
+    col1, col2, col3 = st.columns([1, 2, 1])
+    with col2:
+        if st.button("Explore Raw Datasets", type="secondary", use_container_width=True, key="btn_dash_to_db", icon="🔍"):
+            st.switch_page(st.session_state.pages["database"])

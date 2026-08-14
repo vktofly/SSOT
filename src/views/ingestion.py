@@ -383,7 +383,7 @@ def render_review_workspace() -> None:
                 
         st.markdown("---")
         
-        btn_col1, btn_col2, _ = st.columns([2, 1.5, 2.5])
+        btn_col1, btn_col2, _col = st.columns([2, 1.5, 2.5])
         with btn_col1:
             if st.button("Approve & Commit to SSOT", type="primary", key=f"approve_{selected_idx}", use_container_width=True):
                 support_df = st.session_state.support_df
@@ -428,6 +428,10 @@ def render_review_workspace() -> None:
                 if st.button("Discard Item", key=f"discard_{selected_idx}", use_container_width=True):
                     st.session_state.discard_confirm_idx = selected_idx
                     st.rerun()
+                    
+        with _col:
+            if st.button("Back to Dashboard", key=f"dash_{selected_idx}", use_container_width=True):
+                st.switch_page(st.session_state.pages["dashboard"])
 
 def render_ingestion() -> None:
     """Main Ingestion Agent view entrypoint."""

@@ -106,17 +106,21 @@ st.markdown("""
         -ms-user-select: none;
     }
 
-    /* Material Design KPI cards */
-    div[data-testid="stMetric"] {
-        background: var(--google-surface);
-        border: 1px solid var(--google-border);
-        border-radius: 8px;
-        padding: 16px 20px;
-        box-shadow: 0 1px 2px 0 rgba(60,64,67,0.3), 0 1px 3px 1px rgba(60,64,67,0.15);
+    /* Material Design KPI cards & Containers */
+    div[data-testid="stMetric"],
+    div[data-testid="stVerticalBlockBorderWrapper"] {
+        background: var(--google-surface) !important;
+        border: 1px solid var(--google-border) !important;
+        border-radius: 8px !important;
+        box-shadow: 0 1px 2px 0 rgba(60,64,67,0.3), 0 1px 3px 1px rgba(60,64,67,0.15) !important;
         transition: box-shadow 0.2s cubic-bezier(0.4, 0.0, 0.2, 1);
     }
-    div[data-testid="stMetric"]:hover {
-        box-shadow: 0 1px 3px 0 rgba(60,64,67,0.3), 0 4px 8px 3px rgba(60,64,67,0.15);
+    div[data-testid="stMetric"] {
+        padding: 16px 20px;
+    }
+    div[data-testid="stMetric"]:hover,
+    div[data-testid="stVerticalBlockBorderWrapper"]:hover {
+        box-shadow: 0 1px 3px 0 rgba(60,64,67,0.3), 0 4px 8px 3px rgba(60,64,67,0.15) !important;
     }
     div[data-testid="stMetricLabel"] {
         font-family: var(--font-sans) !important;
@@ -306,6 +310,16 @@ def main():
     ingestion_p = st.Page(page_ingestion, title="Ingestion Agent", url_path="ingestion")
     reconciliation_p = st.Page(page_reconciliation, title="Reconciliation (HITL)", url_path="reconciliation")
     triage_p = st.Page(page_triage, title="Escalation Triage", url_path="triage", default=(st.session_state.role != "Manager"))
+
+    # Store pages in session_state for programmatic navigation in other modules
+    st.session_state.pages = {
+        "dashboard": dashboard_p,
+        "partners": partners_p,
+        "database": database_p,
+        "ingestion": ingestion_p,
+        "reconciliation": reconciliation_p,
+        "triage": triage_p
+    }
 
     # Role-Based Sectioned Navigation
     if st.session_state.role == "Manager":
