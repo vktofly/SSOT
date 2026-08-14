@@ -1,10 +1,15 @@
-# Environments
-deliverables/data_analysis_methodology.md
+# Environments & Secrets
 .env
+.env.*
+!.env.example
 .venv
-env/
 venv/
+env/
 ENV/
+deliverables/data_analysis_methodology.md
+
+# Session & Auth State
+.remember.json
 
 # Streamlit
 .streamlit/
@@ -14,10 +19,24 @@ __pycache__/
 *.py[cod]
 *$py.class
 
-# IDEs
+# Testing & Coverage
+.pytest_cache/
+.coverage
+htmlcov/
+ingestion_page*.png
+test_*.png
+
+# Browser Automation & Agent Artifacts
+.agent-browser/
+agent-browser.json
+
+# IDEs & Editors
 .vscode/
 .idea/
+*.swp
+*.swo
 
 # OS generated files
 .DS_Store
 Thumbs.db
+desktop.ini
