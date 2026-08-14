@@ -1,8 +1,14 @@
 """
 Ingestion Agent View Module.
 Event-driven unstructured message ingestion, PII redaction, and Human-in-the-Loop review workspace.
-Engineered with modern frontend patterns: custom payload injector, channel filtering, live extraction preview, and optimistic state transitions.
+Features:
+- Single Raw Message Playground with live entity parse
+- Interactive CSV / JSON Drag-and-Drop Batch File Ingestion
+- Multi-Channel filtering and batch/single processing triggers
+- Staged Human-In-The-Loop review with SSOT database association
 """
+import io
+import json
 from datetime import datetime
 from typing import Dict, Any, List, Optional
 import pandas as pd
@@ -12,19 +18,19 @@ from src.db import insert_support_record
 
 DEFAULT_SIMULATED_MESSAGES: List[Dict[str, str]] = [
     {
-        "id": "MSG-1042",
-        "channel": "WhatsApp",
-        "text": "Hi, I cancelled booking for DEL-DXB last week and was told I'd get a refund. I don't have my ref number. My number is 9876543210."
-    },
-    {
-        "id": "MSG-1043",
+        "id": "MSG-BRIEF-01",
         "channel": "Email",
-        "text": "urgent! MAA-CMB refund not processed yet for Peak Journeys agency. Please verify immediately."
+        "text": "Hi, I cancelled booking for DEL-DXB last week and was told I'd get a refund. I haven't received anything and I don't have any reference number. Please help, my client is asking. (Agency: Peak Journeys)"
     },
     {
-        "id": "MSG-1044",
-        "channel": "Portal",
-        "text": "Need status on my refund for RF-1099, expected 5400 INR."
+        "id": "MSG-BRIEF-02",
+        "channel": "WhatsApp",
+        "text": "Bhai refund ka kya hua? BLR-MAA wala. 2 hafte ho gaye, koi jawab nahi. (Agency: Nomad Travel)"
+    },
+    {
+        "id": "MSG-BRIEF-03",
+        "channel": "Email",
+        "text": "Finance says they never received several of the refunds I closed last month. I marked them done on my side. Not sure where they went. Need status on RF-1099 expected 5400 INR."
     }
 ]
 
@@ -59,9 +65,12 @@ def render_ingestion_header() -> None:
     col3.metric("Processed in Session", st.session_state.processed_today, delta="Committed to SSOT", delta_color="normal")
     st.markdown("---")
 
-def render_custom_injector_tab() -> None:
-    """Provides an interactive testing playground for custom unstructured messages."""
-    with st.expander("🛠️ Custom Payload Injector & Live Preview (Click to collapse)", expanded=True):
+def render_payload_injector_tabs() -> None:
+    """Renders tabbed custom playground for raw manual entry and drag-and-drop batch upload."""
+    st.subheader("🛠️ Ingestion Testing & Batch Upload Studio")
+    tab_single, tab_batch = st.tabs(["✍️ Single Message Playground", "📁 Drag-and-Drop Batch File Ingestion"])
+    
+    with tab_single:
         st.caption("Inject informal messages across multiple communication channels or run instant AI extraction tests.")
         c1, c2 = st.columns([2, 1])
         with c1:
@@ -69,12 +78,17 @@ def render_custom_injector_tab() -> None:
                 "Inbound Raw Text",
                 value="",
                 placeholder="e.g., Passenger Rohit cancelled BLR-GOI flight RF-1082, expecting full refund of 4200 INR via WhatsApp.",
-                help="Enter any informal message to test PII masking and structured entity parsing"
+                help="Enter any informal message to test PII masking and structured entity parsing",
+                key="single_raw_input"
             )
         with c2:
-            custom_channel = st.selectbox("Source Channel", ["WhatsApp", "Email", "Phone", "Portal", "OTA API"])
-            preview_btn = st.button("🔍 Test Live Parse", use_container_width=True)
-            inject_btn = st.button("📥 Inject to Live Queue", type="primary", use_container_width=True)
+            custom_channel = st.selectbox(
+                "Source Channel", 
+                ["WhatsApp", "Email", "Phone", "Portal", "OTA API"],
+                key="single_chan_select"
+            )
+            preview_btn = st.button("🔍 Test Live Parse", use_container_width=True, key="btn_live_parse")
+            inject_btn = st.button("📥 Inject to Live Queue", type="primary", use_container_width=True, key="btn_inject_single")
 
         if preview_btn and custom_text.strip():
             with st.spinner("Executing LLM entity extraction & PII guardrails..."):
@@ -93,14 +107,73 @@ def render_custom_injector_tab() -> None:
             st.toast(f"✅ Injected payload {new_id} to queue!", icon="📥")
             st.rerun()
 
+    with tab_batch:
+        st.caption("Upload `.csv` or `.json` files containing batch ticket payloads or customer communication dumps.")
+        uploaded_file = st.file_uploader(
+            "Upload Batch Payloads (CSV / JSON)", 
+            type=["csv", "json"], 
+            help="CSV must have 'text' or 'message' column. JSON should be an array of objects or message strings."
+        )
+        
+        if uploaded_file is not None:
+            parsed_batch_items: List[Dict[str, str]] = []
+            try:
+                if uploaded_file.name.endswith(".csv"):
+                    df_upload = pd.read_csv(uploaded_file)
+                    text_col = next((c for c in df_upload.columns if c.lower() in ["text", "message", "raw_text", "body", "notes"]), None)
+                    if not text_col:
+                        st.error(f"❌ CSV requires a 'text' or 'message' column. Found columns: {list(df_upload.columns)}")
+                    else:
+                        chan_col = next((c for c in df_upload.columns if c.lower() in ["channel", "source"]), None)
+                        for i, row in df_upload.iterrows():
+                            raw_msg = str(row[text_col]).strip()
+                            if raw_msg and raw_msg.lower() != "nan":
+                                c_val = str(row[chan_col]) if chan_col and str(row[chan_col]).lower() != "nan" else "OTA API"
+                                item_id = f"CSV-{1000 + len(parsed_batch_items) + 1}"
+                                parsed_batch_items.append({
+                                    "id": item_id,
+                                    "channel": c_val,
+                                    "text": raw_msg
+                                })
+                elif uploaded_file.name.endswith(".json"):
+                    json_data = json.load(uploaded_file)
+                    if isinstance(json_data, list):
+                        for idx, entry in enumerate(json_data):
+                            if isinstance(entry, dict):
+                                msg = entry.get("text") or entry.get("message") or str(entry)
+                                chan = entry.get("channel") or "JSON Batch"
+                                item_id = entry.get("id") or f"JSON-{1000 + idx + 1}"
+                                parsed_batch_items.append({"id": str(item_id), "channel": str(chan), "text": str(msg)})
+                            elif isinstance(entry, str):
+                                parsed_batch_items.append({"id": f"JSON-{1000 + idx + 1}", "channel": "JSON Batch", "text": entry})
+                    else:
+                        st.error("❌ JSON must contain a top-level array of message objects or strings.")
+                        
+                if parsed_batch_items:
+                    st.success(f"✅ Successfully validated **{len(parsed_batch_items)}** records from `{uploaded_file.name}`.")
+                    st.dataframe(pd.DataFrame(parsed_batch_items), use_container_width=True, height=180)
+                    
+                    b_col1, _ = st.columns([2, 3])
+                    with b_col1:
+                        if st.button(f"📥 Enqueue All {len(parsed_batch_items)} Records", type="primary", use_container_width=True, key="btn_enqueue_batch"):
+                            st.session_state.webhook_inbox_items.extend(parsed_batch_items)
+                            st.toast(f"✅ Ingested {len(parsed_batch_items)} records from {uploaded_file.name}!", icon="📁")
+                            st.rerun()
+            except Exception as ex:
+                st.error(f"Error parsing uploaded file: {str(ex)}")
+    st.markdown("---")
+
 def render_incoming_queue() -> None:
     """Renders filtered webhook inbox with batch and single parse triggers."""
     q_col1, q_col2 = st.columns([3, 1])
     with q_col1:
         st.subheader("1. Incoming Unstructured Queue")
     with q_col2:
-        channels = ["All", "WhatsApp", "Email", "Portal", "Phone", "OTA API"]
-        selected_chan = st.selectbox("Filter Channel", channels, index=channels.index(st.session_state.channel_filter))
+        channels = ["All", "WhatsApp", "Email", "Portal", "Phone", "OTA API", "JSON Batch"]
+        current_selection = st.session_state.channel_filter
+        if current_selection not in channels:
+            channels.append(current_selection)
+        selected_chan = st.selectbox("Filter Channel", channels, index=channels.index(current_selection))
         if selected_chan != st.session_state.channel_filter:
             st.session_state.channel_filter = selected_chan
             st.rerun()
@@ -232,7 +305,7 @@ def render_review_workspace() -> None:
                     help="Existing reference or ticket number if available",
                     key=f"ref_id_{selected_idx}"
                 )
-                channel_opts = ["WhatsApp", "Email", "Phone", "Portal", "OTA API", "Unknown"]
+                channel_opts = ["WhatsApp", "Email", "Phone", "Portal", "OTA API", "JSON Batch", "Unknown"]
                 curr_chan = r.get("source_channel", "WhatsApp")
                 if curr_chan not in channel_opts:
                     channel_opts.append(curr_chan)
@@ -350,6 +423,6 @@ def render_ingestion() -> None:
     """Main Ingestion Agent view entrypoint."""
     init_ingestion_state()
     render_ingestion_header()
-    render_custom_injector_tab()
+    render_payload_injector_tabs()
     render_incoming_queue()
     render_review_workspace()

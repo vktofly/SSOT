@@ -61,3 +61,19 @@
   - Optimistic toast notifications on batch parsing, single ingest, and SSOT commits
   - Normalized container data flow with distinct ID tracking across streams
 - [x] Verified full unit test pass suite (5/5 tests passing in 1.170s)
+
+## Milestone 11: Drag-and-Drop Batch File Ingestion
+- [x] Implemented multi-format file uploader (`.csv` and `.json`) in [`src/views/ingestion.py`](file:///c:/Users/vikash/Documents/SSOT_Parser/src/views/ingestion.py):
+  - Automatic column mapping for `text`, `message`, `raw_text`, `channel`
+  - Validated preview data table with live row count
+  - One-click bulk enqueue to live inbound webhook stream
+  - Dynamic `importlib.reload` in [`app.py`](file:///c:/Users/vikash/Documents/SSOT_Parser/app.py) for instantaneous view updates
+- [x] Verified full unit test pass suite (5/5 tests passing in 0.908s)
+
+## Milestone 12: Telemetry Dashboard & AI RCA Studio
+- [x] Upgraded [`src/views/dashboard.py`](file:///c:/Users/vikash/Documents/SSOT_Parser/src/views/dashboard.py) with executive analytics:
+  - Interactive Feb–June monthly escalation spike trajectory chart
+  - Primary root cause discrepancy distribution chart (82.7% concentration)
+  - Multi-tab AI RCA workspace (*Executive Summary*, *Financial Leakage*, *SLA Forecast*)
+  - Theme-compliant native badges and automated module reload in [`app.py`](file:///c:/Users/vikash/Documents/SSOT_Parser/app.py)
+- [x] Verified full unit test pass suite (5/5 tests passing in 1.325s)

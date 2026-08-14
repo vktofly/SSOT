@@ -3,7 +3,13 @@ import json
 import os
 from src.config import HAS_API_KEY
 from src.data_manager import load_data
-# BharatTrip Operations Suite v2.1 (Hot Reload Trigger)
+import importlib
+import src.views
+import src.views.dashboard
+import src.views.ingestion
+importlib.reload(src.views)
+importlib.reload(src.views.dashboard)
+importlib.reload(src.views.ingestion)
 from src.views import (
     render_dashboard, render_ingestion, render_reconciliation,
     render_database_explorer, render_escalation_triage, render_partner_matrix
