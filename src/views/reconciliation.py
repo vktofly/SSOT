@@ -32,10 +32,20 @@ def render_reconciliation_header() -> None:
     """Renders top header with live HITL reconciliation badge without inline CSS leaks."""
     status_col1, status_col2 = st.columns([3, 1])
     with status_col1:
-        st.title("⚖️ Reconciliation Agent (HITL Workflow)")
-        st.caption("⚡ Human-In-The-Loop Discrepancy Matching · Carrier Fee Verification & Auto-Drafting")
+        st.markdown('<div class="dash-section-label">Discrepancy Engine</div>', unsafe_allow_html=True)
+        st.title("Reconciliation Agent (HITL Workflow)")
+        st.caption("Human-In-The-Loop Discrepancy Matching · Carrier Fee Verification & Auto-Drafting")
     with status_col2:
-        st.info("🟢 HITL Recon Active", icon="⚖️")
+        st.markdown(
+            '<div style="text-align: right; padding-top: 18px;">'
+            '<span class="status-pill" style="background: rgba(16,185,129,0.1); '
+            'border: 1px solid rgba(16,185,129,0.25); color: #10b981;">'
+            '<span class="status-dot" style="background: #10b981;"></span>'
+            'HITL Recon Active'
+            '</span>'
+            '</div>',
+            unsafe_allow_html=True
+        )
 
 def render_kpi_summary_bar(
     pending_mismatches: List[Dict[str, Any]], 
@@ -73,7 +83,7 @@ def render_kpi_summary_bar(
         st.write("")
         csv_data = support_df.to_csv(index=False).encode('utf-8')
         st.download_button(
-            label="💾 Export Clean SSOT",
+            label="Export Clean SSOT",
             data=csv_data,
             file_name="Reconciled_SSOT.csv",
             mime="text/csv",
@@ -88,7 +98,7 @@ def render_mismatch_studio(
 ) -> None:
     """Renders interactive deduction mismatch review tab with side-by-side ledger cards."""
     if not pending_mismatches:
-        st.success("🎉 All deduction mismatches have been resolved! Zero variance inbox.")
+        st.success("All deduction mismatches have been resolved. Zero variance inbox.")
         return
 
     total_mismatches = len(raw_mismatches)
@@ -115,9 +125,9 @@ def render_mismatch_studio(
         st.session_state['show_success_toast'] = True
 
     # Batch Action Container
-    with st.expander("🛠️ Optional: Batch Reconcile All Deduction Discrepancies", expanded=False):
+    with st.expander("Optional: Batch Reconcile All Deduction Discrepancies", expanded=False):
         st.markdown("Automatically generate carrier deduction explanations and dispatch emails for **all pending tickets** simultaneously.")
-        if st.button("🚀 Batch Process All Pending Discrepancies", type="primary", key="btn_batch_recon_all"):
+        if st.button("Batch Process All Pending Discrepancies", type="primary", key="btn_batch_recon_all"):
             with st.spinner("Processing pending discrepancies in parallel..."):
                 count = 0
                 for pending_m in pending_mismatches:
@@ -129,7 +139,7 @@ def render_mismatch_studio(
                     )
                     handle_approve_send(p_tid, pending_m, draft)
                     count += 1
-                st.toast(f"Successfully processed {count} discrepancies!", icon="✅")
+                st.toast(f"Successfully processed {count} discrepancies.")
                 st.rerun()
 
     st.markdown("---")
@@ -151,13 +161,13 @@ def render_mismatch_studio(
     # Side-by-Side Ledger Card
     with st.container(border=True):
         if m.get('Risk Level') == 'High':
-            st.error("🚨 HIGH RISK VARIANCE: Payout discrepancy exceeds 20% of total ticket value.")
+            st.error("HIGH RISK VARIANCE: Payout discrepancy exceeds 20% of total ticket value.")
             
         c_sup, c_mid, c_fin = st.columns([3, 1, 3])
         
         with c_sup:
             with st.container(border=True):
-                st.markdown("#### 📋 Support Record")
+                st.markdown("#### Support Record")
                 st.markdown(f"**Ticket ID:** `{tid}`")
                 st.markdown(f"**Partner Agency:** `{m.get('Agent', 'Unknown')}`")
                 st.markdown(f"**Sector / Route:** `{m.get('Route', 'N/A')}`")
@@ -169,7 +179,7 @@ def render_mismatch_studio(
 
         with c_fin:
             with st.container(border=True):
-                st.markdown("#### 💳 Finance Settlement")
+                st.markdown("#### Finance Settlement")
                 st.markdown(f"**Settlement Ref:** `{tid}`")
                 st.markdown(f"**Carrier Deduction:** `{m.get('Reason', 'Airline Policy')}`")
                 st.markdown(f"**Variance Status:** `Contested`")
@@ -178,20 +188,20 @@ def render_mismatch_studio(
         # Airline Fare Policy Integration
         route_str = m.get('Route', '')
         policy = lookup_airline_penalty(route_str)
-        with st.expander(f"✈️ Airline Fare Rules ({policy['carrier']} · Sector {route_str or 'General'})", expanded=True):
+        with st.expander(f"Airline Fare Rules ({policy['carrier']} · Sector {route_str or 'General'})", expanded=True):
             f_col1, f_col2, f_col3 = st.columns(3)
             f_col1.markdown(f"**Operating Carrier:** `{policy['carrier']}`")
             f_col2.markdown(f"**Standard Fee:** `₹{policy['cancellation_fee']}`")
             f_col3.markdown(f"**Resolution SLA:** `{policy['sla_hours']} Hours`")
-            st.caption(f"📌 **Tariff Policy Note:** {policy['policy_notes']}")
+            st.caption(f"**Tariff Policy Note:** {policy['policy_notes']}")
 
-        st.markdown("### 🤖 AI-Drafted Discrepancy Explanation")
+        st.markdown("### AI-Drafted Discrepancy Explanation")
         draft_key = f"draft_{tid}"
         if draft_key not in st.session_state:
             st.session_state[draft_key] = ""
             
         if not st.session_state[draft_key]:
-            if st.button("✨ Generate AI Explanation Email", type="primary", key=f"btn_gen_draft_{tid}"):
+            if st.button("Generate AI Explanation Email", type="primary", key=f"btn_gen_draft_{tid}"):
                 with st.spinner("Drafting airline policy explanation..."):
                     draft = draft_reconciliation_message(
                         m['Agent'], m['Route'], tid, 
@@ -211,14 +221,14 @@ def render_mismatch_studio(
             c_send1, c_send2 = st.columns([1, 4])
             with c_send1:
                 st.button(
-                    "✉️ Approve & Dispatch", 
+                    "Approve & Dispatch", 
                     type="primary", 
                     key=f"btn_send_draft_{tid}", 
                     on_click=handle_approve_send, 
                     args=(tid, m, edited_draft)
                 )
             with c_send2:
-                if st.button("🔄 Regenerate", key=f"btn_regen_draft_{tid}"):
+                if st.button("Regenerate", key=f"btn_regen_draft_{tid}"):
                     st.session_state[draft_key] = ""
                     st.rerun()
 
@@ -234,29 +244,29 @@ def render_orphaned_tickets_studio(
     high_risk_agents = set([m.get('Risk Note') for m in missing_in_finance if m.get('Risk Level') == 'High'])
     for note in high_risk_agents:
         if note:
-            st.warning(f"🚨 **High-Risk Agent Corridor:** {note}", icon="⚠️")
+            st.warning(f"**High-Risk Agent Corridor:** {note}")
     
     col_s, col_f = st.columns(2)
     with col_s:
         with st.container(border=True):
-            st.markdown(f"#### 🔴 Missing in Finance ({len(missing_in_finance)} Tickets)")
+            st.markdown(f"#### Missing in Finance ({len(missing_in_finance)} Tickets)")
             st.caption("Marked closed on Support tracker, but never reached Finance accounts.")
             for m in missing_in_finance[:5]:
                 st.markdown(f"- **`{m['Ticket ID']}`** · {m.get('Agent', 'Unknown')} · ₹{m.get('Refund Amount (INR)', '0')}")
                 
     with col_f:
         with st.container(border=True):
-            st.markdown(f"#### 🟡 Missing in Support ({len(missing_in_support)} Records)")
+            st.markdown(f"#### Missing in Support ({len(missing_in_support)} Records)")
             st.caption("Processed in Finance ledger without corresponding Support ticket ID.")
             for m in missing_in_support[:5]:
                 st.markdown(f"- **`{m['Ref No']}`** · {m.get('Agent Name', 'Unknown')} · ₹{m.get('Amount Paid (INR)', '0')}")
             
     st.markdown("---")
-    st.subheader("🤖 AI Entity Resolution (Metadata Fuzzy Matching)")
+    st.subheader("AI Entity Resolution (Metadata Fuzzy Matching)")
     st.markdown("If a ticket ID was mistyped (failing exact text match), Gemini analyzes metadata (Agent Name, Route, Amount) to find the correct ledger link.")
     
     if missing_in_finance and missing_in_support:
-        if st.button("🚀 Run Batch AI Entity Resolution", type="primary", key="btn_run_ai_linkage"):
+        if st.button("Run Batch AI Entity Resolution", type="primary", key="btn_run_ai_linkage"):
             with st.spinner("Analyzing cross-ledger metadata with Gemini..."):
                 all_matches = []
                 chunk_size = 10
@@ -302,14 +312,14 @@ def render_orphaned_tickets_studio(
                         
                 if all_matches:
                     st.session_state.batch_matches = all_matches
-                    st.toast(f"Identified {len(all_matches)} confident linkage proposals!", icon="🎯")
+                    st.toast(f"Identified {len(all_matches)} confident linkage proposals.")
                     st.rerun()
                 else:
                     st.error("No confident metadata linkages discovered across remaining orphans.")
                     
         if st.session_state.get('batch_matches'):
             st.markdown("---")
-            st.subheader("🎯 Proposed Cross-Ledger Linkages (Awaiting Human Approval)")
+            st.subheader("Proposed Cross-Ledger Linkages (Awaiting Human Approval)")
             
             if 'acted_matches' not in st.session_state:
                 st.session_state.acted_matches = set()
@@ -360,7 +370,7 @@ def render_orphaned_tickets_studio(
                             st.markdown(f"**Proposed Finance Record:** `{f_id}`")
                             st.write(f"Agent: {f_row.get('Agent Name', 'Unknown')} | Amount: ₹{f_row.get('Amount Paid (INR)', '0')} | Route: {f_row.get('Route', 'Unknown')}")
                             
-                        st.info(f"**AI Linkage Hypothesis:** {match.get('reasoning')}", icon="💡")
+                        st.info(f"**AI Linkage Hypothesis:** {match.get('reasoning')}")
                         
                         score = match.get('confidence_score', 0)
                         st.progress(score / 100.0)
@@ -368,7 +378,7 @@ def render_orphaned_tickets_studio(
                         
                         c_btn1, c_btn2, _ = st.columns([2, 2, 4])
                         with c_btn1:
-                            if st.button("✅ Approve & Merge", key=f"app_{i}_{s_id}", type="primary"):
+                            if st.button("Approve & Merge", key=f"app_{i}_{s_id}", type="primary"):
                                 update_ticket_id(s_id, f_id)
                                 sdf = st.session_state.get('support_df', pd.DataFrame())
                                 if not sdf.empty and 'Ticket ID' in sdf.columns and s_id in sdf['Ticket ID'].values:
@@ -376,17 +386,17 @@ def render_orphaned_tickets_studio(
                                     if idx:
                                         sdf.at[idx[0], 'Ticket ID'] = f_id
                                 st.session_state.acted_matches.add(s_id)
-                                log_action(f"Approved AI Linkage: Support Ticket {s_id} ➔ Finance Ref {f_id}")
-                                st.toast(f"Merged Ticket {s_id} -> {f_id}", icon="✅")
+                                log_action(f"Approved AI Linkage: Support Ticket {s_id} -> Finance Ref {f_id}")
+                                st.toast(f"Merged Ticket {s_id} -> {f_id}")
                                 st.rerun()
                         with c_btn2:
-                            if st.button("❌ Reject", type="secondary", key=f"rej_{i}_{s_id}"):
+                            if st.button("Reject", type="secondary", key=f"rej_{i}_{s_id}"):
                                 st.session_state.acted_matches.add(s_id)
                                 log_action(f"Rejected AI Linkage for Support Ticket {s_id}")
                                 st.rerun()
                                 
                 st.markdown("---")
-                if filtered_matches and st.button(f"✅ Approve & Merge All Filtered Linkages ({len(filtered_matches)})", type="primary", key="btn_merge_all_filtered"):
+                if filtered_matches and st.button(f"Approve & Merge All Filtered Linkages ({len(filtered_matches)})", type="primary", key="btn_merge_all_filtered"):
                     sdf = st.session_state.get('support_df', pd.DataFrame())
                     for match in filtered_matches:
                         s_id = match['support_ticket_id']
@@ -398,7 +408,7 @@ def render_orphaned_tickets_studio(
                                 sdf.at[idx[0], 'Ticket ID'] = f_id
                         st.session_state.acted_matches.add(s_id)
                         
-                    st.toast(f"Merged {len(filtered_matches)} tickets into clean SSOT!", icon="✅")
+                    st.toast(f"Merged {len(filtered_matches)} tickets into clean SSOT.")
                     log_action(f"Batch AI Linkage approved for {len(filtered_matches)} tickets.")
                     st.rerun()
     else:
@@ -406,7 +416,7 @@ def render_orphaned_tickets_studio(
 
 def render_proactive_notification_bot(support_df: pd.DataFrame) -> None:
     """Renders proactive lifecycle milestone notification studio."""
-    st.subheader("3. 📢 Proactive Partner Notification Bot")
+    st.subheader("3. Proactive Partner Notification Bot")
     st.caption("Dispatch outbound milestone alerts to travel agencies to preempt inbound status chasing.")
     
     col1, col2 = st.columns([1, 1])
@@ -438,7 +448,7 @@ def render_proactive_notification_bot(support_df: pd.DataFrame) -> None:
             
     with col2:
         with st.container(border=True):
-            st.markdown("#### 📱 Outbound Message Preview")
+            st.markdown("#### Outbound Message Preview")
             preview = generate_proactive_notification(
                 ticket_id=selected_ticket,
                 agent_name=agent_input,
@@ -454,9 +464,9 @@ def render_proactive_notification_bot(support_df: pd.DataFrame) -> None:
             st.markdown("---")
             msg_content = st.text_area("Message Payload:", value=preview['message'], height=150, key="proactive_msg_preview")
             
-            if st.button("🚀 Approve & Dispatch Outbound Alert", type="primary", key="proactive_dispatch_btn"):
+            if st.button("Approve & Dispatch Outbound Alert", type="primary", key="proactive_dispatch_btn"):
                 log_action(f"Proactive {channel} Alert Dispatched to {agent_input} for Ticket {selected_ticket} (Milestone: {stage}).")
-                st.toast(f"Alert dispatched to {agent_input} via {channel}!", icon="🚀")
+                st.toast(f"Alert dispatched to {agent_input} via {channel}.")
                 st.session_state['show_success_toast'] = True
                 st.rerun()
 
@@ -467,20 +477,20 @@ def render_audit_logs() -> None:
         with st.container(border=True):
             c_title, c_down = st.columns([3, 1])
             with c_title:
-                st.markdown("### 🛠️ Immutable System Activity Audit Trail")
+                st.markdown("### Immutable System Activity Audit Trail")
                 st.caption("Chronological record of operator approvals, AI linkages, and outbound communications.")
             with c_down:
                 if st.session_state.get('role') == 'Manager':
                     csv_data = "Log_Entry\n" + "\n".join([f'"{log}"' for log in st.session_state.system_logs])
                     st.download_button(
-                        label="📥 Download Audit Log (CSV)",
+                        label="Download Audit Log (CSV)",
                         data=csv_data,
                         file_name=f"audit_log_{datetime.now().strftime('%Y%m%d')}.csv",
                         mime="text/csv",
                         key="btn_download_audit_log_recon"
                     )
                 else:
-                    st.caption("🔒 Audit Export restricted to Manager role.")
+                    st.caption("Audit Export restricted to Manager role.")
             
             with st.expander("View Full Session Event Stream", expanded=False):
                 for log in st.session_state.system_logs:
@@ -498,9 +508,9 @@ def render_reconciliation(support_df: pd.DataFrame, finance_df: pd.DataFrame) ->
     render_kpi_summary_bar(pending_mismatches, missing_in_finance, support_df)
     
     tab1, tab2, tab3 = st.tabs([
-        "💸 Deduction Mismatches (Side-by-Side Audit)", 
-        "🔗 Orphaned Tickets & Cross-Ledger AI Linkage", 
-        "📢 Proactive Notification Bot"
+        "Deduction Mismatches (Side-by-Side Audit)", 
+        "Orphaned Tickets & Cross-Ledger AI Linkage", 
+        "Proactive Notification Bot"
     ])
     
     with tab1:
@@ -513,7 +523,7 @@ def render_reconciliation(support_df: pd.DataFrame, finance_df: pd.DataFrame) ->
         render_proactive_notification_bot(support_df)
 
     if st.session_state.get('show_success_toast', False):
-        st.toast("Action committed to SSOT successfully!", icon="🎉")
+        st.toast("Action committed to SSOT successfully.")
         st.session_state['show_success_toast'] = False
 
     render_audit_logs()

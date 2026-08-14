@@ -33,10 +33,20 @@ def render_database_explorer_header() -> None:
     """Renders top header with live SQLite synchronization indicator."""
     status_col1, status_col2 = st.columns([3, 1])
     with status_col1:
-        st.title("🗄️ Database Explorer")
+        st.markdown('<div class="dash-section-label">SSOT Explorer</div>', unsafe_allow_html=True)
+        st.title("Database Explorer")
         st.caption("Unified Single Source of Truth · Cross-department relational database explorer")
     with status_col2:
-        st.info("🟢 SQLite Synced", icon="🗄️")
+        st.markdown(
+            '<div style="text-align: right; padding-top: 18px;">'
+            '<span class="status-pill" style="background: rgba(16,185,129,0.1); '
+            'border: 1px solid rgba(16,185,129,0.25); color: #10b981;">'
+            '<span class="status-dot" style="background: #10b981;"></span>'
+            'SQLite Synced'
+            '</span>'
+            '</div>',
+            unsafe_allow_html=True
+        )
 
 def render_database_kpis(
     support_df: pd.DataFrame, 
@@ -53,7 +63,7 @@ def render_database_kpis(
         if st.session_state.get('role') == 'Manager':
             csv = support_df.to_csv(index=False).encode('utf-8')
             st.download_button(
-                "📥 Export Unified SSOT", 
+                "Export Unified SSOT", 
                 data=csv, 
                 file_name="unified_ssot.csv", 
                 mime="text/csv", 
@@ -61,7 +71,7 @@ def render_database_kpis(
                 key="btn_export_unified_db"
             )
         else:
-            st.caption("🔒 Export reserved for Managers.")
+            st.caption("Export reserved for Managers.")
     st.markdown("---")
 
 def render_database_explorer(
@@ -77,13 +87,13 @@ def render_database_explorer(
         search_col, badge_col = st.columns([3, 1])
         with search_col:
             search_query = st.text_input(
-                "🔍 Global Ticket & Entity Search", 
+                "Global Ticket & Entity Search", 
                 placeholder="Enter Ticket ID (RF-1099), Agency Name, Route (DEL-DXB), or Status...",
                 key="global_search_query"
             ).strip()
         with badge_col:
             st.write("")
-            st.caption("⚡ Live multi-table indexing across all 3 datasets")
+            st.caption("Live multi-table indexing across all 3 datasets")
     
     if search_query:
         # Filter all dataframes safely with regex=False to prevent regex warnings
@@ -92,7 +102,7 @@ def render_database_explorer(
         escalations_view = escalations_df[escalations_df.astype(str).apply(lambda x: x.str.contains(search_query, case=False, na=False, regex=False)).any(axis=1)]
         
         total_hits = len(support_view) + len(finance_view) + len(escalations_view)
-        st.info(f"🎯 Found **{total_hits}** matching records across 3 tables for query `{search_query}`.", icon="🔎")
+        st.info(f"Found **{total_hits}** matching records across 3 tables for query `{search_query}`.")
     else:
         support_view = support_df
         finance_view = finance_df
@@ -100,15 +110,15 @@ def render_database_explorer(
 
     # Role-Based Access Control / Masking
     if st.session_state.get('role') == 'Junior':
-        st.warning("🔒 **Junior Role Active**: Sensitive financial amounts and PII are masked by DLP policy.", icon="🛡️")
+        st.warning("**Junior Role Active**: Sensitive financial amounts and PII are masked by DLP policy.")
         support_view = mask_sensitive_data(support_view)
         finance_view = mask_sensitive_data(finance_view)
         escalations_view = mask_sensitive_data(escalations_view)
 
     tab1, tab2, tab3 = st.tabs([
-        f"📋 Support Tracker ({len(support_view)} Rows)", 
-        f"💳 Finance Tracker ({len(finance_view)} Rows)", 
-        f"🚨 Escalations Log ({len(escalations_view)} Rows)"
+        f"Support Tracker ({len(support_view)} Rows)", 
+        f"Finance Tracker ({len(finance_view)} Rows)", 
+        f"Escalations Log ({len(escalations_view)} Rows)"
     ])
     
     with tab1:

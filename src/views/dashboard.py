@@ -428,11 +428,11 @@ def render_kpi_cards(metrics: Dict[str, Any]) -> None:
     # Action buttons below KPIs
     _, btn1, btn2, _ = st.columns([2, 1, 1, 1])
     with btn1:
-        if st.button("⚖️ Reconcile", type="primary", use_container_width=True, key="btn_dash_recon"):
+        if st.button("Reconcile", type="primary", use_container_width=True, key="btn_dash_recon"):
             st.session_state['current_page'] = "Reconciliation Matrix"
             st.rerun()
     with btn2:
-        if st.button("🚨 Triage", use_container_width=True, key="btn_dash_triage"):
+        if st.button("Triage", use_container_width=True, key="btn_dash_triage"):
             st.session_state['current_page'] = "Escalation Triage"
             st.rerun()
 
@@ -634,7 +634,7 @@ def render_rca_section(escalations_df: pd.DataFrame) -> None:
     st.markdown("""
     <div class="rca-card">
         <div class="rca-item">
-            <div class="rca-icon" style="background: rgba(239,68,68,0.12);">🔍</div>
+            <div class="rca-icon" style="background: rgba(239,68,68,0.12); color: var(--clr-danger); font-family: var(--font-mono); font-weight: 700; font-size: 13px;">01</div>
             <div>
                 <div class="rca-item-label" style="color: var(--clr-danger);">Root cause 01</div>
                 <div class="rca-item-title">100 tickets dropped at handoff</div>
@@ -645,7 +645,7 @@ def render_rca_section(escalations_df: pd.DataFrame) -> None:
             </div>
         </div>
         <div class="rca-item">
-            <div class="rca-icon" style="background: rgba(245,158,11,0.12);">💰</div>
+            <div class="rca-icon" style="background: rgba(245,158,11,0.12); color: var(--clr-warning); font-family: var(--font-mono); font-weight: 700; font-size: 13px;">02</div>
             <div>
                 <div class="rca-item-label" style="color: var(--clr-warning);">Root cause 02</div>
                 <div class="rca-item-title">₹14.8L in contested deduction variances</div>
@@ -656,7 +656,7 @@ def render_rca_section(escalations_df: pd.DataFrame) -> None:
             </div>
         </div>
         <div class="rca-item">
-            <div class="rca-icon" style="background: rgba(14,165,233,0.12);">⏱️</div>
+            <div class="rca-icon" style="background: rgba(14,165,233,0.12); color: var(--clr-accent); font-family: var(--font-mono); font-weight: 700; font-size: 13px;">03</div>
             <div>
                 <div class="rca-item-label" style="color: var(--clr-accent);">Projected outcome</div>
                 <div class="rca-item-title">&lt; 4h resolution with automated MCP reconciliation</div>

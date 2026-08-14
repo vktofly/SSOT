@@ -7,19 +7,21 @@ def render_escalation_triage(escalations_df, support_df):
     # Top Live Status Indicator
     status_col1, status_col2 = st.columns([3, 1])
     with status_col1:
-        st.title("🚨 Escalation Triage")
-        st.caption("⚡ Live Fast-Track Triage Queue · NLP Urgency Classification & Response Drafting")
+        st.markdown('<div class="dash-section-label">Dispute Queue</div>', unsafe_allow_html=True)
+        st.title("Escalation Triage")
+        st.caption("Live Fast-Track Triage Queue · NLP Urgency Classification & Response Drafting")
     with status_col2:
         st.markdown("""
             <div style="text-align: right; padding-top: 18px;">
-                <span style="background: rgba(244, 63, 94, 0.15); border: 1px solid rgba(244, 63, 94, 0.4); color: #f43f5e; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 600;">
-                    🟢 TRIAGE LIVE
+                <span class="status-pill" style="background: rgba(244, 63, 94, 0.12); border: 1px solid rgba(244, 63, 94, 0.3); color: #f43f5e;">
+                    <span class="status-dot" style="background: #f43f5e;"></span>
+                    TRIAGE LIVE
                 </span>
             </div>
         """, unsafe_allow_html=True)
     
     if escalations_df is None or escalations_df.empty:
-        st.success("No escalations to triage! All customer complaints resolved.")
+        st.success("No escalations to triage. All customer complaints resolved.")
         return
         
     # Top metrics
@@ -35,7 +37,7 @@ def render_escalation_triage(escalations_df, support_df):
     st.subheader("Escalations Queue")
     
     # Search feature for the dataframe
-    search_query = st.text_input("🔍 Search Escalations (Ticket ID, Agent, etc.)", key="esc_search").strip().lower()
+    search_query = st.text_input("Search Escalations (Ticket ID, Agent, etc.)", key="esc_search").strip().lower()
     
     filtered_df = escalations_df
     if search_query:
@@ -63,7 +65,7 @@ def render_escalation_triage(escalations_df, support_df):
         with col1:
             st.subheader(f"Ticket ID: {row.get('Ticket ID', 'Unknown')}")
             st.markdown(f"**Agent/Customer:** {row.get('Agent', 'Unknown')} | **Open Since:** {row.get('Open Since', 'Unknown')}")
-            st.write(f"💬 **Message:** *\"{row.get('Message', 'No message provided')}\"*")
+            st.write(f"**Message:** *\"{row.get('Message', 'No message provided')}\"*")
         
         with col2:
             ticket_id = str(row.get('Ticket ID', '')).strip().upper()
@@ -95,7 +97,7 @@ def render_escalation_triage(escalations_df, support_df):
         if draft_key not in st.session_state:
             st.session_state[draft_key] = ""
             
-        if st.button("🤖 Generate AI Response", key=f"gen_esc_{selected_index}"):
+        if st.button("Generate AI Response", key=f"gen_esc_{selected_index}"):
             with st.spinner("Drafting response based on SSOT..."):
                 draft = draft_escalation_response(str(row.get('Message', '')), status_dict)
                 st.session_state[draft_key] = draft
@@ -104,7 +106,7 @@ def render_escalation_triage(escalations_df, support_df):
         if st.session_state[draft_key]:
             st.text_area("Review Response:", value=st.session_state[draft_key], height=120, key=f"text_esc_{selected_index}")
             if st.button("Approve & Send", type="primary", key=f"send_esc_{selected_index}"):
-                st.success("Response sent to customer!")
+                st.success("Response sent to customer.")
                 
                 # Drop from active queue (session state)
                 st.session_state.escalations_df = st.session_state.escalations_df.drop(selected_index)

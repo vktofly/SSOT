@@ -27,26 +27,72 @@ from src.views import (
 # Configuration & Setup
 # -----------------------------------------------------------------------------
 st.set_page_config(
-    page_title="BharatTrip AI Operations",
-    page_icon="✈️",
+    page_title="BharatTrip Operations",
     layout="wide",
     initial_sidebar_state="expanded"
 )
 
 # -----------------------------------------------------------------------------
-# Security & DLP
+# Security & DLP + Global Standardized Typography
 # -----------------------------------------------------------------------------
-# Inject CSS to prevent text selection (Data Loss Prevention)
+# Inject global CSS for typography standardization & DLP text protection
 st.markdown("""
     <style>
-    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,600&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
     
-    html, body, [class*="css"] {
-        font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    :root {
+        --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
     }
-    
-    code, pre, .stCodeBlock {
-        font-family: 'JetBrains Mono', monospace !important;
+
+    html, body, [class*="css"], .stMarkdown, .stText, p, div, span, label, input, textarea, select, button {
+        font-family: var(--font-sans) !important;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+
+    h1, h2, h3, h4, h5, h6, [data-testid="stHeading"] {
+        font-family: var(--font-sans) !important;
+        font-weight: 700 !important;
+        letter-spacing: -0.02em !important;
+    }
+
+    code, pre, .stCodeBlock, [data-testid="stCode"] {
+        font-family: var(--font-mono) !important;
+    }
+
+    /* Standardized Section Labels */
+    .dash-section-label, .section-kicker {
+        font-family: var(--font-mono) !important;
+        font-size: 11px !important;
+        font-weight: 600 !important;
+        letter-spacing: 0.08em !important;
+        text-transform: uppercase !important;
+        opacity: 0.55;
+        margin-bottom: 6px;
+    }
+
+    /* Standardized Status Pills */
+    .status-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-family: var(--font-mono) !important;
+        font-size: 11px !important;
+        font-weight: 600 !important;
+        padding: 4px 12px;
+        border-radius: 9999px;
+        letter-spacing: 0.03em;
+    }
+    .status-dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        animation: pulse-dot 2s ease-in-out infinite;
+    }
+    @keyframes pulse-dot {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.4; }
     }
 
     /* DLP text selection lock */
@@ -71,11 +117,29 @@ st.markdown("""
         border-color: rgba(14, 165, 233, 0.8);
         box-shadow: 0 8px 24px rgba(14, 165, 233, 0.15);
     }
+    div[data-testid="stMetricLabel"] {
+        font-family: var(--font-sans) !important;
+        font-size: 13px !important;
+        font-weight: 500 !important;
+        letter-spacing: 0.01em !important;
+    }
+    div[data-testid="stMetricValue"] {
+        font-family: var(--font-sans) !important;
+        font-size: 26px !important;
+        font-weight: 800 !important;
+        font-variant-numeric: tabular-nums !important;
+    }
+    div[data-testid="stMetricDelta"] {
+        font-family: var(--font-mono) !important;
+        font-size: 12px !important;
+        font-weight: 500 !important;
+    }
 
     /* Polished Interactive Buttons */
     div.stButton > button {
         border-radius: 8px;
-        font-weight: 500;
+        font-family: var(--font-sans) !important;
+        font-weight: 600;
         letter-spacing: 0.01em;
         transition: all 0.2s ease-in-out;
     }
@@ -93,7 +157,10 @@ st.markdown("""
     .stTabs [data-baseweb="tab"] {
         border-radius: 6px 6px 0 0;
         padding: 8px 16px;
-        font-weight: 500;
+        font-family: var(--font-sans) !important;
+        font-weight: 600;
+        font-size: 13px;
+        letter-spacing: 0.01em;
     }
 
     /* Subtle Glassmorphism for Containers & Expanders */
@@ -136,7 +203,7 @@ def check_password():
 
     col1, col2, col3 = st.columns([1,2,1])
     with col2:
-        st.title("🔒 Identity Gateway")
+        st.title("Identity Gateway")
         st.markdown("This application is restricted. Please authenticate via your Identity Provider.")
         
         with st.form("login_form"):
@@ -157,14 +224,14 @@ def check_password():
                             
                     st.rerun()
                 else:
-                    st.error("😕 Invalid username or password")
+                    st.error("Invalid username or password")
     return False
 
 def main():
     if not check_password():
         return
         
-    st.sidebar.title("✈️ BharatTrip Operations")
+    st.sidebar.title("BharatTrip Operations")
     
     st.sidebar.markdown(f"**Logged in as:** {st.session_state.username} ({st.session_state.role})")
     if st.sidebar.button("Log Out", use_container_width=True):
@@ -178,7 +245,7 @@ def main():
     st.sidebar.markdown("---")
     
     if not HAS_API_KEY:
-        st.sidebar.warning("⚠️ `GEMINI_API_KEY` not found. Using mocked AI responses for demonstration.")
+        st.sidebar.warning("`GEMINI_API_KEY` not found. Using mocked AI responses for demonstration.")
     
     # Load data into session state for mutability
     if 'support_df' not in st.session_state:
@@ -207,12 +274,12 @@ def main():
         render_partner_matrix(st.session_state.escalations_df, st.session_state.support_df)
 
     # Declarative Multi-Page Declarations with clean URL paths
-    dashboard_p = st.Page(page_dashboard, title="Metrics Dashboard", icon="📊", url_path="dashboard", default=True)
-    partners_p = st.Page(page_partners, title="Partner Health Matrix", icon="📈", url_path="partners")
-    database_p = st.Page(page_database, title="Database Explorer", icon="🗄️", url_path="database")
-    ingestion_p = st.Page(page_ingestion, title="Ingestion Agent", icon="📥", url_path="ingestion")
-    reconciliation_p = st.Page(page_reconciliation, title="Reconciliation (HITL)", icon="⚖️", url_path="reconciliation")
-    triage_p = st.Page(page_triage, title="Escalation Triage", icon="🚨", url_path="triage", default=(st.session_state.role != "Manager"))
+    dashboard_p = st.Page(page_dashboard, title="Metrics Dashboard", url_path="dashboard", default=True)
+    partners_p = st.Page(page_partners, title="Partner Health Matrix", url_path="partners")
+    database_p = st.Page(page_database, title="Database Explorer", url_path="database")
+    ingestion_p = st.Page(page_ingestion, title="Ingestion Agent", url_path="ingestion")
+    reconciliation_p = st.Page(page_reconciliation, title="Reconciliation (HITL)", url_path="reconciliation")
+    triage_p = st.Page(page_triage, title="Escalation Triage", url_path="triage", default=(st.session_state.role != "Manager"))
 
     # Role-Based Sectioned Navigation
     if st.session_state.role == "Manager":

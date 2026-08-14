@@ -3,8 +3,9 @@ import pandas as pd
 from src.agents import analyze_partner_sentiment
 
 def render_partner_matrix(escalations_df, support_df):
-    st.title("📈 Partner Health & Churn Risk Matrix")
-    st.caption("⚡ Live B2B Agency Sentiment Telemetry · VIP Partner Retention & Early Warning Churn Radar")
+    st.markdown('<div class="dash-section-label">Partner Intelligence</div>', unsafe_allow_html=True)
+    st.title("Partner Health & Churn Risk Matrix")
+    st.caption("Live B2B Agency Sentiment Telemetry · VIP Partner Retention & Early Warning Churn Radar")
     
     if escalations_df is None or escalations_df.empty:
         st.success("No active partner escalations. All agency health scores are optimal (100% green).")
@@ -44,11 +45,11 @@ def render_partner_matrix(escalations_df, support_df):
         
         # Determine Risk Status
         if data["Tier"] == "VIP" and (avg_sent < -0.4 or data["Escalations"] >= 3):
-            risk_label = "🔴 CRITICAL (Immediate Churn Risk)"
+            risk_label = "CRITICAL (Immediate Churn Risk)"
         elif avg_sent < -0.3 or data["Escalations"] >= 4:
-            risk_label = "🟡 ELEVATED (SLA Delay)"
+            risk_label = "ELEVATED (SLA Delay)"
         else:
-            risk_label = "🟢 STABLE"
+            risk_label = "STABLE"
             
         summary_rows.append({
             "Agency Name": agent,
@@ -73,7 +74,7 @@ def render_partner_matrix(escalations_df, support_df):
     c4.metric("Dominant Complaint", "Fee Deductions", delta="149 Mismatches", delta_color="inverse")
     
     st.markdown("---")
-    st.subheader("📊 Partner Telemetry & Retention Leaderboard")
+    st.subheader("Partner Telemetry & Retention Leaderboard")
     
     # Render stylized data grid
     st.dataframe(
@@ -92,7 +93,7 @@ def render_partner_matrix(escalations_df, support_df):
     )
     
     st.markdown("---")
-    st.subheader("🎯 Partner Drill-Down & Fast Outreach")
+    st.subheader("Partner Drill-Down & Fast Outreach")
     
     selected_agency = st.selectbox("Select Partner Agency for Incident Review:", list(agency_stats.keys()))
     if selected_agency:
@@ -100,18 +101,18 @@ def render_partner_matrix(escalations_df, support_df):
         with st.container(border=True):
             col_a, col_b = st.columns([2, 1])
             with col_a:
-                st.markdown(f"### 🏢 {selected_agency} (`{p_data['Tier']} Partner`)")
+                st.markdown(f"### {selected_agency} (`{p_data['Tier']} Partner`)")
                 st.markdown(f"**Total Escalations Logged:** `{p_data['Escalations']}`")
                 st.markdown("**Recent Inbound Communications:**")
                 for i, sample in enumerate(p_data["Sample_Messages"][:3]):
-                    st.caption(f"💬 *\"{sample}\"*")
+                    st.caption(f"*\"{sample}\"*")
             with col_b:
-                st.markdown("### ⚡ Fast-Track Actions")
-                if st.button(f"📞 Launch VIP Reassurance Dispatch", type="primary", use_container_width=True):
-                    st.success(f"Proactive VIP account manager outreach scheduled for {selected_agency}!")
+                st.markdown("### Fast-Track Actions")
+                if st.button(f"Launch VIP Reassurance Dispatch", type="primary", use_container_width=True):
+                    st.success(f"Proactive VIP account manager outreach scheduled for {selected_agency}.")
                     st.session_state['show_success_toast'] = True
                     st.rerun()
-                if st.button("⚖️ Jump to Reconciliation Queue", use_container_width=True):
+                if st.button("Jump to Reconciliation Queue", use_container_width=True):
                     try:
                         st.switch_page("reconciliation")
                     except Exception:

@@ -51,10 +51,20 @@ def render_ingestion_header() -> None:
     """Renders top header with live listener badge and telemetry KPI cards."""
     status_col1, status_col2 = st.columns([3, 1])
     with status_col1:
-        st.title("📥 Ingestion Agent (Event-Driven)")
-        st.caption("⚡ Live Webhook Ingestion · Automated PII Redaction & Structured Entity Extraction")
+        st.markdown('<div class="dash-section-label">Intake Pipeline</div>', unsafe_allow_html=True)
+        st.title("Ingestion Agent (Event-Driven)")
+        st.caption("Live Webhook Ingestion · Automated PII Redaction & Structured Entity Extraction")
     with status_col2:
-        st.info("🟢 Webhook Active", icon="📡")
+        st.markdown(
+            '<div style="text-align: right; padding-top: 18px;">'
+            '<span class="status-pill" style="background: rgba(16,185,129,0.1); '
+            'border: 1px solid rgba(16,185,129,0.25); color: #10b981;">'
+            '<span class="status-dot" style="background: #10b981;"></span>'
+            'Webhook Active'
+            '</span>'
+            '</div>',
+            unsafe_allow_html=True
+        )
     
     col1, col2, col3 = st.columns(3)
     inbox_len = len(st.session_state.webhook_inbox_items)
@@ -67,8 +77,8 @@ def render_ingestion_header() -> None:
 
 def render_payload_injector_tabs() -> None:
     """Renders tabbed custom playground for raw manual entry and drag-and-drop batch upload."""
-    st.subheader("🛠️ Ingestion Testing & Batch Upload Studio")
-    tab_single, tab_batch = st.tabs(["✍️ Single Message Playground", "📁 Drag-and-Drop Batch File Ingestion"])
+    st.subheader("Ingestion Testing & Batch Upload Studio")
+    tab_single, tab_batch = st.tabs(["Single Message Playground", "Drag-and-Drop Batch File Ingestion"])
     
     with tab_single:
         st.caption("Inject informal messages across multiple communication channels or run instant AI extraction tests.")
@@ -87,14 +97,14 @@ def render_payload_injector_tabs() -> None:
                 ["WhatsApp", "Email", "Phone", "Portal", "OTA API"],
                 key="single_chan_select"
             )
-            preview_btn = st.button("🔍 Test Live Parse", use_container_width=True, key="btn_live_parse")
-            inject_btn = st.button("📥 Inject to Live Queue", type="primary", use_container_width=True, key="btn_inject_single")
+            preview_btn = st.button("Test Live Parse", use_container_width=True, key="btn_live_parse")
+            inject_btn = st.button("Inject to Live Queue", type="primary", use_container_width=True, key="btn_inject_single")
 
         if preview_btn and custom_text.strip():
             with st.spinner("Executing LLM entity extraction & PII guardrails..."):
                 extracted = parse_informal_message(custom_text)
                 extracted["source_channel"] = custom_channel
-                st.success("✅ Extraction Complete")
+                st.success("Extraction Complete")
                 st.json(extracted)
 
         if inject_btn and custom_text.strip():
@@ -104,7 +114,7 @@ def render_payload_injector_tabs() -> None:
                 "channel": custom_channel,
                 "text": custom_text.strip()
             })
-            st.toast(f"✅ Injected payload {new_id} to queue!", icon="📥")
+            st.toast(f"Injected payload {new_id} to queue.")
             st.rerun()
 
     with tab_batch:
@@ -122,7 +132,7 @@ def render_payload_injector_tabs() -> None:
                     df_upload = pd.read_csv(uploaded_file)
                     text_col = next((c for c in df_upload.columns if c.lower() in ["text", "message", "raw_text", "body", "notes"]), None)
                     if not text_col:
-                        st.error(f"❌ CSV requires a 'text' or 'message' column. Found columns: {list(df_upload.columns)}")
+                        st.error(f"CSV requires a 'text' or 'message' column. Found columns: {list(df_upload.columns)}")
                     else:
                         chan_col = next((c for c in df_upload.columns if c.lower() in ["channel", "source"]), None)
                         for i, row in df_upload.iterrows():
@@ -147,17 +157,17 @@ def render_payload_injector_tabs() -> None:
                             elif isinstance(entry, str):
                                 parsed_batch_items.append({"id": f"JSON-{1000 + idx + 1}", "channel": "JSON Batch", "text": entry})
                     else:
-                        st.error("❌ JSON must contain a top-level array of message objects or strings.")
+                        st.error("JSON must contain a top-level array of message objects or strings.")
                         
                 if parsed_batch_items:
-                    st.success(f"✅ Successfully validated **{len(parsed_batch_items)}** records from `{uploaded_file.name}`.")
+                    st.success(f"Successfully validated **{len(parsed_batch_items)}** records from `{uploaded_file.name}`.")
                     st.dataframe(pd.DataFrame(parsed_batch_items), use_container_width=True, height=180)
                     
                     b_col1, _ = st.columns([2, 3])
                     with b_col1:
-                        if st.button(f"📥 Enqueue All {len(parsed_batch_items)} Records", type="primary", use_container_width=True, key="btn_enqueue_batch"):
+                        if st.button(f"Enqueue All {len(parsed_batch_items)} Records", type="primary", use_container_width=True, key="btn_enqueue_batch"):
                             st.session_state.webhook_inbox_items.extend(parsed_batch_items)
-                            st.toast(f"✅ Ingested {len(parsed_batch_items)} records from {uploaded_file.name}!", icon="📁")
+                            st.toast(f"Ingested {len(parsed_batch_items)} records from {uploaded_file.name}.")
                             st.rerun()
             except Exception as ex:
                 st.error(f"Error parsing uploaded file: {str(ex)}")
@@ -186,9 +196,9 @@ def render_incoming_queue() -> None:
 
     if not items:
         with st.container(border=True):
-            st.success("✅ **Inbox Zero**: All incoming webhook events have been processed.")
+            st.success("**Inbox Zero**: All incoming webhook events have been processed.")
             st.caption("New messages received from travel agencies or direct travelers will appear here automatically.")
-            if st.button("➕ Inject Default Test Payloads", key="reinject_btn"):
+            if st.button("Inject Default Test Payloads", key="reinject_btn"):
                 st.session_state.webhook_inbox_items = [dict(item) for item in DEFAULT_SIMULATED_MESSAGES]
                 st.rerun()
         return
@@ -201,7 +211,7 @@ def render_incoming_queue() -> None:
         for idx, item in enumerate(filtered_items):
             msg_col, chan_col, btn_col = st.columns([4, 1.2, 1.2])
             with msg_col:
-                st.markdown(f"💬 **{item.get('id', 'MSG')}:** *\"{item.get('text', '')}\"*")
+                st.markdown(f"**{item.get('id', 'MSG')}:** *\"{item.get('text', '')}\"*")
             with chan_col:
                 st.caption(f"Channel: `{item.get('channel', 'Unknown')}`")
             with btn_col:
@@ -212,14 +222,14 @@ def render_incoming_queue() -> None:
                         result["inbound_id"] = item.get("id")
                         st.session_state.review_queue.append(result)
                         st.session_state.webhook_inbox_items.remove(item)
-                        st.toast(f"Parsed {item.get('id')} into verification queue!", icon="⚡")
+                        st.toast(f"Parsed {item.get('id')} into verification queue.")
                         st.rerun()
             if idx < len(filtered_items) - 1:
                 st.divider()
 
     c_batch, _ = st.columns([2, 3])
     with c_batch:
-        if st.button("▶️ Batch Parse Visible Messages", type="primary", use_container_width=True):
+        if st.button("Batch Parse Visible Messages", type="primary", use_container_width=True):
             with st.spinner(f"Processing batch of {len(filtered_items)} messages with PII redaction..."):
                 for item in list(filtered_items):
                     result = parse_informal_message(item.get("text", ""))
@@ -227,7 +237,7 @@ def render_incoming_queue() -> None:
                     result["inbound_id"] = item.get("id")
                     st.session_state.review_queue.append(result)
                     st.session_state.webhook_inbox_items.remove(item)
-                st.toast(f"Batch parsed {len(filtered_items)} messages successfully!", icon="✅")
+                st.toast(f"Batch parsed {len(filtered_items)} messages successfully.")
                 st.rerun()
 
 def render_review_workspace() -> None:
@@ -237,13 +247,13 @@ def render_review_workspace() -> None:
     
     if not st.session_state.review_queue:
         with st.container(border=True):
-            st.info("ℹ️ **Verification Queue Empty**: No parsed tickets currently awaiting review.")
+            st.info("**Verification Queue Empty**: No parsed tickets currently awaiting review.")
             st.caption("Parse inbound messages from the queue above to stage tickets for HITL validation.")
         return
 
     low_confidence = any(r.get("confidence_score", 100) < 80 for r in st.session_state.review_queue)
     if low_confidence:
-        st.warning("⚠️ **Confidence Warning**: One or more records flagged low AI extraction confidence (< 80%). Verify fields before commit.")
+        st.warning("**Confidence Warning**: One or more records flagged low AI extraction confidence (< 80%). Verify fields before commit.")
 
     ticket_options = {
         f"Item #{i+1} | {r.get('agent_name', 'Unknown Agency')} | Route: {r.get('route', 'Unknown')} ({r.get('confidence_score', 85)}% Conf)": i 
@@ -257,13 +267,13 @@ def render_review_workspace() -> None:
     with st.container(border=True):
         col_hdr1, col_hdr2 = st.columns([2, 1])
         with col_hdr1:
-            st.markdown(f"### 🎫 Staged Ticket #{selected_idx + 1}")
+            st.markdown(f"### Staged Ticket #{selected_idx + 1}")
         
         conf_score = int(r.get("confidence_score", 85))
         with col_hdr2:
             st.progress(conf_score / 100.0, text=f"AI Confidence: {conf_score}%")
         
-        st.caption("🛡️ PII automatically masked at ingestion boundary before LLM processing.")
+        st.caption("PII automatically masked at ingestion boundary before LLM processing.")
         
         # Database pre-match lookup
         support_db = st.session_state.get('support_df', pd.DataFrame())
@@ -286,7 +296,7 @@ def render_review_workspace() -> None:
         col1, col2 = st.columns(2)
         with col1:
             with st.container(border=True):
-                st.markdown("**📍 Partner & Route Identity**")
+                st.markdown("**Partner & Route Identity**")
                 new_agent = st.text_input(
                     "Agency / Partner Name", 
                     value=agent_val, 
@@ -319,7 +329,7 @@ def render_review_workspace() -> None:
             
         with col2:
             with st.container(border=True):
-                st.markdown("**⚡ Financial & Priority Classification**")
+                st.markdown("**Financial & Priority Classification**")
                 intent_opts = ["status_update", "new_refund", "other"]
                 curr_intent = r.get("intent", "status_update")
                 if curr_intent not in intent_opts:
@@ -358,9 +368,9 @@ def render_review_workspace() -> None:
             
         st.markdown("---")
         
-        with st.expander("🔍 SSOT Database Association", expanded=True):
+        with st.expander("SSOT Database Association", expanded=True):
             if db_record is not None:
-                st.success("✅ Prior record located in SSOT database. Update will attach to existing history.")
+                st.success("Prior record located in SSOT database. Update will attach to existing history.")
                 c_db1, c_db2 = st.columns(2)
                 with c_db1:
                     st.text_input("Logged Request Date", value=str(db_record.get('Request Date', '')), disabled=True)
@@ -369,13 +379,13 @@ def render_review_workspace() -> None:
                     st.text_input("Existing Notes", value=str(db_record.get('Notes', '')), disabled=True)
                     st.text_input("Owner Department", value=str(db_record.get('Handled By', '')), disabled=True)
             else:
-                st.info("ℹ️ No previous record found. A new SSOT entry will be registered upon approval.")
+                st.info("No previous record found. A new SSOT entry will be registered upon approval.")
                 
         st.markdown("---")
         
         btn_col1, btn_col2, _ = st.columns([2, 1.5, 2.5])
         with btn_col1:
-            if st.button("💾 Approve & Commit to SSOT", type="primary", key=f"approve_{selected_idx}", use_container_width=True):
+            if st.button("Approve & Commit to SSOT", type="primary", key=f"approve_{selected_idx}", use_container_width=True):
                 support_df = st.session_state.support_df
                 
                 new_record: Dict[str, Any] = {
@@ -404,18 +414,18 @@ def render_review_workspace() -> None:
                 st.session_state.processed_today += 1
                 st.session_state.review_queue.pop(selected_idx)
                 st.session_state.discard_confirm_idx = None
-                st.toast("✅ Ticket successfully committed to SSOT database!", icon="💾")
+                st.toast("Ticket successfully committed to SSOT database.")
                 st.rerun()
                 
         with btn_col2:
             if st.session_state.discard_confirm_idx == selected_idx:
-                if st.button("⚠️ Confirm Discard", key=f"confirm_discard_{selected_idx}", type="secondary", use_container_width=True):
+                if st.button("Confirm Discard", key=f"confirm_discard_{selected_idx}", type="secondary", use_container_width=True):
                     st.session_state.review_queue.pop(selected_idx)
                     st.session_state.discard_confirm_idx = None
-                    st.toast("Item discarded from queue.", icon="🗑️")
+                    st.toast("Item discarded from queue.")
                     st.rerun()
             else:
-                if st.button("🗑️ Discard Item", key=f"discard_{selected_idx}", use_container_width=True):
+                if st.button("Discard Item", key=f"discard_{selected_idx}", use_container_width=True):
                     st.session_state.discard_confirm_idx = selected_idx
                     st.rerun()
 
