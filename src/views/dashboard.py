@@ -69,65 +69,55 @@ def calculate_dashboard_metrics(
 # CSS Token System
 # ---------------------------------------------------------------------------
 def inject_dashboard_styles() -> None:
-    """Injects the redesigned CSS token system."""
+    """Injects the dashboard-specific structural CSS over the global theme."""
     st.markdown("""
     <style>
-    /* ── Design Tokens ── */
-    :root {
-        --font-display: var(--font-sans);
-        --font-mono: var(--font-mono);
-
-        --clr-accent: #1a73e8;
-        --clr-accent-subtle: rgba(26, 115, 232, 0.12);
-        --clr-success: #34a853;
-        --clr-success-subtle: rgba(52, 168, 83, 0.12);
-        --clr-warning: #fbbc04;
-        --clr-warning-subtle: rgba(251, 188, 4, 0.12);
-        --clr-danger: #ea4335;
-        --clr-danger-subtle: rgba(234, 67, 53, 0.12);
-
-        --radius-sm: 4px;
-        --radius-md: 8px;
-        --radius-lg: 12px;
-    }
-
     /* ── Section Label ── */
     .dash-section-label {
-        font-family: var(--font-sans);
-        font-size: 12px;
+        font-family: var(--font-mono);
+        font-size: 11px;
         font-weight: 500;
-        letter-spacing: 0.06em;
+        letter-spacing: 0.1em;
         text-transform: uppercase;
-        color: var(--google-text-secondary);
+        color: var(--clr-text-secondary);
         margin-bottom: 6px;
         padding-left: 2px;
     }
 
     /* ── KPI Hero Card (Health Gauge) ── */
     .kpi-hero {
-        background: var(--google-surface);
-        border: 1px solid var(--google-border);
-        border-radius: 8px;
+        background: var(--clr-surface);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border: 1px solid var(--clr-border);
+        border-radius: var(--radius-md);
         padding: 24px;
         display: flex;
         flex-direction: column;
         align-items: center;
         gap: 12px;
-        box-shadow: 0 1px 2px 0 rgba(60,64,67,0.3), 0 1px 3px 1px rgba(60,64,67,0.15);
+        transition: all 0.3s ease;
+    }
+    .kpi-hero:hover {
+        border-color: var(--clr-border-highlight);
+        background: var(--clr-surface-hover);
+        box-shadow: 0 0 20px var(--clr-accent-subtle);
     }
 
     /* ── KPI Stat Card ── */
     .kpi-stat {
-        background: var(--google-surface);
-        border: 1px solid var(--google-border);
-        border-radius: 8px;
-        box-shadow: 0 1px 2px 0 rgba(60,64,67,0.3), 0 1px 3px 1px rgba(60,64,67,0.15);
+        background: var(--clr-surface);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border: 1px solid var(--clr-border);
+        border-radius: var(--radius-md);
         padding: 16px 20px;
-        transition: transform 0.2s cubic-bezier(0.4, 0.0, 0.2, 1), box-shadow 0.2s cubic-bezier(0.4, 0.0, 0.2, 1);
+        transition: all 0.3s ease;
     }
     .kpi-stat:hover {
-        transform: translateY(-1px);
-        box-shadow: 0 1px 3px 0 rgba(60,64,67,0.3), 0 4px 8px 3px rgba(60,64,67,0.15);
+        transform: translateY(-2px);
+        background: var(--clr-surface-hover);
+        box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
     }
     .kpi-stat-label {
         font-family: var(--font-mono);
@@ -135,23 +125,22 @@ def inject_dashboard_styles() -> None:
         font-weight: 500;
         letter-spacing: 0.05em;
         text-transform: uppercase;
-        opacity: 0.5;
+        color: var(--clr-text-secondary);
         margin-bottom: 6px;
     }
     .kpi-stat-value {
-        font-family: var(--font-display);
+        font-family: var(--font-sans);
         font-size: 28px;
-        font-weight: 500;
-        font-variant-numeric: tabular-nums;
+        font-weight: 600;
         line-height: 1.1;
         margin-bottom: 4px;
-        color: var(--google-text);
+        color: var(--clr-text-primary);
     }
     .kpi-stat-delta {
         font-family: var(--font-mono);
         font-size: 12px;
         font-weight: 500;
-        opacity: 0.6;
+        opacity: 0.8;
     }
 
     /* ── Pipeline Corridor ── */
@@ -159,12 +148,18 @@ def inject_dashboard_styles() -> None:
         display: flex;
         align-items: center;
         justify-content: space-between;
-        background: var(--google-surface);
-        border: 1px solid var(--google-border);
-        border-radius: 8px;
-        box-shadow: 0 1px 2px 0 rgba(60,64,67,0.3), 0 1px 3px 1px rgba(60,64,67,0.15);
+        background: var(--clr-surface);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border: 1px solid var(--clr-border);
+        border-radius: var(--radius-md);
         padding: 24px 32px;
         gap: 16px;
+        transition: all 0.3s ease;
+    }
+    .pipeline-corridor-card:hover {
+        border-color: var(--clr-accent-subtle);
+        box-shadow: 0 0 20px var(--clr-accent-subtle);
     }
     .pipeline-node {
         flex: 1;
@@ -176,9 +171,14 @@ def inject_dashboard_styles() -> None:
         align-items: center;
         justify-content: center;
         flex-shrink: 0;
-        color: var(--google-text-secondary);
-        opacity: 0.4;
+        color: var(--clr-accent);
+        opacity: 0.7;
         padding: 0 8px;
+        animation: pulse-arrow 2s infinite;
+    }
+    @keyframes pulse-arrow {
+        0%, 100% { transform: translateX(0); opacity: 0.4; }
+        50% { transform: translateX(4px); opacity: 1; }
     }
     .pipeline-node-label {
         font-family: var(--font-mono);
@@ -186,36 +186,34 @@ def inject_dashboard_styles() -> None:
         font-weight: 500;
         letter-spacing: 0.08em;
         text-transform: uppercase;
-        opacity: 0.5;
+        color: var(--clr-text-secondary);
         margin-bottom: 8px;
     }
     .pipeline-node-title {
-        font-family: var(--font-display);
-        font-weight: 700;
+        font-family: var(--font-sans);
+        font-weight: 600;
         font-size: 15px;
         margin-bottom: 12px;
     }
     .pipeline-node-metric {
-        font-family: var(--font-display);
-        font-size: 24px;
-        font-weight: 500;
-        font-variant-numeric: tabular-nums;
+        font-family: var(--font-sans);
+        font-size: 28px;
+        font-weight: 600;
         line-height: 1.2;
-        color: var(--google-text);
     }
     .pipeline-node-sub {
         font-family: var(--font-mono);
         font-size: 12px;
-        opacity: 0.6;
+        color: var(--clr-text-secondary);
         margin-top: 4px;
     }
     .pipeline-node-note {
-        font-family: var(--font-display);
+        font-family: var(--font-sans);
         font-size: 12px;
-        opacity: 0.5;
+        color: var(--clr-text-secondary);
         margin-top: 10px;
         padding-top: 10px;
-        border-top: 1px solid rgba(128,128,128,0.2);
+        border-top: 1px dashed var(--clr-border);
     }
 
     /* ── Carrier ── */
@@ -230,7 +228,7 @@ def inject_dashboard_styles() -> None:
     .carrier-bar-bg {
         width: 100%;
         height: 6px;
-        background: rgba(128,128,128,0.15);
+        background: rgba(255,255,255,0.1);
         border-radius: 3px;
         overflow: hidden;
     }
@@ -238,35 +236,36 @@ def inject_dashboard_styles() -> None:
         height: 100%;
         border-radius: 3px;
         transition: width 0.6s cubic-bezier(0.32, 0.72, 0, 1);
+        box-shadow: 0 0 8px currentColor;
     }
     .carrier-pct {
         font-family: var(--font-mono);
         font-size: 13px;
         font-weight: 600;
-        font-variant-numeric: tabular-nums;
         margin-bottom: 4px;
     }
 
     /* ── Analytics Section ── */
     .analytics-card-title {
-        font-family: var(--font-display);
-        font-weight: 700;
+        font-family: var(--font-sans);
+        font-weight: 600;
         font-size: 15px;
         margin-bottom: 4px;
     }
     .analytics-card-sub {
         font-family: var(--font-mono);
         font-size: 11px;
-        opacity: 0.5;
+        color: var(--clr-text-secondary);
         margin-bottom: 14px;
     }
 
     /* ── RCA Executive Card ── */
     .rca-card {
-        background: var(--google-surface);
-        border: 1px solid var(--google-border);
-        border-radius: 8px;
-        box-shadow: 0 1px 2px 0 rgba(60,64,67,0.3), 0 1px 3px 1px rgba(60,64,67,0.15);
+        background: var(--clr-surface);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border: 1px solid var(--clr-border);
+        border-radius: var(--radius-md);
         padding: 24px 28px;
     }
     .rca-item {
@@ -274,7 +273,7 @@ def inject_dashboard_styles() -> None:
         gap: 14px;
         align-items: flex-start;
         padding: 14px 0;
-        border-bottom: 1px solid rgba(128,128,128,0.15);
+        border-bottom: 1px solid var(--clr-border);
     }
     .rca-item:last-child {
         border-bottom: none;
@@ -286,7 +285,7 @@ def inject_dashboard_styles() -> None:
     .rca-icon {
         width: 36px;
         height: 36px;
-        border-radius: 8px;
+        border-radius: var(--radius-sm);
         display: flex;
         align-items: center;
         justify-content: center;
@@ -302,39 +301,16 @@ def inject_dashboard_styles() -> None:
         margin-bottom: 3px;
     }
     .rca-item-title {
-        font-family: var(--font-display);
-        font-weight: 700;
+        font-family: var(--font-sans);
+        font-weight: 600;
         font-size: 15px;
         margin-bottom: 4px;
     }
     .rca-item-desc {
-        font-family: var(--font-display);
+        font-family: var(--font-sans);
         font-size: 13px;
-        opacity: 0.7;
+        color: var(--clr-text-secondary);
         line-height: 1.5;
-    }
-
-    /* ── Status Pill ── */
-    .status-pill {
-        display: inline-flex;
-        align-items: center;
-        gap: 6px;
-        font-family: var(--font-mono);
-        font-size: 11px;
-        font-weight: 600;
-        padding: 4px 12px;
-        border-radius: 9999px;
-        letter-spacing: 0.03em;
-    }
-    .status-dot {
-        width: 6px;
-        height: 6px;
-        border-radius: 50%;
-        animation: pulse-dot 2s ease-in-out infinite;
-    }
-    @keyframes pulse-dot {
-        0%, 100% { opacity: 1; }
-        50% { opacity: 0.4; }
     }
 
     /* ── Section Divider ── */
@@ -360,9 +336,9 @@ def render_dashboard_header() -> str:
     with status_col:
         st.markdown(
             '<div style="text-align: right; padding-top: 18px;">'
-            '<span class="status-pill" style="background: rgba(52,168,83,0.1); border: 1px solid rgba(52,168,83,0.3); color: #34a853;">'
+            '<span class="status-pill">'
             '● Live Stream '
-            '<span class="status-dot" style="background: #34a853;"></span>'
+            '<span class="status-dot"></span>'
             'SSOT Active'
             '</span>'
             '</div>',
@@ -396,32 +372,32 @@ def render_kpi_cards(metrics: Dict[str, Any]) -> None:
         pct = metrics['health_pct']
         circumference = 283
         stroke_dash = (pct / 100.0) * circumference
-        gauge_color = "#34a853" if pct >= 80 else "#1a73e8" if pct >= 60 else "#fbbc04"
+        gauge_color = "var(--clr-success)" if pct >= 80 else "var(--clr-accent)" if pct >= 60 else "var(--clr-warning)"
         status_text = "Healthy" if pct >= 80 else "Degraded" if pct >= 60 else "At Risk"
 
         st.markdown(f"""
         <div class="kpi-hero">
             <svg width="140" height="140" viewBox="0 0 120 120">
                 <circle cx="60" cy="60" r="45" fill="none"
-                    stroke="var(--google-border)" stroke-width="8" />
+                    stroke="var(--clr-border)" stroke-width="8" />
                 <circle cx="60" cy="60" r="45" fill="none"
                     stroke="{gauge_color}" stroke-width="8"
                     stroke-dasharray="{stroke_dash} {circumference}"
                     stroke-linecap="round"
                     transform="rotate(-90 60 60)"
-                    style="transition: stroke-dasharray 0.8s cubic-bezier(0.32,0.72,0,1);" />
+                    style="transition: stroke-dasharray 0.8s cubic-bezier(0.32,0.72,0,1); filter: drop-shadow(0 0 8px {gauge_color});" />
                 <text x="60" y="55" text-anchor="middle"
                     font-family="var(--font-sans)"
-                    font-size="26" font-weight="500" fill="var(--google-text)"
+                    font-size="26" font-weight="600" fill="var(--clr-text-primary)"
                     style="font-variant-numeric: tabular-nums;">{pct}%</text>
                 <text x="60" y="72" text-anchor="middle"
                     font-family="var(--font-mono)"
-                    font-size="9" font-weight="500" fill="{gauge_color}"
+                    font-size="9" font-weight="600" fill="{gauge_color}"
                     letter-spacing="0.08em">{status_text.upper()}</text>
             </svg>
             <div style="text-align: center;">
-                <div style="font-family: var(--font-display); font-weight: 700;
-                    font-size: 15px; color: var(--clr-text-primary); margin-bottom: 2px;">
+                <div style="font-family: var(--font-sans); font-weight: 600;
+                    font-size: 15px; margin-bottom: 2px;">
                     Pipeline Health</div>
                 <div style="font-family: var(--font-mono); font-size: 12px;
                     color: var(--clr-text-secondary);">
@@ -469,10 +445,10 @@ def render_kpi_cards(metrics: Dict[str, Any]) -> None:
 def _render_stat_card(label: str, value: str, delta: str, accent_color: str) -> None:
     """Renders a single KPI stat card."""
     st.markdown(f"""
-    <div class="kpi-stat">
+    <div class="kpi-stat" style="border-bottom: 2px solid {accent_color};">
         <div class="kpi-stat-label">{label}</div>
         <div class="kpi-stat-value">{value}</div>
-        <div class="kpi-stat-delta">{delta}</div>
+        <div class="kpi-stat-delta" style="color: {accent_color};">{delta}</div>
     </div>
     """, unsafe_allow_html=True)
 
@@ -486,7 +462,7 @@ def render_pipeline_corridor(metrics: Dict[str, Any]) -> None:
     st.markdown('<div class="dash-section-label">Settlement corridor</div>', unsafe_allow_html=True)
 
     audited = metrics['total_pipeline'] - metrics['dropped_handoffs']
-    hop3_color = '#34a853' if metrics['health_pct'] >= 80 else '#fbbc04' if metrics['health_pct'] >= 60 else '#ea4335'
+    hop3_color = 'var(--clr-success)' if metrics['health_pct'] >= 80 else 'var(--clr-warning)' if metrics['health_pct'] >= 60 else 'var(--clr-danger)'
     
     chevron = '''<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>'''
 
@@ -496,7 +472,7 @@ def render_pipeline_corridor(metrics: Dict[str, Any]) -> None:
         <div class="pipeline-node">
             <div class="pipeline-node-label">Intake Pipeline</div>
             <div class="pipeline-node-title">Inbound Intake</div>
-            <div class="pipeline-node-metric" style="color: #34a853;">{metrics['total_pipeline']}</div>
+            <div class="pipeline-node-metric" style="color: var(--clr-success); text-shadow: 0 0 10px var(--clr-success-subtle);">{metrics['total_pipeline']}</div>
             <div class="pipeline-node-sub">Total claims</div>
             <div class="pipeline-node-note">WhatsApp · Email · Web intake</div>
         </div>
@@ -505,16 +481,16 @@ def render_pipeline_corridor(metrics: Dict[str, Any]) -> None:
         <div class="pipeline-node">
             <div class="pipeline-node-label">Support Audit</div>
             <div class="pipeline-node-title">Route Validation</div>
-            <div class="pipeline-node-metric" style="color: #fbbc04;">{audited}</div>
+            <div class="pipeline-node-metric" style="color: var(--clr-warning); text-shadow: 0 0 10px var(--clr-warning-subtle);">{audited}</div>
             <div class="pipeline-node-sub">Audited tickets</div>
-            <div class="pipeline-node-note" style="color: #ea4335;">−{metrics['dropped_handoffs']} dropped before Finance sync</div>
+            <div class="pipeline-node-note" style="color: var(--clr-danger);">−{metrics['dropped_handoffs']} dropped before Finance sync</div>
         </div>
         <div class="pipeline-connector">{chevron}</div>
         <!-- Node 3 -->
         <div class="pipeline-node">
             <div class="pipeline-node-label">Settlement Corridor</div>
             <div class="pipeline-node-title">Banking Payout</div>
-            <div class="pipeline-node-metric" style="color: {hop3_color};">{metrics['healthy_count']}</div>
+            <div class="pipeline-node-metric" style="color: {hop3_color}; text-shadow: 0 0 10px {hop3_color};">{metrics['healthy_count']}</div>
             <div class="pipeline-node-sub">Clean settlements</div>
             <div class="pipeline-node-note">{metrics['deduction_mismatches']} mismatches &middot; ₹14.8L variance</div>
         </div>
@@ -543,7 +519,7 @@ def render_carrier_health() -> None:
 
     with st.container(border=True):
         for c in carriers:
-            bar_color = "#34a853" if c["pct"] >= 85 else "#1a73e8" if c["pct"] >= 75 else "#fbbc04" if c["pct"] >= 70 else "#ea4335"
+            bar_color = "var(--clr-success)" if c["pct"] >= 85 else "var(--clr-accent)" if c["pct"] >= 75 else "var(--clr-warning)" if c["pct"] >= 70 else "var(--clr-danger)"
             c_name, c_badge, c_fee, c_sla, c_bar = st.columns([2, 1.5, 1, 1, 2])
             with c_name:
                 st.markdown(f'<div style="font-weight: 600; padding-top: 6px;">{c["name"]}</div>', unsafe_allow_html=True)
@@ -590,15 +566,16 @@ def render_analytics(escalations_df: pd.DataFrame) -> None:
                 df_trend = pd.DataFrame({"Month": ["Feb", "Mar", "Apr", "May", "Jun"], "Metric": [2.4, 5.6, 8.2, 11.2, 14.8]})
                 fmt, label = "Q", "Value (Lakhs)"
                 
-            bars1 = alt.Chart(df_trend).mark_bar(color="#1a73e8", cornerRadiusTopLeft=3, cornerRadiusTopRight=3).encode(
-                x=alt.X("Month", sort=None, axis=alt.Axis(labelAngle=0, grid=False)),
-                y=alt.Y("Metric", title=label),
+            bars1 = alt.Chart(df_trend).mark_bar(color="#00F0FF", cornerRadiusTopLeft=4, cornerRadiusTopRight=4).encode(
+                x=alt.X("Month", sort=None, axis=alt.Axis(labelAngle=0, grid=False, domain=False, tickColor='transparent', labelColor='#94A3B8')),
+                y=alt.Y("Metric", title=label, axis=alt.Axis(gridColor='rgba(255,255,255,0.05)', domain=False, labelColor='#94A3B8')),
                 tooltip=["Month", alt.Tooltip("Metric", title=label, format=".1f" if view_mode=="Financial Impact" else "d")]
             )
-            text1 = bars1.mark_text(align='center', baseline='bottom', dy=-5).encode(
+            text1 = bars1.mark_text(align='center', baseline='bottom', dy=-5, color='#F8FAFC').encode(
                 text=alt.Text('Metric:Q', format='.1f' if view_mode=="Financial Impact" else 'd')
             )
             c1 = (bars1 + text1).properties(height=300).interactive()
+            c1 = c1.configure_view(strokeWidth=0).configure_axis(grid=False)
             st.altair_chart(c1, use_container_width=True)
 
     with col_cause:
@@ -618,15 +595,16 @@ def render_analytics(escalations_df: pd.DataFrame) -> None:
                 "Value": [14.8, 9.2, 3.4, 1.8]
             })
             y_col = "Count" if view_mode == "Volume" else "Value"
-            bars2 = alt.Chart(df_cause).mark_bar(color="#fbbc04", cornerRadiusTopLeft=3, cornerRadiusTopRight=3).encode(
-                x=alt.X("Cause", sort="-y", axis=alt.Axis(labelAngle=-45, grid=False)),
-                y=alt.Y(y_col),
+            bars2 = alt.Chart(df_cause).mark_bar(color="#FFD600", cornerRadiusTopLeft=4, cornerRadiusTopRight=4).encode(
+                x=alt.X("Cause", sort="-y", axis=alt.Axis(labelAngle=-45, grid=False, domain=False, tickColor='transparent', labelColor='#94A3B8')),
+                y=alt.Y(y_col, axis=alt.Axis(gridColor='rgba(255,255,255,0.05)', domain=False, labelColor='#94A3B8')),
                 tooltip=["Cause", y_col]
             )
-            text2 = bars2.mark_text(align='center', baseline='bottom', dy=-5).encode(
+            text2 = bars2.mark_text(align='center', baseline='bottom', dy=-5, color='#F8FAFC').encode(
                 text=alt.Text(f'{y_col}:Q', format='.1f' if view_mode=="Financial Impact" else 'd')
             )
             c2 = (bars2 + text2).properties(height=300).interactive()
+            c2 = c2.configure_view(strokeWidth=0).configure_axis(grid=False)
             st.altair_chart(c2, use_container_width=True)
 
     col_agencies, col_pareto = st.columns(2, gap="medium")
@@ -668,15 +646,16 @@ def render_analytics(escalations_df: pd.DataFrame) -> None:
                 "Category": ["Silent Delay", "Ghost Ticket", "Short Payout", "Unlogged Msg", "No Reason"],
                 "Count": [61, 32, 21, 17, 5]
             })
-            bars3 = alt.Chart(pareto_df).mark_bar(color="#ea4335", cornerRadiusTopLeft=3, cornerRadiusTopRight=3).encode(
-                x=alt.X("Category", sort="-y", axis=alt.Axis(labelAngle=-45, grid=False)),
-                y="Count",
+            bars3 = alt.Chart(pareto_df).mark_bar(color="#FF2A54", cornerRadiusTopLeft=4, cornerRadiusTopRight=4).encode(
+                x=alt.X("Category", sort="-y", axis=alt.Axis(labelAngle=-45, grid=False, domain=False, tickColor='transparent', labelColor='#94A3B8')),
+                y=alt.Y("Count", axis=alt.Axis(gridColor='rgba(255,255,255,0.05)', domain=False, labelColor='#94A3B8')),
                 tooltip=["Category", "Count"]
             )
-            text3 = bars3.mark_text(align='center', baseline='bottom', dy=-5).encode(
+            text3 = bars3.mark_text(align='center', baseline='bottom', dy=-5, color='#F8FAFC').encode(
                 text=alt.Text('Count:Q')
             )
             c3 = (bars3 + text3).properties(height=250).interactive()
+            c3 = c3.configure_view(strokeWidth=0).configure_axis(grid=False)
             st.altair_chart(c3, use_container_width=True)
 
 # ---------------------------------------------------------------------------
@@ -698,7 +677,7 @@ def render_rca_section(escalations_df: pd.DataFrame) -> None:
     st.markdown("""
     <div class="rca-card">
         <div class="rca-item">
-            <div class="rca-icon" style="background: rgba(234,67,53,0.12); color: var(--clr-danger); font-family: var(--font-mono); font-weight: 700; font-size: 11px;">RCA</div>
+            <div class="rca-icon" style="background: var(--clr-danger-subtle); color: var(--clr-danger);">RCA</div>
             <div>
                 <div class="rca-item-label" style="color: var(--clr-danger);">Intake Handoff Failure</div>
                 <div class="rca-item-title">100 tickets dropped at handoff</div>
@@ -709,7 +688,7 @@ def render_rca_section(escalations_df: pd.DataFrame) -> None:
             </div>
         </div>
         <div class="rca-item">
-            <div class="rca-icon" style="background: rgba(251,188,4,0.12); color: var(--clr-warning); font-family: var(--font-mono); font-weight: 700; font-size: 11px;">VAR</div>
+            <div class="rca-icon" style="background: var(--clr-warning-subtle); color: var(--clr-warning);">VAR</div>
             <div>
                 <div class="rca-item-label" style="color: var(--clr-warning);">Deduction Variance</div>
                 <div class="rca-item-title">₹14.8L in contested deduction variances</div>
@@ -720,7 +699,7 @@ def render_rca_section(escalations_df: pd.DataFrame) -> None:
             </div>
         </div>
         <div class="rca-item">
-            <div class="rca-icon" style="background: rgba(26,115,232,0.12); color: var(--clr-accent); font-family: var(--font-mono); font-weight: 700; font-size: 11px;">SLA</div>
+            <div class="rca-icon" style="background: var(--clr-accent-subtle); color: var(--clr-accent);">SLA</div>
             <div>
                 <div class="rca-item-label" style="color: var(--clr-accent);">Projected Outcome</div>
                 <div class="rca-item-title">&lt; 4h resolution with automated MCP reconciliation</div>
