@@ -47,9 +47,14 @@ except Exception as e:
 # -----------------------------------------------------------------------------
 # Mock Authentication (Identity Provider)
 # -----------------------------------------------------------------------------
+import hashlib
+
+def get_hash(pw: str) -> str:
+    return hashlib.sha256(pw.encode()).hexdigest()
+
 MOCK_USERS = {
-    "manager": {"password": "admin123", "role": "Manager"},
-    "operator": {"password": "agent123", "role": "Junior"}
+    "manager": {"password_hash": get_hash("admin123"), "role": "Manager"},
+    "operator": {"password_hash": get_hash("agent123"), "role": "Junior"}
 }
 
 def check_password():
@@ -58,19 +63,6 @@ def check_password():
         st.session_state.logged_in = False
         st.session_state.role = None
         st.session_state.username = None
-        
-        # Check for remember me file
-        if os.path.exists(".remember.json"):
-            try:
-                with open(".remember.json", "r") as f:
-                    saved_creds = json.load(f)
-                    if saved_creds.get("username") in MOCK_USERS and MOCK_USERS[saved_creds["username"]]["password"] == saved_creds.get("password"):
-                        st.session_state.logged_in = True
-                        st.session_state.role = MOCK_USERS[saved_creds["username"]]["role"]
-                        st.session_state.username = saved_creds["username"]
-                        return True
-            except:
-                pass
 
     if st.session_state.logged_in:
         return True
@@ -83,19 +75,13 @@ def check_password():
         with st.form("login_form"):
             username = st.text_input("Username").strip()
             password = st.text_input("Password", type="password").strip()
-            remember_me = st.checkbox("Remember Me")
             submit = st.form_submit_button("Log In", type="primary", use_container_width=True)
             
             if submit:
-                if username in MOCK_USERS and MOCK_USERS[username]["password"] == password:
+                if username in MOCK_USERS and MOCK_USERS[username]["password_hash"] == get_hash(password):
                     st.session_state.logged_in = True
                     st.session_state.role = MOCK_USERS[username]["role"]
                     st.session_state.username = username
-                    
-                    if remember_me:
-                        with open(".remember.json", "w") as f:
-                            json.dump({"username": username, "password": password}, f)
-                            
                     st.rerun()
                 else:
                     st.error("Invalid username or password")
@@ -137,12 +123,12 @@ def main():
         render_partner_matrix(st.session_state.escalations_df, st.session_state.support_df)
 
     # Declarative Multi-Page Declarations with clean URL paths
-    dashboard_p = st.Page(page_dashboard, title="Metrics Dashboard", url_path="dashboard", default=True)
-    partners_p = st.Page(page_partners, title="Partner Health Matrix", url_path="partners")
-    database_p = st.Page(page_database, title="Database Explorer", url_path="database")
-    ingestion_p = st.Page(page_ingestion, title="Ingestion Agent", url_path="ingestion")
-    reconciliation_p = st.Page(page_reconciliation, title="Reconciliation (HITL)", url_path="reconciliation")
-    triage_p = st.Page(page_triage, title="Escalation Triage", url_path="triage", default=(st.session_state.role != "Manager"))
+    dashboard_p = st.Page(page_dashboard, title="Metrics Dashboard", url_path="dashboard", icon=":material/dashboard:", default=True)
+    partners_p = st.Page(page_partners, title="Partner Health Matrix", url_path="partners", icon=":material/handshake:")
+    database_p = st.Page(page_database, title="Database Explorer", url_path="database", icon=":material/database:")
+    ingestion_p = st.Page(page_ingestion, title="Ingestion Agent", url_path="ingestion", icon=":material/smart_toy:")
+    reconciliation_p = st.Page(page_reconciliation, title="Reconciliation (HITL)", url_path="reconciliation", icon=":material/receipt_long:")
+    triage_p = st.Page(page_triage, title="Escalation Triage", url_path="triage", icon=":material/support_agent:", default=(st.session_state.role != "Manager"))
 
     # Store pages in session_state for programmatic navigation in other modules
     st.session_state.pages = {
@@ -173,8 +159,12 @@ def main():
         st.session_state.logged_in = False
         st.session_state.role = None
         st.session_state.username = None
+        # Clean up legacy remember.json if it exists
         if os.path.exists(".remember.json"):
-            os.remove(".remember.json")
+            try:
+                os.remove(".remember.json")
+            except OSError:
+                pass
         st.rerun()
         
     pg.run()

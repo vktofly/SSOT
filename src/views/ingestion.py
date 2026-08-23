@@ -126,6 +126,16 @@ def render_payload_injector_tabs() -> None:
         )
         
         if uploaded_file is not None:
+            MAX_FILE_SIZE = 5 * 1024 * 1024
+            if uploaded_file.size > MAX_FILE_SIZE:
+                st.error("File is too large. Maximum allowed size is 5MB.")
+                return
+
+            valid_mime_types = ["text/csv", "application/json", "application/vnd.ms-excel"]
+            if uploaded_file.type not in valid_mime_types:
+                st.error(f"Invalid file type: {uploaded_file.type}. Only CSV and JSON are allowed.")
+                return
+
             parsed_batch_items: List[Dict[str, str]] = []
             try:
                 if uploaded_file.name.endswith(".csv"):

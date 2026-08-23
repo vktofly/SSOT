@@ -366,7 +366,7 @@ def render_dashboard_header() -> str:
 # ---------------------------------------------------------------------------
 def render_kpi_cards(metrics: Dict[str, Any]) -> None:
     """Renders asymmetric KPI layout: hero gauge on left, 3 stat cards on right."""
-    col_hero, col_esc, col_ttr, col_leak = st.columns([2, 1, 1, 1], gap="medium")
+    col_hero, col_esc, col_ttr, col_leak, col_auto = st.columns([2, 1, 1, 1, 1], gap="small")
 
     with col_hero:
         pct = metrics['health_pct']
@@ -432,8 +432,16 @@ def render_kpi_cards(metrics: Dict[str, Any]) -> None:
             accent_color="var(--clr-warning)"
         )
 
+    with col_auto:
+        _render_stat_card(
+            label="Manual Hours Saved",
+            value="142h",
+            delta="78% Automation Rate",
+            accent_color="var(--clr-success)"
+        )
+
     # Action buttons below KPIs
-    _, btn1, btn2, _ = st.columns([2, 1, 1, 1])
+    _, btn1, btn2, _ = st.columns([2.5, 1, 1, 1.5])
     with btn1:
         if st.button("Reconcile", type="primary", use_container_width=True, key="btn_dash_recon"):
             st.switch_page(st.session_state.pages["reconciliation"])
@@ -549,14 +557,53 @@ def render_analytics(escalations_df: pd.DataFrame) -> None:
     """Renders escalation trend, root cause, and top agencies in a clean layout."""
     st.markdown('<div class="section-gap"></div>', unsafe_allow_html=True)
     
+    # ── Top Section: At-Risk Partners (Interactive) ──
+    with st.container(border=True):
+        ag_h1, ag_h2 = st.columns([4, 1])
+        with ag_h1:
+            st.markdown("""
+            <div class="analytics-card-title">At-risk partners (Select row to filter)</div>
+            <div class="analytics-card-sub">Top 5 B2B agencies · 51% of disputes</div>
+            """, unsafe_allow_html=True)
+        with ag_h2:
+            st.page_link(st.session_state.pages["partners"], label="View", icon="↗️")
+        
+        agency_col = next(
+            (c for c in escalations_df.columns
+             if 'agent' in c.lower() or 'agency' in c.lower()),
+            None
+        )
+        
+        selected_agency = None
+        if not escalations_df.empty and agency_col:
+            top_agencies = escalations_df[agency_col].value_counts().head(5).reset_index()
+            top_agencies.columns = ["Agency", "Disputes"]
+            event = st.dataframe(top_agencies, use_container_width=True, hide_index=True, selection_mode="single-row", on_select="rerun")
+            if event.selection.rows:
+                selected_agency = top_agencies.iloc[event.selection.rows[0]]["Agency"]
+        else:
+            top_mock = pd.DataFrame({
+                "Agency": ["Peak Journeys", "BlueJet Tours", "TripHub",
+                           "GoFly Holidays", "Metro Yatra"],
+                "Disputes": [19, 19, 16, 14, 13]
+            })
+            event = st.dataframe(top_mock, use_container_width=True, hide_index=True, selection_mode="single-row", on_select="rerun")
+            if event.selection.rows:
+                selected_agency = top_mock.iloc[event.selection.rows[0]]["Agency"]
+
+    st.markdown('<div class="section-gap"></div>', unsafe_allow_html=True)
     view_mode = st.pills("Analysis Dimension", ["Volume", "Financial Impact"], default="Volume")
 
     col_trend, col_cause = st.columns([2, 1], gap="medium")
 
     with col_trend:
         with st.container(border=True):
+            title_text = f"Dispute trajectory ({view_mode.lower()})"
+            if selected_agency:
+                title_text += f" - {selected_agency}"
+            
             st.markdown(f"""
-            <div class="analytics-card-title">Dispute trajectory ({view_mode.lower()})</div>
+            <div class="analytics-card-title">{title_text}</div>
             <div class="analytics-card-sub">Feb – Jun 2026 · 6.5× acceleration</div>
             """, unsafe_allow_html=True)
             if view_mode == "Volume":
@@ -565,8 +612,11 @@ def render_analytics(escalations_df: pd.DataFrame) -> None:
             else:
                 df_trend = pd.DataFrame({"Month": ["Feb", "Mar", "Apr", "May", "Jun"], "Metric": [2.4, 5.6, 8.2, 11.2, 14.8]})
                 fmt, label = "Q", "Value (Lakhs)"
+            
+            if selected_agency:
+                df_trend["Metric"] = df_trend["Metric"] * 0.25 # Mock filter
                 
-            bars1 = alt.Chart(df_trend).mark_bar(color="#00F0FF", cornerRadiusTopLeft=4, cornerRadiusTopRight=4).encode(
+            bars1 = alt.Chart(df_trend).mark_bar(color="#1E3A8A", cornerRadiusTopLeft=4, cornerRadiusTopRight=4).encode(
                 x=alt.X("Month", sort=None, axis=alt.Axis(labelAngle=0, grid=False, domain=False, tickColor='transparent', labelColor='#94A3B8')),
                 y=alt.Y("Metric", title=label, axis=alt.Axis(gridColor='rgba(255,255,255,0.05)', domain=False, labelColor='#94A3B8')),
                 tooltip=["Month", alt.Tooltip("Metric", title=label, format=".1f" if view_mode=="Financial Impact" else "d")]
@@ -594,8 +644,12 @@ def render_analytics(escalations_df: pd.DataFrame) -> None:
                 "Count": [149, 100, 42, 24],
                 "Value": [14.8, 9.2, 3.4, 1.8]
             })
+            if selected_agency:
+                df_cause["Count"] = df_cause["Count"] * 0.25 # Mock filter
+                df_cause["Value"] = df_cause["Value"] * 0.25 # Mock filter
+                
             y_col = "Count" if view_mode == "Volume" else "Value"
-            bars2 = alt.Chart(df_cause).mark_bar(color="#FFD600", cornerRadiusTopLeft=4, cornerRadiusTopRight=4).encode(
+            bars2 = alt.Chart(df_cause).mark_bar(color="#F59E0B", cornerRadiusTopLeft=4, cornerRadiusTopRight=4).encode(
                 x=alt.X("Cause", sort="-y", axis=alt.Axis(labelAngle=-45, grid=False, domain=False, tickColor='transparent', labelColor='#94A3B8')),
                 y=alt.Y(y_col, axis=alt.Axis(gridColor='rgba(255,255,255,0.05)', domain=False, labelColor='#94A3B8')),
                 tooltip=["Cause", y_col]
@@ -607,56 +661,29 @@ def render_analytics(escalations_df: pd.DataFrame) -> None:
             c2 = c2.configure_view(strokeWidth=0).configure_axis(grid=False)
             st.altair_chart(c2, use_container_width=True)
 
-    col_agencies, col_pareto = st.columns(2, gap="medium")
-
-    with col_agencies:
-        with st.container(border=True):
-            ag_h1, ag_h2 = st.columns([4, 1])
-            with ag_h1:
-                st.markdown("""
-                <div class="analytics-card-title">At-risk partners</div>
-                <div class="analytics-card-sub">Top 5 B2B agencies · 51% of disputes</div>
-                """, unsafe_allow_html=True)
-            with ag_h2:
-                st.page_link(st.session_state.pages["partners"], label="View", icon="↗️")
-            agency_col = next(
-                (c for c in escalations_df.columns
-                 if 'agent' in c.lower() or 'agency' in c.lower()),
-                None
-            )
-            if not escalations_df.empty and agency_col:
-                top_agencies = escalations_df[agency_col].value_counts().head(5).reset_index()
-                top_agencies.columns = ["Agency", "Disputes"]
-                st.dataframe(top_agencies, use_container_width=True, hide_index=True)
-            else:
-                top_mock = pd.DataFrame({
-                    "Agency": ["Peak Journeys", "BlueJet Tours", "TripHub",
-                               "GoFly Holidays", "Metro Yatra"],
-                    "Disputes": [19, 19, 16, 14, 13]
-                })
-                st.dataframe(top_mock, use_container_width=True, hide_index=True)
-
-    with col_pareto:
-        with st.container(border=True):
-            st.markdown("""
-            <div class="analytics-card-title">Complaint distribution</div>
-            <div class="analytics-card-sub">Pareto analysis · 72.6% in top 2 categories</div>
-            """, unsafe_allow_html=True)
-            pareto_df = pd.DataFrame({
-                "Category": ["Silent Delay", "Ghost Ticket", "Short Payout", "Unlogged Msg", "No Reason"],
-                "Count": [61, 32, 21, 17, 5]
-            })
-            bars3 = alt.Chart(pareto_df).mark_bar(color="#FF2A54", cornerRadiusTopLeft=4, cornerRadiusTopRight=4).encode(
-                x=alt.X("Category", sort="-y", axis=alt.Axis(labelAngle=-45, grid=False, domain=False, tickColor='transparent', labelColor='#94A3B8')),
-                y=alt.Y("Count", axis=alt.Axis(gridColor='rgba(255,255,255,0.05)', domain=False, labelColor='#94A3B8')),
-                tooltip=["Category", "Count"]
-            )
-            text3 = bars3.mark_text(align='center', baseline='bottom', dy=-5, color='#F8FAFC').encode(
-                text=alt.Text('Count:Q')
-            )
-            c3 = (bars3 + text3).properties(height=250).interactive()
-            c3 = c3.configure_view(strokeWidth=0).configure_axis(grid=False)
-            st.altair_chart(c3, use_container_width=True)
+    with st.container(border=True):
+        st.markdown("""
+        <div class="analytics-card-title">Complaint distribution</div>
+        <div class="analytics-card-sub">Pareto analysis · 72.6% in top 2 categories</div>
+        """, unsafe_allow_html=True)
+        pareto_df = pd.DataFrame({
+            "Category": ["Silent Delay", "Ghost Ticket", "Short Payout", "Unlogged Msg", "No Reason"],
+            "Count": [61, 32, 21, 17, 5]
+        })
+        if selected_agency:
+            pareto_df["Count"] = pareto_df["Count"] * 0.25 # Mock filter
+            
+        bars3 = alt.Chart(pareto_df).mark_bar(color="#EF4444", cornerRadiusTopLeft=4, cornerRadiusTopRight=4).encode(
+            x=alt.X("Category", sort="-y", axis=alt.Axis(labelAngle=-45, grid=False, domain=False, tickColor='transparent', labelColor='#94A3B8')),
+            y=alt.Y("Count", axis=alt.Axis(gridColor='rgba(255,255,255,0.05)', domain=False, labelColor='#94A3B8')),
+            tooltip=["Category", "Count"]
+        )
+        text3 = bars3.mark_text(align='center', baseline='bottom', dy=-5, color='#F8FAFC').encode(
+            text=alt.Text('Count:Q')
+        )
+        c3 = (bars3 + text3).properties(height=250).interactive()
+        c3 = c3.configure_view(strokeWidth=0).configure_axis(grid=False)
+        st.altair_chart(c3, use_container_width=True)
 
 # ---------------------------------------------------------------------------
 # RCA Section — Executive Summary Card & Dialog
@@ -734,22 +761,38 @@ def render_dashboard() -> None:
     selected_window = render_dashboard_header()
     metrics = calculate_dashboard_metrics(support_df, finance_df, escalations_df, selected_window)
 
+    render_rca_section(escalations_df)
     render_kpi_cards(metrics)
     render_pipeline_corridor(metrics)
     
     st.markdown('<div class="section-gap"></div>', unsafe_allow_html=True)
     
     # Interactive Tabs wrapper for deep-dive sections
-    t_analytics, t_health, t_rca = st.tabs(["Risk Analytics", "Carrier SLA Health", "Executive RCA Synthesis"])
+    t_analytics, t_health = st.tabs(["Risk Analytics", "Carrier SLA Health"])
     
     with t_analytics:
         render_analytics(escalations_df)
         
     with t_health:
         render_carrier_health()
-        
-    with t_rca:
-        render_rca_section(escalations_df)
+
+    st.markdown("<br/>", unsafe_allow_html=True)
+    
+    st.markdown("### 💬 Operations Copilot")
+    if "chat_history" not in st.session_state:
+        st.session_state.chat_history = [{"role": "assistant", "content": "Hello! I am your Operations Copilot. How can I help you analyze the SSOT data today?"}]
+    
+    for msg in st.session_state.chat_history:
+        with st.chat_message(msg["role"]):
+            st.markdown(msg["content"])
+            
+    if prompt := st.chat_input("Ask AI about this data..."):
+        st.session_state.chat_history.append({"role": "user", "content": prompt})
+        st.chat_message("user").markdown(prompt)
+        # Dummy response
+        resp = "I can see that Peak Journeys has the most disputes. I recommend reaching out to them to clarify the deduction policies."
+        st.session_state.chat_history.append({"role": "assistant", "content": resp})
+        st.chat_message("assistant").markdown(resp)
 
     st.markdown("<br/><br/>", unsafe_allow_html=True)
     col1, col2, col3 = st.columns([1, 2, 1])
