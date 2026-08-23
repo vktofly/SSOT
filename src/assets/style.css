@@ -39,6 +39,16 @@ html, body, [class*="css"], .stMarkdown, .stText, p, div, span, label, input, te
     color: var(--clr-text-primary);
 }
 
+/* Fix for Material Icons rendering as text ligatures */
+span.material-symbols-rounded,
+span.material-symbols-outlined,
+i.material-icons,
+.stIcon,
+.material-symbols-rounded,
+[data-testid="stIconMaterial"] {
+    font-family: "Material Symbols Rounded", "Material Symbols Outlined", "Material Icons", sans-serif !important;
+}
+
 h1, h2, h3, h4, h5, h6, [data-testid="stHeading"] {
     font-family: var(--font-sans) !important;
     font-weight: 500 !important;
@@ -203,4 +213,26 @@ body {
     user-select: none;
     -webkit-user-select: none;
     -ms-user-select: none;
+}
+
+/* Sidebar Fixes */
+section[data-testid="stSidebar"] {
+    background-color: var(--clr-bg) !important;
+    border-right: 1px solid var(--clr-border) !important;
+}
+
+[data-testid="stSidebarUserContent"] {
+    padding-top: 2rem;
+}
+
+/* Header & Hamburger Menu Fixes */
+header[data-testid="stHeader"] {
+    background-color: transparent !important;
+}
+
+header[data-testid="stHeader"] svg,
+[data-testid="collapsedControl"] svg,
+button[kind="header"] svg {
+    fill: var(--clr-text-primary) !important;
+    color: var(--clr-text-primary) !important;
 }

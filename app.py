@@ -28,6 +28,7 @@ from src.views import (
 # -----------------------------------------------------------------------------
 st.set_page_config(
     page_title="BharatTrip Operations",
+    page_icon="src/assets/logo.jpg",
     layout="wide",
     initial_sidebar_state="expanded"
 )
@@ -104,21 +105,10 @@ def main():
     if not check_password():
         return
         
-    st.sidebar.title("BharatTrip Operations")
-    
-    st.sidebar.markdown(f"**Logged in as:** {st.session_state.username} ({st.session_state.role})")
-    if st.sidebar.button("Log Out", use_container_width=True):
-        st.session_state.logged_in = False
-        st.session_state.role = None
-        st.session_state.username = None
-        if os.path.exists(".remember.json"):
-            os.remove(".remember.json")
-        st.rerun()
-        
-    st.sidebar.markdown("---")
+    st.logo("src/assets/logo.jpg")
     
     if not HAS_API_KEY:
-        st.sidebar.warning("`GEMINI_API_KEY` not found. Using mocked AI responses for demonstration.")
+        st.sidebar.warning("`GEMINI_API_KEY` not found. Using mocked responses.")
     
     # Load data into session state for mutability
     if 'support_df' not in st.session_state:
@@ -176,6 +166,17 @@ def main():
         }
 
     pg = st.navigation(nav_dict)
+    
+    st.sidebar.markdown("---")
+    st.sidebar.markdown(f"**Logged in as:** {st.session_state.username} ({st.session_state.role})")
+    if st.sidebar.button("Log Out", use_container_width=True):
+        st.session_state.logged_in = False
+        st.session_state.role = None
+        st.session_state.username = None
+        if os.path.exists(".remember.json"):
+            os.remove(".remember.json")
+        st.rerun()
+        
     pg.run()
 
 if __name__ == "__main__":
