@@ -90,7 +90,6 @@ dashboard_verified.png
 # Streamlit & Session State
 # ==========================================
 .streamlit/secrets.toml
-.streamlit/
 .remember.json
 
 # ==========================================
