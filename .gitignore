@@ -128,3 +128,11 @@ node_modules/
 /blob-report/
 /playwright/.cache/
 /playwright/.auth/
+
+# ==========================================
+# Backend & LangGraph
+# ==========================================
+backend/app/bharattrip.db
+backend/app/*.db
+langgraph_checkpoints/
+.langchain/

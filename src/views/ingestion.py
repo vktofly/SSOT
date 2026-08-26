@@ -13,8 +13,7 @@ from datetime import datetime
 from typing import Dict, Any, List, Optional
 import pandas as pd
 import streamlit as st
-from src.agents import parse_informal_message
-from src.db import insert_support_record
+from src.api_client import api_client
 
 DEFAULT_SIMULATED_MESSAGES: List[Dict[str, str]] = [
     {
@@ -102,7 +101,7 @@ def render_payload_injector_tabs() -> None:
 
         if preview_btn and custom_text.strip():
             with st.spinner("Executing LLM entity extraction & PII guardrails..."):
-                extracted = parse_informal_message(custom_text)
+                extracted = api_client.parse_inbound_message(custom_text, channel=custom_channel)
                 extracted["source_channel"] = custom_channel
                 st.success("Extraction Complete")
                 st.json(extracted)
@@ -227,7 +226,7 @@ def render_incoming_queue() -> None:
             with btn_col:
                 if st.button("Parse Entity", key=f"ingest_single_{item.get('id')}", use_container_width=True):
                     with st.spinner("Extracting..."):
-                        result = parse_informal_message(item.get("text", ""))
+                        result = api_client.parse_inbound_message(item.get("text", ""), channel=item.get("channel", "WhatsApp"))
                         result["source_channel"] = item.get("channel", "Unknown")
                         result["inbound_id"] = item.get("id")
                         st.session_state.review_queue.append(result)
@@ -242,7 +241,7 @@ def render_incoming_queue() -> None:
         if st.button("Batch Parse Visible Messages", type="primary", use_container_width=True):
             with st.spinner(f"Processing batch of {len(filtered_items)} messages with PII redaction..."):
                 for item in list(filtered_items):
-                    result = parse_informal_message(item.get("text", ""))
+                    result = api_client.parse_inbound_message(item.get("text", ""), channel=item.get("channel", "WhatsApp"))
                     result["source_channel"] = item.get("channel", "Unknown")
                     result["inbound_id"] = item.get("id")
                     st.session_state.review_queue.append(result)
@@ -411,16 +410,20 @@ def render_review_workspace() -> None:
                     'Notes': f"Intent: {new_intent}, Urgency: {new_urgency}"
                 }
                 
-                target_id = new_record['Ticket ID']
-                if target_id and 'Ticket ID' in support_df.columns and target_id in support_df['Ticket ID'].values:
+                target_id = new_record.get('Ticket ID')
+                support_df = st.session_state.get('support_df', pd.DataFrame())
+                if target_id and not support_df.empty and 'Ticket ID' in support_df.columns and target_id in support_df['Ticket ID'].values:
                     idx = support_df.index[support_df['Ticket ID'] == target_id].tolist()[0]
                     for k, v in new_record.items():
                         support_df.at[idx, k] = v
                 else:
                     new_df = pd.DataFrame([new_record])
-                    st.session_state.support_df = pd.concat([support_df, new_df], ignore_index=True)
+                    st.session_state.support_df = pd.concat([support_df, new_df], ignore_index=True) if not support_df.empty else new_df
                 
-                insert_support_record(new_record)
+                try:
+                    api_client.create_support_ticket(new_record)
+                except Exception:
+                    pass
                 st.session_state.processed_today += 1
                 st.session_state.review_queue.pop(selected_idx)
                 st.session_state.discard_confirm_idx = None

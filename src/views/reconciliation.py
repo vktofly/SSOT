@@ -2,19 +2,15 @@
 Reconciliation Agent View Module (Human-in-the-loop HITL Workflow).
 Automated discrepancy detection, side-by-side ledger audits, carrier penalty rule lookups,
 and AI-assisted short-payment communication drafting.
-Engineered following frontend-design, design-taste-frontend, and designing-beautiful-websites standards.
+Decoupled to communicate entirely via REST API Client.
 """
 from typing import Dict, Any, List, Set, Optional
 from datetime import datetime
 import pandas as pd
 import streamlit as st
 
-from src.agents import (
-    draft_reconciliation_message, batch_fuzzy_match_metadata,
-    generate_proactive_notification, lookup_airline_penalty
-)
-from src.db import update_support_status, update_ticket_id
-from src.data_manager import find_mismatches, find_orphans
+from src.api_client import api_client
+
 
 def init_reconciliation_state(mismatches: List[Dict[str, Any]]) -> None:
     """Initializes session state to track resolved tickets and audit logs."""
@@ -23,10 +19,12 @@ def init_reconciliation_state(mismatches: List[Dict[str, Any]]) -> None:
     if "system_logs" not in st.session_state:
         st.session_state.system_logs = []
 
+
 def log_action(message: str) -> None:
     """Adds a timestamped log entry to the system audit trail."""
     timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     st.session_state.system_logs.insert(0, f"[{timestamp}] {message}")
+
 
 def render_reconciliation_header() -> None:
     """Renders top header with live HITL reconciliation badge without inline CSS leaks."""
@@ -47,10 +45,11 @@ def render_reconciliation_header() -> None:
             unsafe_allow_html=True
         )
 
+
 def render_kpi_summary_bar(
     pending_mismatches: List[Dict[str, Any]], 
     missing_in_finance: List[Dict[str, Any]], 
-    support_df: pd.DataFrame
+    support_df: Optional[pd.DataFrame] = None
 ) -> None:
     """Renders executive KPI metrics and SSOT export button."""
     col_kpi1, col_kpi2, col_kpi3, col_export = st.columns([1, 1, 1, 1])
@@ -67,8 +66,8 @@ def render_kpi_summary_bar(
         st.metric(
             "Dropped in Finance", 
             len(missing_in_finance), 
-            delta="100 Orphaned Tickets", 
-            delta_color="inverse",
+            delta=f"{len(missing_in_finance)} Orphaned Tickets", 
+            delta_color="inverse" if len(missing_in_finance) > 0 else "normal",
             help="Tickets marked approved in Support but missing in Finance"
         )
     with col_kpi3:
@@ -77,11 +76,15 @@ def render_kpi_summary_bar(
             len(st.session_state.resolved_tickets), 
             delta="SSOT Committed", 
             delta_color="normal",
-            help="Discrepancies reconciled and persisted to SQLite"
+            help="Discrepancies reconciled and persisted to backend"
         )
     with col_export:
         st.write("")
-        csv_data = support_df.to_csv(index=False).encode('utf-8')
+        if support_df is not None and not support_df.empty:
+            csv_data = support_df.to_csv(index=False).encode('utf-8')
+        else:
+            tickets = api_client.get_support_tickets()
+            csv_data = pd.DataFrame(tickets).to_csv(index=False).encode('utf-8') if tickets else b"Ticket ID,Agent,Status\n"
         st.download_button(
             label="Export Clean SSOT",
             data=csv_data,
@@ -91,6 +94,7 @@ def render_kpi_summary_bar(
             key="btn_export_ssot_recon"
         )
     st.markdown("---")
+
 
 def render_mismatch_studio(
     raw_mismatches: List[Dict[str, Any]], 
@@ -112,16 +116,22 @@ def render_mismatch_studio(
     def handle_approve_send(ticket_id: str, mismatch_record: Dict[str, Any], final_draft: str) -> None:
         st.session_state.resolved_tickets.add(ticket_id)
         
-        sdf = st.session_state.get('support_df', pd.DataFrame())
-        if not sdf.empty and 'Ticket ID' in sdf.columns and ticket_id in sdf['Ticket ID'].values:
-            idx = sdf.index[sdf['Ticket ID'] == ticket_id].tolist()[0]
-            sdf.at[idx, 'Status'] = 'Client Notified'
-            current_notes = str(sdf.at[idx, 'Notes']) if pd.notna(sdf.at[idx, 'Notes']) else ""
-            new_notes = f"{current_notes} | Finance Deduction: {mismatch_record['Reason']}".strip(" |")
-            sdf.at[idx, 'Notes'] = new_notes
-            update_support_status(ticket_id, 'Client Notified', new_notes)
+        reason = mismatch_record.get('reason') or mismatch_record.get('Reason', 'Tariff deduction')
+        new_notes = f"Finance Deduction: {reason}"
+        try:
+            api_client.resolve_mismatch(
+                ticket_id=ticket_id,
+                new_status="Client Notified",
+                notes=new_notes,
+                resolution_type="Accept Deduction",
+                send_communication=True,
+                communication_draft=final_draft
+            )
+        except Exception as err:
+            st.error(f"Error resolving mismatch: {err}")
         
-        log_action(f"Email dispatched to {mismatch_record['Agent']} for Ticket {ticket_id}. Status updated to 'Client Notified'.")
+        agent_name = mismatch_record.get('agent') or mismatch_record.get('Agent', 'Partner')
+        log_action(f"Email dispatched to {agent_name} for Ticket {ticket_id}. Status updated to 'Client Notified'.")
         st.session_state['show_success_toast'] = True
 
     # Batch Action Container
@@ -131,12 +141,8 @@ def render_mismatch_studio(
             with st.spinner("Processing pending discrepancies in parallel..."):
                 count = 0
                 for pending_m in pending_mismatches:
-                    p_tid = str(pending_m['Ticket ID'])
-                    draft = draft_reconciliation_message(
-                        pending_m['Agent'], pending_m['Route'], p_tid, 
-                        pending_m['Support Amount'], pending_m['Finance Amount'], 
-                        pending_m['Deduction'], pending_m['Reason']
-                    )
+                    p_tid = str(pending_m.get('ticket_id') or pending_m.get('Ticket ID'))
+                    draft = api_client.draft_reconciliation_explanation(pending_m)
                     handle_approve_send(p_tid, pending_m, draft)
                     count += 1
                 st.toast(f"Successfully processed {count} discrepancies.")
@@ -145,10 +151,13 @@ def render_mismatch_studio(
     st.markdown("---")
     st.subheader("Individual Ticket Ledger Audit")
     
-    ticket_options = {
-        f"Ticket {m['Ticket ID']} · {m['Agent']} (₹{m['Deduction']} Variance)": m 
-        for m in pending_mismatches
-    }
+    ticket_options = {}
+    for m in pending_mismatches:
+        t_id = m.get('ticket_id') or m.get('Ticket ID')
+        agent = m.get('agent') or m.get('Agent')
+        ded = m.get('deduction') or m.get('Deduction')
+        label = f"Ticket {t_id} · {agent} (₹{ded} Variance)"
+        ticket_options[label] = m
     
     selected_label = st.selectbox(
         "Select Discrepancy Ticket for HITL Review:", 
@@ -156,11 +165,12 @@ def render_mismatch_studio(
         key="select_recon_ticket"
     )
     m = ticket_options[selected_label]
-    tid = str(m['Ticket ID'])
+    tid = str(m.get('ticket_id') or m.get('Ticket ID'))
 
     # Side-by-Side Ledger Card
     with st.container(border=True):
-        if m.get('Risk Level') == 'High':
+        risk_lvl = m.get('risk_level') or m.get('Risk Level')
+        if risk_lvl == 'High':
             st.error("HIGH RISK VARIANCE: Payout discrepancy exceeds 20% of total ticket value.")
             
         c_sup, c_mid, c_fin = st.columns([3, 1, 3])
@@ -169,32 +179,31 @@ def render_mismatch_studio(
             with st.container(border=True):
                 st.markdown("#### Support Record")
                 st.markdown(f"**Ticket ID:** `{tid}`")
-                st.markdown(f"**Partner Agency:** `{m.get('Agent', 'Unknown')}`")
-                st.markdown(f"**Sector / Route:** `{m.get('Route', 'N/A')}`")
-                st.metric("Customer Promised Refund", f"₹{m.get('Support Amount', '0')}")
+                st.markdown(f"**Partner Agency:** `{m.get('agent') or m.get('Agent', 'Unknown')}`")
+                st.markdown(f"**Sector / Route:** `{m.get('route') or m.get('Route', 'N/A')}`")
+                st.metric("Customer Promised Refund", f"₹{m.get('support_amount') or m.get('Support Amount', '0')}")
 
         with c_mid:
             st.markdown("<br><br><h3 style='text-align: center; color: var(--google-text-secondary);'>VS</h3>", unsafe_allow_html=True)
-            st.caption(f"<div style='text-align:center;'><b>₹{m.get('Deduction', '0')}</b><br>Deducted</div>", unsafe_allow_html=True)
-
+            st.caption(f"<div style='text-align:center;'><b>₹{m.get('deduction') or m.get('Deduction', '0')}</b><br>Deducted</div>", unsafe_allow_html=True)
 
         with c_fin:
             with st.container(border=True):
                 st.markdown("#### Finance Settlement")
                 st.markdown(f"**Settlement Ref:** `{tid}`")
-                st.markdown(f"**Carrier Deduction:** `{m.get('Reason', 'Airline Policy')}`")
+                st.markdown(f"**Carrier Deduction:** `{m.get('reason') or m.get('Reason', 'Airline Policy')}`")
                 st.markdown(f"**Variance Status:** `Contested`")
-                st.metric("Actual Bank Payout", f"₹{m.get('Finance Amount', '0')}")
+                st.metric("Actual Bank Payout", f"₹{m.get('finance_amount') or m.get('Finance Amount', '0')}")
 
         # Airline Fare Policy Integration
-        route_str = m.get('Route', '')
-        policy = lookup_airline_penalty(route_str)
-        with st.expander(f"Airline Fare Rules ({policy['carrier']} · Sector {route_str or 'General'})", expanded=True):
+        route_str = m.get('route') or m.get('Route', '')
+        policy = api_client.lookup_airline_policy(route_str)
+        with st.expander(f"Airline Fare Rules ({policy.get('carrier', 'Carrier')} · Sector {route_str or 'General'})", expanded=True):
             f_col1, f_col2, f_col3 = st.columns(3)
-            f_col1.markdown(f"**Operating Carrier:** `{policy['carrier']}`")
-            f_col2.markdown(f"**Standard Fee:** `₹{policy['cancellation_fee']}`")
-            f_col3.markdown(f"**Resolution SLA:** `{policy['sla_hours']} Hours`")
-            st.caption(f"**Tariff Policy Note:** {policy['policy_notes']}")
+            f_col1.markdown(f"**Operating Carrier:** `{policy.get('carrier')}`")
+            f_col2.markdown(f"**Standard Fee:** `₹{policy.get('cancellation_fee')}`")
+            f_col3.markdown(f"**Resolution SLA:** `{policy.get('sla_hours')} Hours`")
+            st.caption(f"**Tariff Policy Note:** {policy.get('policy_notes')}")
 
         st.markdown("### AI-Drafted Discrepancy Explanation")
         draft_key = f"draft_{tid}"
@@ -204,11 +213,7 @@ def render_mismatch_studio(
         if not st.session_state[draft_key]:
             if st.button("Generate AI Explanation Email", type="primary", key=f"btn_gen_draft_{tid}"):
                 with st.spinner("Drafting airline policy explanation..."):
-                    draft = draft_reconciliation_message(
-                        m['Agent'], m['Route'], tid, 
-                        m['Support Amount'], m['Finance Amount'], 
-                        m['Deduction'], m['Reason']
-                    )
+                    draft = api_client.draft_reconciliation_explanation(m)
                     st.session_state[draft_key] = draft
                     st.rerun()
         else:
@@ -233,6 +238,7 @@ def render_mismatch_studio(
                     st.session_state[draft_key] = ""
                     st.rerun()
 
+
 def render_orphaned_tickets_studio(
     missing_in_finance: List[Dict[str, Any]], 
     missing_in_support: List[Dict[str, Any]]
@@ -244,12 +250,12 @@ def render_orphaned_tickets_studio(
     col_orph1, col_orph2 = st.columns([3, 1])
     with col_orph2:
         if st.button("Parse Missing Emails (Ingestion)", use_container_width=True, key="btn_jump_ingest"):
-            st.switch_page(st.session_state.pages["ingestion"])
+            if "pages" in st.session_state and "ingestion" in st.session_state.pages:
+                st.switch_page(st.session_state.pages["ingestion"])
     
     with col_orph1:
-    
         # High-Risk Agent Warnings
-        high_risk_agents = set([m.get('Risk Note') for m in missing_in_finance if m.get('Risk Level') == 'High'])
+        high_risk_agents = set([m.get('risk_note') or m.get('Risk Note') for m in missing_in_finance if (m.get('risk_level') or m.get('Risk Level')) == 'High'])
         for note in high_risk_agents:
             if note:
                 st.warning(f"**High-Risk Agent Corridor:** {note}")
@@ -260,67 +266,32 @@ def render_orphaned_tickets_studio(
             st.markdown(f"#### Missing in Finance ({len(missing_in_finance)} Tickets)")
             st.caption("Marked closed on Support tracker, but never reached Finance accounts.")
             for m in missing_in_finance[:5]:
-                st.markdown(f"- **`{m['Ticket ID']}`** · {m.get('Agent', 'Unknown')} · ₹{m.get('Refund Amount (INR)', '0')}")
+                t_id = m.get('ticket_id') or m.get('Ticket ID')
+                ag = m.get('agent') or m.get('Agent', 'Unknown')
+                amt = m.get('amount') or m.get('Refund Amount (INR)', '0')
+                st.markdown(f"- **`{t_id}`** · {ag} · ₹{amt}")
                 
     with col_f:
         with st.container(border=True):
             st.markdown(f"#### Missing in Support ({len(missing_in_support)} Records)")
             st.caption("Processed in Finance ledger without corresponding Support ticket ID.")
             for m in missing_in_support[:5]:
-                st.markdown(f"- **`{m['Ref No']}`** · {m.get('Agent Name', 'Unknown')} · ₹{m.get('Amount Paid (INR)', '0')}")
+                ref = m.get('ref_no') or m.get('Ref No')
+                ag = m.get('agent') or m.get('Agent Name', 'Unknown')
+                amt = m.get('amount') or m.get('Amount Paid (INR)', '0')
+                st.markdown(f"- **`{ref}`** · {ag} · ₹{amt}")
             
     st.markdown("---")
     st.subheader("AI Entity Resolution (Metadata Fuzzy Matching)")
-    st.markdown("If a ticket ID was mistyped (failing exact text match), Gemini analyzes metadata (Agent Name, Route, Amount) to find the correct ledger link.")
+    st.markdown("If a ticket ID was mistyped (failing exact text match), metadata matching discovers candidate linkages.")
     
     if missing_in_finance and missing_in_support:
         if st.button("Run Batch AI Entity Resolution", type="primary", key="btn_run_ai_linkage"):
-            with st.spinner("Analyzing cross-ledger metadata with Gemini..."):
-                all_matches = []
-                chunk_size = 10
-                for i in range(0, len(missing_in_finance), chunk_size):
-                    chunk = missing_in_finance[i:i+chunk_size]
-                    
-                    filtered_finance = []
-                    for f_cand in missing_in_support:
-                        try:
-                            f_amt = float(str(f_cand.get('Amount Paid (INR)', '0')).replace(',', ''))
-                        except ValueError:
-                            f_amt = 0.0
-                        
-                        f_agent = str(f_cand.get('Agent Name', '')).lower()
-                        f_words = set(w for w in f_agent.split() if len(w) > 2)
-                        
-                        keep = False
-                        for s_cand in chunk:
-                            try:
-                                s_amt = float(str(s_cand.get('Refund Amount (INR)', '0')).replace(',', ''))
-                            except ValueError:
-                                s_amt = 0.0
-                            
-                            s_agent = str(s_cand.get('Agent', '')).lower()
-                            s_words = set(w for w in s_agent.split() if len(w) > 2)
-                            
-                            if s_amt > 0 and f_amt > 0:
-                                if abs(s_amt - f_amt) <= max(s_amt, f_amt) * 0.20:
-                                    keep = True
-                                    break
-                            
-                            if f_words and s_words and len(f_words & s_words) > 0:
-                                keep = True
-                                break
-                        
-                        if keep:
-                            filtered_finance.append(f_cand)
-                    
-                    if filtered_finance:
-                        matches = batch_fuzzy_match_metadata(chunk, filtered_finance)
-                        if matches:
-                            all_matches.extend(matches)
-                        
-                if all_matches:
-                    st.session_state.batch_matches = all_matches
-                    st.toast(f"Identified {len(all_matches)} confident linkage proposals.")
+            with st.spinner("Analyzing cross-ledger metadata..."):
+                matches = api_client.fuzzy_match_orphans()
+                if matches:
+                    st.session_state.batch_matches = matches
+                    st.toast(f"Identified {len(matches)} confident linkage proposals.")
                     st.rerun()
                 else:
                     st.error("No confident metadata linkages discovered across remaining orphans.")
@@ -334,7 +305,7 @@ def render_orphaned_tickets_studio(
             
             pending_matches = [
                 m for m in st.session_state.batch_matches 
-                if m['support_ticket_id'] not in st.session_state.acted_matches
+                if m.get('support_ticket_id') not in st.session_state.acted_matches
             ]
             
             if not pending_matches:
@@ -344,55 +315,27 @@ def render_orphaned_tickets_studio(
                     st.session_state.acted_matches.clear()
                     st.rerun()
             else:
-                agent_names = set()
-                for match in pending_matches:
-                    s_id = match['support_ticket_id']
-                    s_row = next((r for r in missing_in_finance if r['Ticket ID'] == s_id), None)
-                    if s_row and s_row.get('Agent'):
-                        agent_names.add(s_row['Agent'])
-                
-                selected_agents = st.multiselect("Filter Proposals by Partner Agency:", list(agent_names), default=[])
-                
-                filtered_matches = pending_matches
-                if selected_agents:
-                    filtered_matches = [
-                        match for match in pending_matches
-                        if next((r for r in missing_in_finance if r['Ticket ID'] == match['support_ticket_id']), {}).get('Agent') in selected_agents
-                    ]
-                            
-                st.caption(f"Showing {len(filtered_matches)} of {len(pending_matches)} remaining proposals.")
-                
-                for i, match in enumerate(filtered_matches):
-                    s_id = match['support_ticket_id']
-                    f_id = match['finance_ref_no']
-                    
-                    s_row = next((r for r in missing_in_finance if r['Ticket ID'] == s_id), {})
-                    f_row = next((r for r in missing_in_support if r['Ref No'] == f_id), {})
+                for i, match in enumerate(pending_matches):
+                    s_id = match.get('support_ticket_id')
+                    f_id = match.get('finance_ref_no')
                     
                     with st.container(border=True):
                         col1, col2 = st.columns(2)
                         with col1:
                             st.markdown(f"**Support Ticket (Missing in Finance):** `{s_id}`")
-                            st.write(f"Agent: {s_row.get('Agent', 'Unknown')} | Amount: ₹{s_row.get('Refund Amount (INR)', '0')} | Route: {s_row.get('Sector', 'Unknown')}")
+                            st.write(f"Agent: {match.get('agent', 'Unknown')}")
                         with col2:
                             st.markdown(f"**Proposed Finance Record:** `{f_id}`")
-                            st.write(f"Agent: {f_row.get('Agent Name', 'Unknown')} | Amount: ₹{f_row.get('Amount Paid (INR)', '0')} | Route: {f_row.get('Route', 'Unknown')}")
+                            st.write(f"Rationale: {match.get('match_rationale')}")
                             
-                        st.info(f"**AI Linkage Hypothesis:** {match.get('reasoning')}")
-                        
-                        score = match.get('confidence_score', 0)
+                        score = int(float(match.get('confidence_score', 0)) * 100)
                         st.progress(score / 100.0)
                         st.caption(f"Match Confidence Score: **{score}%**")
                         
                         c_btn1, c_btn2, _ = st.columns([2, 2, 4])
                         with c_btn1:
                             if st.button("Approve & Merge", key=f"app_{i}_{s_id}", type="primary"):
-                                update_ticket_id(s_id, f_id)
-                                sdf = st.session_state.get('support_df', pd.DataFrame())
-                                if not sdf.empty and 'Ticket ID' in sdf.columns and s_id in sdf['Ticket ID'].values:
-                                    idx = sdf.index[sdf['Ticket ID'] == s_id].tolist()
-                                    if idx:
-                                        sdf.at[idx[0], 'Ticket ID'] = f_id
+                                api_client.merge_orphan_linkage(s_id, f_id)
                                 st.session_state.acted_matches.add(s_id)
                                 log_action(f"Approved AI Linkage: Support Ticket {s_id} -> Finance Ref {f_id}")
                                 st.toast(f"Merged Ticket {s_id} -> {f_id}")
@@ -402,31 +345,22 @@ def render_orphaned_tickets_studio(
                                 st.session_state.acted_matches.add(s_id)
                                 log_action(f"Rejected AI Linkage for Support Ticket {s_id}")
                                 st.rerun()
-                                
-                st.markdown("---")
-                if filtered_matches and st.button(f"Approve & Merge All Filtered Linkages ({len(filtered_matches)})", type="primary", key="btn_merge_all_filtered"):
-                    sdf = st.session_state.get('support_df', pd.DataFrame())
-                    for match in filtered_matches:
-                        s_id = match['support_ticket_id']
-                        f_id = match['finance_ref_no']
-                        update_ticket_id(s_id, f_id)
-                        if not sdf.empty and 'Ticket ID' in sdf.columns and s_id in sdf['Ticket ID'].values:
-                            idx = sdf.index[sdf['Ticket ID'] == s_id].tolist()
-                            if idx:
-                                sdf.at[idx[0], 'Ticket ID'] = f_id
-                        st.session_state.acted_matches.add(s_id)
-                        
-                    st.toast(f"Merged {len(filtered_matches)} tickets into clean SSOT.")
-                    log_action(f"Batch AI Linkage approved for {len(filtered_matches)} tickets.")
-                    st.rerun()
     else:
         st.success("No orphaned records detected in current ledger snapshot.")
 
-def render_proactive_notification_bot(support_df: pd.DataFrame) -> None:
+
+def render_proactive_notification_bot(support_df: Optional[pd.DataFrame] = None) -> None:
     """Renders proactive lifecycle milestone notification studio."""
     st.subheader("Proactive Partner Notification Bot")
     st.caption("Dispatch outbound milestone alerts to travel agencies to preempt inbound status chasing.")
     
+    tickets_list = []
+    if support_df is not None and not support_df.empty and 'Ticket ID' in support_df.columns:
+        tickets_list = support_df['Ticket ID'].dropna().astype(str).tolist()
+    else:
+        raw_tickets = api_client.get_support_tickets(limit=50)
+        tickets_list = [t['ticket_id'] for t in raw_tickets if 'ticket_id' in t]
+
     col1, col2 = st.columns([1, 1])
     with col1:
         with st.container(border=True):
@@ -443,21 +377,17 @@ def render_proactive_notification_bot(support_df: pd.DataFrame) -> None:
             )
             
             channel = st.radio("Dispatch Channel:", ["WhatsApp", "Email"], horizontal=True, key="proactive_channel_radio")
+            selected_ticket = st.selectbox("Select Associated Ticket:", tickets_list[:50], key="proactive_ticket_select") if tickets_list else "RF-1001"
             
-            tickets_list = support_df['Ticket ID'].dropna().astype(str).tolist() if 'Ticket ID' in support_df.columns else []
-            selected_ticket = st.selectbox("Select Associated Ticket:", tickets_list[:50], key="proactive_ticket_select") if tickets_list else ""
-            
-            t_row = support_df[support_df['Ticket ID'] == selected_ticket].iloc[0] if selected_ticket and not support_df[support_df['Ticket ID'] == selected_ticket].empty else {}
-            
-            agent_input = st.text_input("Travel Agent / Agency:", value=t_row.get("Agent", "Peak Journeys"), key="proactive_agent_input")
-            route_input = st.text_input("Travel Route / Sector:", value=t_row.get("Route", "DEL-DXB"), key="proactive_route_input")
-            amount_input = st.text_input("Refund Amount (INR):", value=str(t_row.get("Refund Amount (INR)", "5400")), key="proactive_amt_input")
+            agent_input = st.text_input("Travel Agent / Agency:", value="Peak Journeys", key="proactive_agent_input")
+            route_input = st.text_input("Travel Route / Sector:", value="DEL-DXB", key="proactive_route_input")
+            amount_input = st.text_input("Refund Amount (INR):", value="5400", key="proactive_amt_input")
             deduction_input = st.text_input("Airline Cancellation Fee (INR):", value="600" if stage == "payout_done" else "0", key="proactive_ded_input")
             
     with col2:
         with st.container(border=True):
             st.markdown("#### Outbound Message Preview")
-            preview = generate_proactive_notification(
+            preview = api_client.send_proactive_alert(
                 ticket_id=selected_ticket,
                 agent_name=agent_input,
                 route=route_input,
@@ -467,16 +397,13 @@ def render_proactive_notification_bot(support_df: pd.DataFrame) -> None:
                 channel=channel
             )
             
-            st.markdown(f"**Headline:** `{preview['headline']}`")
-            st.markdown(f"**Channel:** `{preview['channel']}` · **Recipient:** `{preview['recipient']}`")
-            st.markdown("---")
-            msg_content = st.text_area("Message Payload:", value=preview['message'], height=150, key="proactive_msg_preview")
+            st.markdown(f"**Delivery Channel:** `{channel}`")
+            st.text_area("Live Message Body:", value=preview.get("message", ""), height=150, key="proactive_preview_area")
             
-            if st.button("Approve & Dispatch Outbound Alert", type="primary", key="proactive_dispatch_btn"):
-                log_action(f"Proactive {channel} Alert Dispatched to {agent_input} for Ticket {selected_ticket} (Milestone: {stage}).")
-                st.toast(f"Alert dispatched to {agent_input} via {channel}.")
-                st.session_state['show_success_toast'] = True
-                st.rerun()
+            if st.button(f"Dispatch Outbound {channel} Alert", type="primary", key="btn_dispatch_proactive"):
+                log_action(f"Dispatched {channel} proactive alert to {agent_input} for Ticket {selected_ticket}.")
+                st.toast(f"Outbound {channel} alert sent successfully.")
+
 
 def render_audit_logs() -> None:
     """Renders persistent audit logs with manager CSV export."""
@@ -504,13 +431,23 @@ def render_audit_logs() -> None:
                 for log in st.session_state.system_logs:
                     st.text(log)
 
-def render_reconciliation(support_df: pd.DataFrame, finance_df: pd.DataFrame) -> None:
+
+def render_reconciliation(
+    support_df: Optional[pd.DataFrame] = None,
+    finance_df: Optional[pd.DataFrame] = None
+) -> None:
     """Main Reconciliation view entrypoint."""
-    raw_mismatches = find_mismatches(support_df, finance_df)
-    missing_in_finance, missing_in_support = find_orphans(support_df, finance_df)
+    raw_mismatches = api_client.get_reconciliation_mismatches()
+    orphans = api_client.get_reconciliation_orphans()
+    missing_in_finance = orphans.get("missing_in_finance", [])
+    missing_in_support = orphans.get("missing_in_support", [])
+
     init_reconciliation_state(raw_mismatches)
     
-    pending_mismatches = [m for m in raw_mismatches if m['Ticket ID'] not in st.session_state.resolved_tickets]
+    pending_mismatches = [
+        m for m in raw_mismatches 
+        if (m.get('ticket_id') or m.get('Ticket ID')) not in st.session_state.resolved_tickets
+    ]
 
     render_reconciliation_header()
     render_kpi_summary_bar(pending_mismatches, missing_in_finance, support_df)

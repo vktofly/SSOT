@@ -1,77 +1,71 @@
+"""
+Partner Health & Churn Risk Matrix View.
+Displays live B2B agency sentiment telemetry, VIP retention warnings,
+and fast-track outreach dispatch via REST API client.
+"""
+from typing import Optional
 import streamlit as st
 import pandas as pd
-from src.agents import analyze_partner_sentiment
 
-def render_partner_matrix(escalations_df, support_df):
+from src.api_client import api_client
+
+
+def render_partner_matrix(
+    escalations_df: Optional[pd.DataFrame] = None,
+    support_df: Optional[pd.DataFrame] = None
+) -> None:
     st.markdown('<div class="dash-section-label">Partner Intelligence</div>', unsafe_allow_html=True)
     st.title("Partner Health & Churn Risk Matrix")
     st.caption("Live B2B Agency Sentiment Telemetry · VIP Partner Retention & Early Warning Churn Radar")
     
-    if escalations_df is None or escalations_df.empty:
+    matrix_resp = api_client.get_partner_matrix()
+    partners_list = matrix_resp.get("partners", [])
+    summary_dict = matrix_resp.get("summary", {})
+
+    if not partners_list:
         st.success("No active partner escalations. All agency health scores are optimal (100% green).")
         return
         
-    # Aggregate Agency Intelligence
-    agency_stats = {}
-    
-    for _, row in escalations_df.iterrows():
-        agent = str(row.get('Agent', 'Unknown')).strip()
-        if not agent or agent == 'nan':
-            agent = "Direct Traveler / Unspecified"
-            
-        if agent not in agency_stats:
-            is_vip = any(vip in agent.lower() for vip in ["peak", "nomad", "global", "royal", "zenith"])
-            tier = "VIP" if is_vip else "Standard"
-            agency_stats[agent] = {
-                "Agent": agent,
-                "Tier": tier,
-                "Escalations": 0,
-                "Sentiments": [],
-                "Categories": [],
-                "Sample_Messages": []
-            }
-            
-        agency_stats[agent]["Escalations"] += 1
-        msg = str(row.get('Message', ''))
-        sentiment_res = analyze_partner_sentiment(msg, agency_tier=agency_stats[agent]["Tier"])
-        agency_stats[agent]["Sentiments"].append(sentiment_res.get("sentiment_score", -0.5))
-        agency_stats[agent]["Categories"].append(sentiment_res.get("frustration_category", "Delay"))
-        agency_stats[agent]["Sample_Messages"].append(msg)
-        
     summary_rows = []
-    for agent, data in agency_stats.items():
-        avg_sent = round(sum(data["Sentiments"]) / len(data["Sentiments"]), 2) if data["Sentiments"] else 0.0
-        most_common_cat = max(set(data["Categories"]), key=data["Categories"].count) if data["Categories"] else "General"
-        
-        # Determine Risk Status
-        if data["Tier"] == "VIP" and (avg_sent < -0.4 or data["Escalations"] >= 3):
-            risk_label = "CRITICAL (Immediate Churn Risk)"
-        elif avg_sent < -0.3 or data["Escalations"] >= 4:
-            risk_label = "ELEVATED (SLA Delay)"
-        else:
-            risk_label = "STABLE"
-            
+    agency_stats = {}
+    for p in partners_list:
+        agent_name = p.get("agency_name") or p.get("Agency Name", "Unknown")
+        tier = p.get("revenue_tier") or p.get("Revenue Tier", "Standard")
+        active_escs = p.get("active_escalations") or p.get("Active Escalations", 0)
+        sent_idx = float(p.get("sentiment_index") or p.get("Sentiment Index", 0.0))
+        bottleneck = p.get("primary_bottleneck") or p.get("Primary Bottleneck", "General")
+        risk_status = p.get("risk_status") or p.get("Risk Status", "STABLE")
+
         summary_rows.append({
-            "Agency Name": agent,
-            "Revenue Tier": data["Tier"],
-            "Active Escalations": data["Escalations"],
-            "Sentiment Index": avg_sent,
-            "Primary Bottleneck": most_common_cat,
-            "Risk Status": risk_label
+            "Agency Name": agent_name,
+            "Revenue Tier": tier,
+            "Active Escalations": active_escs,
+            "Sentiment Index": sent_idx,
+            "Primary Bottleneck": bottleneck,
+            "Risk Status": risk_status,
         })
-        
-    summary_df = pd.DataFrame(summary_rows).sort_values(by=["Revenue Tier", "Active Escalations"], ascending=[False, False])
+        agency_stats[agent_name] = {
+            "Agent": agent_name,
+            "Tier": tier,
+            "Escalations": active_escs,
+            "Sentiment": sent_idx,
+            "Bottleneck": bottleneck,
+            "Sample_Messages": p.get("sample_messages", []),
+        }
+
+    summary_df = pd.DataFrame(summary_rows)
     
-    total_agencies = len(summary_df)
-    critical_vips = len(summary_df[summary_df["Risk Status"].str.contains("CRITICAL")])
-    overall_sentiment = round(summary_df["Sentiment Index"].mean(), 2) if not summary_df.empty else 0.0
+    total_agencies = summary_dict.get("total_monitored_agencies") or len(summary_df)
+    critical_vips = summary_dict.get("critical_vips_count") or len(summary_df[summary_df["Risk Status"].str.contains("CRITICAL", na=False)])
+    overall_sentiment = summary_dict.get("fleet_sentiment_index") or (round(summary_df["Sentiment Index"].mean(), 2) if not summary_df.empty else 0.0)
+    dominant_complaint = summary_dict.get("dominant_complaint", "Fee Deductions")
     
     # 4 Executive Telemetry Metrics
     c1, c2, c3, c4 = st.columns(4)
     c1.metric("Monitored Agencies", total_agencies, delta="Active Partners", delta_color="off")
     c2.metric("Critical VIPs at Risk", critical_vips, delta="High Priority Action", delta_color="inverse" if critical_vips > 0 else "normal")
     c3.metric("Fleet Sentiment Index", f"{overall_sentiment}", delta="Scale: -1.0 to +1.0", delta_color="inverse" if overall_sentiment < 0 else "normal")
-    c4.metric("Dominant Complaint", "Fee Deductions", delta="149 Mismatches", delta_color="inverse")
+    c4.metric("Dominant Complaint", dominant_complaint, delta="Dispute Corridor", delta_color="inverse")
     
     st.markdown("---")
     st.subheader("Partner Telemetry & Retention Leaderboard")
@@ -82,7 +76,7 @@ def render_partner_matrix(escalations_df, support_df):
         column_config={
             "Sentiment Index": st.column_config.ProgressColumn(
                 "Sentiment Index",
-                help="NLP Sentiment Score mapped to 0-1 range",
+                help="NLP Sentiment Score mapped to -1.0 to +1.0 range",
                 format="%.2f",
                 min_value=-1.0,
                 max_value=1.0,
@@ -104,21 +98,22 @@ def render_partner_matrix(escalations_df, support_df):
                 st.markdown(f"### {selected_agency} (`{p_data['Tier']} Partner`)")
                 st.markdown(f"**Total Escalations Logged:** `{p_data['Escalations']}`")
                 st.markdown("**Recent Inbound Communications:**")
-                for i, sample in enumerate(p_data["Sample_Messages"][:3]):
-                    st.caption(f"*\"{sample}\"*")
+                samples = p_data.get("Sample_Messages", [])
+                if samples:
+                    for sample in samples[:3]:
+                        st.caption(f"*\"{sample}\"*")
+                else:
+                    st.caption("*No recorded complaints on file. Standard operational health.*")
             with col_b:
                 st.markdown("### Fast-Track Actions")
                 if st.button(f"Launch VIP Reassurance Dispatch", type="primary", use_container_width=True):
+                    api_client.dispatch_partner_outreach(selected_agency, action_type="VIP Reassurance")
                     st.success(f"Proactive VIP account manager outreach scheduled for {selected_agency}.")
                     st.session_state['show_success_toast'] = True
                     st.rerun()
                 if st.button("Jump to Reconciliation Queue", use_container_width=True):
-                    try:
+                    if "pages" in st.session_state and "reconciliation" in st.session_state.pages:
                         st.switch_page(st.session_state.pages["reconciliation"])
-                    except Exception:
-                        pass
                 if st.button("Jump to Escalation Triage", use_container_width=True):
-                    try:
+                    if "pages" in st.session_state and "triage" in st.session_state.pages:
                         st.switch_page(st.session_state.pages["triage"])
-                    except Exception:
-                        pass

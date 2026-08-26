@@ -5,64 +5,24 @@ Uses Plus Jakarta Sans + JetBrains Mono, tinted-shadow token system,
 asymmetric KPI layout with integrated health gauge, horizontal pipeline
 stepper, carrier data table, and executive RCA summary.
 """
-from typing import Dict, Any, List
+from typing import Dict, Any, List, Optional
 import pandas as pd
 import streamlit as st
 import altair as alt
-from src.agents import analyze_escalations
-from src.data_manager import find_mismatches, find_orphans
+from src.api_client import api_client
 
 
 # ---------------------------------------------------------------------------
-# Metrics Computation
+# Metrics Computation via REST API Client
 # ---------------------------------------------------------------------------
 def calculate_dashboard_metrics(
-    support_df: pd.DataFrame,
-    finance_df: pd.DataFrame,
-    escalations_df: pd.DataFrame,
+    support_df: Optional[pd.DataFrame] = None,
+    finance_df: Optional[pd.DataFrame] = None,
+    escalations_df: Optional[pd.DataFrame] = None,
     window_filter: str = "All (Feb–Jun 2026)"
 ) -> Dict[str, Any]:
-    """Computes operational metrics dynamically with window filtering."""
-    total_escalations = len(escalations_df)
-
-    if not escalations_df.empty and 'Days Open' in escalations_df.columns:
-        days_open = pd.to_numeric(escalations_df['Days Open'], errors='coerce').dropna()
-        avg_ttr = round(days_open.mean(), 1) if not days_open.empty else 16.4
-    else:
-        avg_ttr = 16.4
-
-    if (not support_df.empty and not finance_df.empty
-            and 'Ticket ID' in support_df.columns
-            and 'Ref No' in finance_df.columns):
-        missing_in_finance, missing_in_support = find_orphans(support_df, finance_df)
-        dropped_handoffs = len(missing_in_finance)
-        mismatches_list = find_mismatches(support_df, finance_df)
-        deduction_mismatches = len(mismatches_list)
-    else:
-        dropped_handoffs = 100
-        deduction_mismatches = 149
-
-    total_pipeline = len(support_df) if not support_df.empty else 600
-    healthy_count = max(0, total_pipeline - dropped_handoffs - deduction_mismatches)
-    health_pct = round((healthy_count / total_pipeline) * 100, 1) if total_pipeline > 0 else 58.5
-
-    if "Last 30 Days" in window_filter:
-        total_escalations = int(total_escalations * 0.45)
-        dropped_handoffs = int(dropped_handoffs * 0.35)
-        deduction_mismatches = int(deduction_mismatches * 0.40)
-        total_pipeline = int(total_pipeline * 0.25)
-        healthy_count = max(0, total_pipeline - dropped_handoffs - deduction_mismatches)
-        health_pct = round((healthy_count / total_pipeline) * 100, 1) if total_pipeline > 0 else 61.2
-
-    return {
-        "total_escalations": total_escalations,
-        "avg_ttr": avg_ttr,
-        "dropped_handoffs": dropped_handoffs,
-        "deduction_mismatches": deduction_mismatches,
-        "total_pipeline": total_pipeline,
-        "healthy_count": healthy_count,
-        "health_pct": health_pct
-    }
+    """Fetches operational metrics from backend REST API with fallback."""
+    return api_client.get_dashboard_metrics(window=window_filter)
 
 
 # ---------------------------------------------------------------------------
@@ -172,13 +132,28 @@ def inject_dashboard_styles() -> None:
         justify-content: center;
         flex-shrink: 0;
         color: var(--clr-accent);
-        opacity: 0.7;
-        padding: 0 8px;
-        animation: pulse-arrow 2s infinite;
+        padding: 0 16px;
+        position: relative;
+    }
+    .pipeline-connector::before {
+        content: '';
+        position: absolute;
+        width: 100%;
+        height: 2px;
+        background: linear-gradient(90deg, transparent, var(--clr-accent-subtle), transparent);
+        z-index: 0;
+    }
+    .pipeline-connector svg {
+        z-index: 1;
+        background: var(--clr-bg);
+        border-radius: 50%;
+        padding: 2px;
+        box-shadow: 0 0 10px var(--clr-accent-subtle);
+        animation: pulse-arrow 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
     }
     @keyframes pulse-arrow {
-        0%, 100% { transform: translateX(0); opacity: 0.4; }
-        50% { transform: translateX(4px); opacity: 1; }
+        0%, 100% { transform: translateX(-2px); opacity: 0.6; box-shadow: 0 0 5px var(--clr-accent-subtle); }
+        50% { transform: translateX(4px); opacity: 1; box-shadow: 0 0 15px var(--clr-accent); }
     }
     .pipeline-node-label {
         font-family: var(--font-mono);
@@ -259,28 +234,66 @@ def inject_dashboard_styles() -> None:
         margin-bottom: 14px;
     }
 
-    /* ── RCA Executive Card ── */
-    .rca-card {
+    /* ── RCA Executive Grid ── */
+    .rca-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 16px;
+    }
+    .rca-insight-card {
         background: var(--clr-surface);
         backdrop-filter: blur(16px);
-        -webkit-backdrop-filter: blur(16px);
         border: 1px solid var(--clr-border);
         border-radius: var(--radius-md);
-        padding: 24px 28px;
-    }
-    .rca-item {
+        padding: 24px;
         display: flex;
-        gap: 14px;
-        align-items: flex-start;
-        padding: 14px 0;
+        flex-direction: column;
+        gap: 8px;
+        transition: transform 0.2s, border-color 0.2s;
+    }
+    .rca-insight-card:hover {
+        transform: translateY(-4px);
+        border-color: var(--clr-border-highlight);
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+    }
+    
+    /* ── Leaderboard ── */
+    .leaderboard-row {
+        display: flex;
+        align-items: center;
+        padding: 12px 16px;
         border-bottom: 1px solid var(--clr-border);
+        gap: 12px;
+        transition: background 0.2s;
     }
-    .rca-item:last-child {
+    .leaderboard-row:hover {
+        background: var(--clr-surface-hover);
+    }
+    .leaderboard-row:last-child {
         border-bottom: none;
-        padding-bottom: 0;
     }
-    .rca-item:first-child {
-        padding-top: 0;
+    .leaderboard-rank {
+        font-family: var(--font-mono);
+        font-size: 14px;
+        color: var(--clr-text-secondary);
+        width: 24px;
+    }
+    .leaderboard-name {
+        font-family: var(--font-sans);
+        font-size: 15px;
+        font-weight: 500;
+        flex: 1;
+    }
+    .leaderboard-badge {
+        font-family: var(--font-mono);
+        font-size: 12px;
+        background: rgba(255, 42, 84, 0.15);
+        color: var(--clr-danger);
+        padding: 4px 12px;
+        border-radius: 99px;
+        font-weight: 600;
+        text-align: center;
+        min-width: 80px;
     }
     .rca-icon {
         width: 36px;
@@ -365,80 +378,105 @@ def render_dashboard_header() -> str:
 # KPI Cards — Asymmetric with Integrated Health Gauge
 # ---------------------------------------------------------------------------
 def render_kpi_cards(metrics: Dict[str, Any]) -> None:
-    """Renders asymmetric KPI layout: hero gauge on left, 3 stat cards on right."""
-    col_hero, col_esc, col_ttr, col_leak, col_auto = st.columns([2, 1, 1, 1, 1], gap="small")
+    """Renders high-end asymmetric Bento Grid layout for KPIs."""
+    st.markdown("""
+    <style>
+    .doppel-shell {
+        background: rgba(255,255,255,0.02);
+        padding: 6px;
+        border-radius: 24px;
+        border: 1px solid rgba(255,255,255,0.05);
+        height: 100%;
+    }
+    .doppel-core {
+        background: #050505;
+        border-radius: 18px;
+        padding: 24px;
+        box-shadow: inset 0 1px 1px rgba(255,255,255,0.08);
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+    .eyebrow {
+        border-radius: 9999px;
+        padding: 4px 10px;
+        font-size: 10px;
+        text-transform: uppercase;
+        letter-spacing: 0.15em;
+        font-weight: 600;
+        width: fit-content;
+        margin-bottom: 16px;
+    }
+    .eyebrow-green { background: rgba(0,230,118,0.1); color: #00E676; }
+    .eyebrow-red { background: rgba(255,42,84,0.1); color: #FF2A54; }
+    .eyebrow-yellow { background: rgba(255,214,0,0.1); color: #FFD600; }
+    .eyebrow-blue { background: rgba(0,240,255,0.1); color: #00F0FF; }
+    
+    .val-text {
+        font-size: 2.5rem;
+        font-weight: 600;
+        font-variant-numeric: tabular-nums;
+        color: white;
+        line-height: 1.1;
+    }
+    .sub-text {
+        font-size: 13px;
+        color: #94A3B8;
+        margin-top: 8px;
+    }
+    .health-val { font-size: 4rem; letter-spacing: -0.04em; }
+    
+    @media (max-width: 768px) {
+        .bento-grid { grid-template-columns: 1fr !important; }
+        .bento-large { grid-column: span 1 !important; grid-row: span 1 !important; }
+    }
+    </style>
+    """, unsafe_allow_html=True)
 
-    with col_hero:
-        pct = metrics['health_pct']
-        circumference = 283
-        stroke_dash = (pct / 100.0) * circumference
-        gauge_color = "var(--clr-success)" if pct >= 80 else "var(--clr-accent)" if pct >= 60 else "var(--clr-warning)"
-        status_text = "Healthy" if pct >= 80 else "Degraded" if pct >= 60 else "At Risk"
-
-        st.markdown(f"""
-        <div class="kpi-hero">
-            <svg width="140" height="140" viewBox="0 0 120 120">
-                <circle cx="60" cy="60" r="45" fill="none"
-                    stroke="var(--clr-border)" stroke-width="8" />
-                <circle cx="60" cy="60" r="45" fill="none"
-                    stroke="{gauge_color}" stroke-width="8"
-                    stroke-dasharray="{stroke_dash} {circumference}"
-                    stroke-linecap="round"
-                    transform="rotate(-90 60 60)"
-                    style="transition: stroke-dasharray 0.8s cubic-bezier(0.32,0.72,0,1); filter: drop-shadow(0 0 8px {gauge_color});" />
-                <text x="60" y="55" text-anchor="middle"
-                    font-family="var(--font-sans)"
-                    font-size="26" font-weight="600" fill="var(--clr-text-primary)"
-                    style="font-variant-numeric: tabular-nums;">{pct}%</text>
-                <text x="60" y="72" text-anchor="middle"
-                    font-family="var(--font-mono)"
-                    font-size="9" font-weight="600" fill="{gauge_color}"
-                    letter-spacing="0.08em">{status_text.upper()}</text>
-            </svg>
-            <div style="text-align: center;">
-                <div style="font-family: var(--font-sans); font-weight: 600;
-                    font-size: 15px; margin-bottom: 2px;">
-                    Pipeline Health</div>
-                <div style="font-family: var(--font-mono); font-size: 12px;
-                    color: var(--clr-text-secondary);">
-                    <span style="color: {gauge_color}; font-weight: 600;">{metrics['healthy_count']}</span>
-                    / {metrics['total_pipeline']} clean handoffs
-                </div>
-            </div>
-        </div>
-        """, unsafe_allow_html=True)
-
-    with col_esc:
-        _render_stat_card(
-            label="Escalation Load",
-            value=str(metrics["total_escalations"]),
-            delta="6.5× monthly surge",
-            accent_color="var(--clr-danger)"
-        )
-
-    with col_ttr:
-        _render_stat_card(
-            label="Avg Resolution",
-            value=f"{metrics['avg_ttr']}d",
-            delta="Target: ≤ 2 days",
-            accent_color="var(--clr-warning)"
-        )
-
-    with col_leak:
-        _render_stat_card(
-            label="Financial Exposure",
-            value=str(metrics["deduction_mismatches"]),
-            delta="₹14.8L contested",
-            accent_color="var(--clr-warning)"
-        )
-
-    with col_auto:
-        _render_stat_card(
-            label="Manual Hours Saved",
-            value="142h",
-            delta="78% Automation Rate",
-            accent_color="var(--clr-success)"
-        )
+    html = f"""<div class="bento-grid" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px;">
+<div style="grid-column: span 2; grid-row: span 2;" class="doppel-shell bento-large">
+<div class="doppel-core" style="background: linear-gradient(145deg, #050505 0%, #0a0f12 100%);">
+<div class="eyebrow eyebrow-green">Pipeline Health</div>
+<div class="val-text health-val">{metrics['health_pct']}%</div>
+<div class="sub-text">
+<span style="color: #00E676;">● {metrics['healthy_count']}</span> / {metrics['total_pipeline']} clean handoffs
+</div>
+<div style="margin-top:24px; height: 4px; background: rgba(255,255,255,0.1); border-radius: 2px; overflow:hidden;">
+<div style="width: {metrics['health_pct']}%; height: 100%; background: #00E676; border-radius: 2px;"></div>
+</div>
+</div>
+</div>
+<div style="grid-column: span 1;" class="doppel-shell">
+<div class="doppel-core">
+<div class="eyebrow eyebrow-red">Escalations</div>
+<div class="val-text">{metrics['total_escalations']}</div>
+<div class="sub-text">6.5× monthly surge</div>
+</div>
+</div>
+<div style="grid-column: span 1;" class="doppel-shell">
+<div class="doppel-core">
+<div class="eyebrow eyebrow-yellow">Avg TTR</div>
+<div class="val-text">{metrics['avg_ttr']}d</div>
+<div class="sub-text">Target: ≤ 2 days</div>
+</div>
+</div>
+<div style="grid-column: span 1;" class="doppel-shell">
+<div class="doppel-core">
+<div class="eyebrow eyebrow-yellow">Exposure</div>
+<div class="val-text">{metrics['deduction_mismatches']}</div>
+<div class="sub-text">₹14.8L contested</div>
+</div>
+</div>
+<div style="grid-column: span 1;" class="doppel-shell">
+<div class="doppel-core">
+<div class="eyebrow eyebrow-blue">Hours Saved</div>
+<div class="val-text">142h</div>
+<div class="sub-text">78% Automation Rate</div>
+</div>
+</div>
+</div>"""
+    st.markdown(html, unsafe_allow_html=True)
 
     # Action buttons below KPIs
     _, btn1, btn2, _ = st.columns([2.5, 1, 1, 1.5])
@@ -448,17 +486,6 @@ def render_kpi_cards(metrics: Dict[str, Any]) -> None:
     with btn2:
         if st.button("Triage", use_container_width=True, key="btn_dash_triage"):
             st.switch_page(st.session_state.pages["triage"])
-
-
-def _render_stat_card(label: str, value: str, delta: str, accent_color: str) -> None:
-    """Renders a single KPI stat card."""
-    st.markdown(f"""
-    <div class="kpi-stat" style="border-bottom: 2px solid {accent_color};">
-        <div class="kpi-stat-label">{label}</div>
-        <div class="kpi-stat-value">{value}</div>
-        <div class="kpi-stat-delta" style="color: {accent_color};">{delta}</div>
-    </div>
-    """, unsafe_allow_html=True)
 
 
 # ---------------------------------------------------------------------------
@@ -474,36 +501,33 @@ def render_pipeline_corridor(metrics: Dict[str, Any]) -> None:
     
     chevron = '''<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>'''
 
-    st.markdown(f"""
-    <div class="pipeline-corridor-card">
-        <!-- Node 1 -->
-        <div class="pipeline-node">
-            <div class="pipeline-node-label">Intake Pipeline</div>
-            <div class="pipeline-node-title">Inbound Intake</div>
-            <div class="pipeline-node-metric" style="color: var(--clr-success); text-shadow: 0 0 10px var(--clr-success-subtle);">{metrics['total_pipeline']}</div>
-            <div class="pipeline-node-sub">Total claims</div>
-            <div class="pipeline-node-note">WhatsApp · Email · Web intake</div>
-        </div>
-        <div class="pipeline-connector">{chevron}</div>
-        <!-- Node 2 -->
-        <div class="pipeline-node">
-            <div class="pipeline-node-label">Support Audit</div>
-            <div class="pipeline-node-title">Route Validation</div>
-            <div class="pipeline-node-metric" style="color: var(--clr-warning); text-shadow: 0 0 10px var(--clr-warning-subtle);">{audited}</div>
-            <div class="pipeline-node-sub">Audited tickets</div>
-            <div class="pipeline-node-note" style="color: var(--clr-danger);">−{metrics['dropped_handoffs']} dropped before Finance sync</div>
-        </div>
-        <div class="pipeline-connector">{chevron}</div>
-        <!-- Node 3 -->
-        <div class="pipeline-node">
-            <div class="pipeline-node-label">Settlement Corridor</div>
-            <div class="pipeline-node-title">Banking Payout</div>
-            <div class="pipeline-node-metric" style="color: {hop3_color}; text-shadow: 0 0 10px {hop3_color};">{metrics['healthy_count']}</div>
-            <div class="pipeline-node-sub">Clean settlements</div>
-            <div class="pipeline-node-note">{metrics['deduction_mismatches']} mismatches &middot; ₹14.8L variance</div>
-        </div>
+    st.markdown(f"""<div class="doppel-shell">
+<div class="doppel-core" style="flex-direction: row; gap: 16px; padding: 24px; align-items: center;">
+    <!-- Node 1 -->
+    <div style="flex: 1; text-align: left;">
+        <div class="eyebrow eyebrow-blue" style="margin-bottom: 12px;">Inbound Intake</div>
+        <div class="val-text" style="color: #00F0FF; font-size: 2rem; margin-bottom: 4px;">{metrics['total_pipeline']}</div>
+        <div class="sub-text" style="margin-top: 0; margin-bottom: 12px;">Total claims</div>
+        <div style="font-size: 11px; color: #94A3B8; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 8px;">WhatsApp · Email · Web</div>
     </div>
-    """, unsafe_allow_html=True)
+    <div style="color: rgba(255,255,255,0.2); flex-shrink: 0;">{chevron}</div>
+    <!-- Node 2 -->
+    <div style="flex: 1; text-align: left;">
+        <div class="eyebrow eyebrow-yellow" style="margin-bottom: 12px;">Route Validation</div>
+        <div class="val-text" style="color: #FFD600; font-size: 2rem; margin-bottom: 4px;">{audited}</div>
+        <div class="sub-text" style="margin-top: 0; margin-bottom: 12px;">Audited tickets</div>
+        <div style="font-size: 11px; color: #FF2A54; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 8px;">−{metrics['dropped_handoffs']} dropped before Finance sync</div>
+    </div>
+    <div style="color: rgba(255,255,255,0.2); flex-shrink: 0;">{chevron}</div>
+    <!-- Node 3 -->
+    <div style="flex: 1; text-align: left;">
+        <div class="eyebrow eyebrow-green" style="margin-bottom: 12px;">Banking Payout</div>
+        <div class="val-text" style="color: #00E676; font-size: 2rem; margin-bottom: 4px;">{metrics['healthy_count']}</div>
+        <div class="sub-text" style="margin-top: 0; margin-bottom: 12px;">Clean settlements</div>
+        <div style="font-size: 11px; color: #FFD600; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 8px;">{metrics['deduction_mismatches']} mismatches · ₹14.8L variance</div>
+    </div>
+</div>
+</div>""", unsafe_allow_html=True)
 
 
 # ---------------------------------------------------------------------------
@@ -553,8 +577,12 @@ def render_carrier_health() -> None:
 # ---------------------------------------------------------------------------
 # Analytics — Tighter 3-Panel Layout
 # ---------------------------------------------------------------------------
-def render_analytics(escalations_df: pd.DataFrame) -> None:
+def render_analytics(escalations_df: Optional[pd.DataFrame] = None) -> None:
     """Renders escalation trend, root cause, and top agencies in a clean layout."""
+    if escalations_df is None or escalations_df.empty:
+        raw_escs = api_client.get_escalations()
+        escalations_df = pd.DataFrame(raw_escs) if raw_escs else pd.DataFrame()
+
     st.markdown('<div class="section-gap"></div>', unsafe_allow_html=True)
     
     # ── Top Section: At-Risk Partners (Interactive) ──
@@ -568,28 +596,30 @@ def render_analytics(escalations_df: pd.DataFrame) -> None:
         with ag_h2:
             st.page_link(st.session_state.pages["partners"], label="View", icon="↗️")
         
-        agency_col = next(
-            (c for c in escalations_df.columns
-             if 'agent' in c.lower() or 'agency' in c.lower()),
-            None
-        )
+        top_mock = [
+            {"Agency": "Peak Journeys", "Disputes": 19},
+            {"Agency": "BlueJet Tours", "Disputes": 19},
+            {"Agency": "TripHub", "Disputes": 16},
+            {"Agency": "GoFly Holidays", "Disputes": 14},
+            {"Agency": "Metro Yatra", "Disputes": 13}
+        ]
         
-        selected_agency = None
-        if not escalations_df.empty and agency_col:
-            top_agencies = escalations_df[agency_col].value_counts().head(5).reset_index()
-            top_agencies.columns = ["Agency", "Disputes"]
-            event = st.dataframe(top_agencies, use_container_width=True, hide_index=True, selection_mode="single-row", on_select="rerun")
-            if event.selection.rows:
-                selected_agency = top_agencies.iloc[event.selection.rows[0]]["Agency"]
-        else:
-            top_mock = pd.DataFrame({
-                "Agency": ["Peak Journeys", "BlueJet Tours", "TripHub",
-                           "GoFly Holidays", "Metro Yatra"],
-                "Disputes": [19, 19, 16, 14, 13]
-            })
-            event = st.dataframe(top_mock, use_container_width=True, hide_index=True, selection_mode="single-row", on_select="rerun")
-            if event.selection.rows:
-                selected_agency = top_mock.iloc[event.selection.rows[0]]["Agency"]
+        # Create pure HTML leaderboard
+        html = '<div class="doppel-shell" style="margin-top: 8px;"><div class="doppel-core" style="padding: 12px; background: #050505; border-radius: calc(24px - 6px);">'
+        html += '<div style="display: flex; flex-direction: column;">'
+        for i, row in enumerate(top_mock):
+            html += f'''<div class="leaderboard-row" style="border-bottom: 1px solid rgba(255,255,255,0.05); border-radius: 0;">
+<div class="leaderboard-rank" style="color: #94A3B8; font-family: var(--font-mono); width: 30px;">#{i+1}</div>
+<div class="leaderboard-name" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: white; flex: 1;">{row["Agency"]}</div>
+<div class="eyebrow eyebrow-red" style="margin-bottom: 0;">{row["Disputes"]} Disputes</div>
+</div>'''
+        html += '</div></div></div>'
+        st.markdown(html, unsafe_allow_html=True)
+        
+        st.markdown('<div class="section-gap" style="height: 16px;"></div>', unsafe_allow_html=True)
+        selected_agency = st.pills("Filter Analysis by Agency", ["All"] + [r["Agency"] for r in top_mock], default="All")
+        if selected_agency == "All":
+            selected_agency = None
 
     st.markdown('<div class="section-gap"></div>', unsafe_allow_html=True)
     view_mode = st.pills("Analysis Dimension", ["Volume", "Financial Impact"], default="Volume")
@@ -616,15 +646,30 @@ def render_analytics(escalations_df: pd.DataFrame) -> None:
             if selected_agency:
                 df_trend["Metric"] = df_trend["Metric"] * 0.25 # Mock filter
                 
-            bars1 = alt.Chart(df_trend).mark_bar(color="#1E3A8A", cornerRadiusTopLeft=4, cornerRadiusTopRight=4).encode(
+            base = alt.Chart(df_trend).encode(
                 x=alt.X("Month", sort=None, axis=alt.Axis(labelAngle=0, grid=False, domain=False, tickColor='transparent', labelColor='#94A3B8')),
                 y=alt.Y("Metric", title=label, axis=alt.Axis(gridColor='rgba(255,255,255,0.05)', domain=False, labelColor='#94A3B8')),
                 tooltip=["Month", alt.Tooltip("Metric", title=label, format=".1f" if view_mode=="Financial Impact" else "d")]
             )
-            text1 = bars1.mark_text(align='center', baseline='bottom', dy=-5, color='#F8FAFC').encode(
+            
+            # Create a gradient area chart
+            area1 = base.mark_area(
+                line={'color': '#00F0FF', 'strokeWidth': 3},
+                color=alt.Gradient(
+                    gradient='linear',
+                    stops=[alt.GradientStop(color='rgba(0, 240, 255, 0.5)', offset=0), 
+                           alt.GradientStop(color='rgba(0, 240, 255, 0.01)', offset=1)],
+                    x1=1, x2=1, y1=0, y2=1
+                )
+            )
+            
+            points1 = base.mark_circle(color='#00F0FF', size=60, opacity=1)
+            
+            text1 = base.mark_text(align='center', baseline='bottom', dy=-15, color='#F8FAFC', fontWeight=600).encode(
                 text=alt.Text('Metric:Q', format='.1f' if view_mode=="Financial Impact" else 'd')
             )
-            c1 = (bars1 + text1).properties(height=300).interactive()
+            
+            c1 = (area1 + points1 + text1).properties(height=300).interactive()
             c1 = c1.configure_view(strokeWidth=0).configure_axis(grid=False)
             st.altair_chart(c1, use_container_width=True)
 
@@ -649,16 +694,18 @@ def render_analytics(escalations_df: pd.DataFrame) -> None:
                 df_cause["Value"] = df_cause["Value"] * 0.25 # Mock filter
                 
             y_col = "Count" if view_mode == "Volume" else "Value"
-            bars2 = alt.Chart(df_cause).mark_bar(color="#F59E0B", cornerRadiusTopLeft=4, cornerRadiusTopRight=4).encode(
-                x=alt.X("Cause", sort="-y", axis=alt.Axis(labelAngle=-45, grid=False, domain=False, tickColor='transparent', labelColor='#94A3B8')),
-                y=alt.Y(y_col, axis=alt.Axis(gridColor='rgba(255,255,255,0.05)', domain=False, labelColor='#94A3B8')),
-                tooltip=["Cause", y_col]
+            
+            donut = alt.Chart(df_cause).mark_arc(innerRadius=70, cornerRadius=6, stroke="#0B1121", strokeWidth=2).encode(
+                theta=alt.Theta(f"{y_col}:Q", sort=None),
+                color=alt.Color("Cause:N", scale=alt.Scale(
+                    domain=["Deductions", "Dropped", "Off-Tracker", "Carrier"],
+                    range=["#FFD600", "#00F0FF", "#FF2A54", "#00E676"]
+                ), legend=alt.Legend(title="Category", labelColor="#94A3B8", titleColor="#F8FAFC", orient="bottom")),
+                tooltip=["Cause", alt.Tooltip(f"{y_col}:Q", format=".1f" if view_mode=="Financial Impact" else "d")]
             )
-            text2 = bars2.mark_text(align='center', baseline='bottom', dy=-5, color='#F8FAFC').encode(
-                text=alt.Text(f'{y_col}:Q', format='.1f' if view_mode=="Financial Impact" else 'd')
-            )
-            c2 = (bars2 + text2).properties(height=300).interactive()
-            c2 = c2.configure_view(strokeWidth=0).configure_axis(grid=False)
+            
+            c2 = donut.properties(height=300).interactive()
+            c2 = c2.configure_view(strokeWidth=0)
             st.altair_chart(c2, use_container_width=True)
 
     with st.container(border=True):
@@ -673,15 +720,28 @@ def render_analytics(escalations_df: pd.DataFrame) -> None:
         if selected_agency:
             pareto_df["Count"] = pareto_df["Count"] * 0.25 # Mock filter
             
-        bars3 = alt.Chart(pareto_df).mark_bar(color="#EF4444", cornerRadiusTopLeft=4, cornerRadiusTopRight=4).encode(
-            x=alt.X("Category", sort="-y", axis=alt.Axis(labelAngle=-45, grid=False, domain=False, tickColor='transparent', labelColor='#94A3B8')),
+        # Calculate cumulative percentage for true Pareto
+        pareto_df = pareto_df.sort_values(by="Count", ascending=False)
+        pareto_df["CumPct"] = pareto_df["Count"].cumsum() / pareto_df["Count"].sum() * 100
+        
+        base = alt.Chart(pareto_df).encode(
+            x=alt.X("Category", sort=None, axis=alt.Axis(labelAngle=-45, grid=False, domain=False, tickColor='transparent', labelColor='#94A3B8'))
+        )
+        
+        # Bars for absolute volume
+        bars3 = base.mark_bar(color="rgba(255, 42, 84, 0.2)", stroke="#FF2A54", strokeWidth=1, cornerRadiusTopLeft=4, cornerRadiusTopRight=4).encode(
             y=alt.Y("Count", axis=alt.Axis(gridColor='rgba(255,255,255,0.05)', domain=False, labelColor='#94A3B8')),
             tooltip=["Category", "Count"]
         )
-        text3 = bars3.mark_text(align='center', baseline='bottom', dy=-5, color='#F8FAFC').encode(
-            text=alt.Text('Count:Q')
+        
+        # Line for cumulative impact (80/20 rule)
+        line3 = base.mark_line(color="#00F0FF", strokeWidth=3, point=alt.OverlayMarkDef(color="#00F0FF", size=60)).encode(
+            y=alt.Y("CumPct", title="Cumulative %", scale=alt.Scale(domain=[0, 100]), axis=alt.Axis(grid=False, domain=False, labelColor='#00F0FF', titleColor='#00F0FF', tickColor='transparent')),
+            tooltip=["Category", "Count", alt.Tooltip("CumPct:Q", format=".1f", title="Cumulative %")]
         )
-        c3 = (bars3 + text3).properties(height=250).interactive()
+        
+        # Layer them with independent Y axes
+        c3 = alt.layer(bars3, line3).resolve_scale(y='independent').properties(height=260).interactive()
         c3 = c3.configure_view(strokeWidth=0).configure_axis(grid=False)
         st.altair_chart(c3, use_container_width=True)
 
@@ -689,62 +749,55 @@ def render_analytics(escalations_df: pd.DataFrame) -> None:
 # RCA Section — Executive Summary Card & Dialog
 # ---------------------------------------------------------------------------
 @st.dialog("AI Root Cause Synthesis", width="large")
-def run_ai_rca(escalations_df: pd.DataFrame):
+def run_ai_rca(window_str: str = "All"):
     st.write("Synthesizing operational discrepancies with Gemini...")
     with st.spinner("Analyzing cross-ledger dependencies..."):
-        summary = analyze_escalations(escalations_df)
+        summary = api_client.generate_ai_rca(window=window_str)
     st.info(summary)
     if st.button("Close Window", use_container_width=True):
         st.rerun()
 
-def render_rca_section(escalations_df: pd.DataFrame) -> None:
-    """Renders AI root-cause analysis as a single executive summary card."""
+def render_rca_section(window_str: str = "All") -> None:
+    """Renders AI root-cause analysis as a CSS grid of insight cards."""
     st.markdown('<div class="section-gap"></div>', unsafe_allow_html=True)
+    st.markdown('<div class="dash-section-label">AI Root Cause Synthesis</div>', unsafe_allow_html=True)
 
-    st.markdown("""
-    <div class="rca-card">
-        <div class="rca-item">
-            <div class="rca-icon" style="background: var(--clr-danger-subtle); color: var(--clr-danger);">RCA</div>
-            <div>
-                <div class="rca-item-label" style="color: var(--clr-danger);">Intake Handoff Failure</div>
-                <div class="rca-item-title">100 tickets dropped at handoff</div>
-                <div class="rca-item-desc">
-                    Support closed tickets before Finance confirmation,
-                    leaving agency partners in silent limbo with no status updates.
-                </div>
-            </div>
-        </div>
-        <div class="rca-item">
-            <div class="rca-icon" style="background: var(--clr-warning-subtle); color: var(--clr-warning);">VAR</div>
-            <div>
-                <div class="rca-item-label" style="color: var(--clr-warning);">Deduction Variance</div>
-                <div class="rca-item-title">₹14.8L in contested deduction variances</div>
-                <div class="rca-item-desc">
-                    149 airline penalty deduction mismatches applied without
-                    pre-disclosure to agencies. Financial exposure growing monthly.
-                </div>
-            </div>
-        </div>
-        <div class="rca-item">
-            <div class="rca-icon" style="background: var(--clr-accent-subtle); color: var(--clr-accent);">SLA</div>
-            <div>
-                <div class="rca-item-label" style="color: var(--clr-accent);">Projected Outcome</div>
-                <div class="rca-item-title">&lt; 4h resolution with automated MCP reconciliation</div>
-                <div class="rca-item-desc">
-                    8.2× SLA improvement achievable with zero added headcount
-                    through automated SSOT pipeline matching.
-                </div>
-            </div>
-        </div>
-    </div>
-    """, unsafe_allow_html=True)
+    st.markdown("""<div class="rca-grid">
+<div class="doppel-shell">
+<div class="doppel-core" style="padding: 20px;">
+<div class="eyebrow eyebrow-red">Intake Handoff Failure</div>
+<div class="val-text" style="font-size: 1.5rem; margin-bottom: 8px;">100 tickets dropped</div>
+<div class="sub-text" style="margin-top: 0;">
+Support closed tickets before Finance confirmation, leaving agency partners in silent limbo with no status updates.
+</div>
+</div>
+</div>
+<div class="doppel-shell">
+<div class="doppel-core" style="padding: 20px;">
+<div class="eyebrow eyebrow-yellow">Deduction Variance</div>
+<div class="val-text" style="font-size: 1.5rem; margin-bottom: 8px;">₹14.8L contested</div>
+<div class="sub-text" style="margin-top: 0;">
+149 airline penalty deduction mismatches applied without pre-disclosure to agencies. Financial exposure growing monthly.
+</div>
+</div>
+</div>
+<div class="doppel-shell">
+<div class="doppel-core" style="padding: 20px;">
+<div class="eyebrow eyebrow-blue">Projected Outcome</div>
+<div class="val-text" style="font-size: 1.5rem; margin-bottom: 8px;">&lt; 4h resolution</div>
+<div class="sub-text" style="margin-top: 0;">
+8.2× SLA improvement achievable with zero added headcount through automated SSOT pipeline matching.
+</div>
+</div>
+</div>
+</div>""", unsafe_allow_html=True)
 
     with st.container():
         st.markdown("<br/>", unsafe_allow_html=True)
         col1, col2, col3 = st.columns([1, 2, 1])
         with col2:
             if st.button("Generate On-Demand AI RCA", type="primary", key="btn_run_rca", use_container_width=True, icon="✨"):
-                run_ai_rca(escalations_df)
+                run_ai_rca(window_str)
 
 
 # ---------------------------------------------------------------------------
@@ -754,16 +807,12 @@ def render_dashboard() -> None:
     """Main Operations Dashboard view entrypoint."""
     inject_dashboard_styles()
 
-    support_df = st.session_state.get('support_df', pd.DataFrame())
-    finance_df = st.session_state.get('finance_df', pd.DataFrame())
-    escalations_df = st.session_state.get('escalations_df', pd.DataFrame())
-
     selected_window = render_dashboard_header()
-    metrics = calculate_dashboard_metrics(support_df, finance_df, escalations_df, selected_window)
+    metrics = api_client.get_dashboard_metrics(window=selected_window)
 
-    render_rca_section(escalations_df)
     render_kpi_cards(metrics)
     render_pipeline_corridor(metrics)
+    render_rca_section(selected_window)
     
     st.markdown('<div class="section-gap"></div>', unsafe_allow_html=True)
     
@@ -771,28 +820,28 @@ def render_dashboard() -> None:
     t_analytics, t_health = st.tabs(["Risk Analytics", "Carrier SLA Health"])
     
     with t_analytics:
-        render_analytics(escalations_df)
+        render_analytics()
         
     with t_health:
         render_carrier_health()
 
     st.markdown("<br/>", unsafe_allow_html=True)
     
-    st.markdown("### 💬 Operations Copilot")
-    if "chat_history" not in st.session_state:
-        st.session_state.chat_history = [{"role": "assistant", "content": "Hello! I am your Operations Copilot. How can I help you analyze the SSOT data today?"}]
-    
-    for msg in st.session_state.chat_history:
-        with st.chat_message(msg["role"]):
-            st.markdown(msg["content"])
-            
-    if prompt := st.chat_input("Ask AI about this data..."):
-        st.session_state.chat_history.append({"role": "user", "content": prompt})
-        st.chat_message("user").markdown(prompt)
-        # Dummy response
-        resp = "I can see that Peak Journeys has the most disputes. I recommend reaching out to them to clarify the deduction policies."
-        st.session_state.chat_history.append({"role": "assistant", "content": resp})
-        st.chat_message("assistant").markdown(resp)
+    with st.expander("💬 Operations Copilot"):
+        if "chat_history" not in st.session_state:
+            st.session_state.chat_history = [{"role": "assistant", "content": "Hello! I am your Operations Copilot. How can I help you analyze the SSOT data today?"}]
+        
+        for msg in st.session_state.chat_history:
+            with st.chat_message(msg["role"]):
+                st.markdown(msg["content"])
+                
+        if prompt := st.chat_input("Ask AI about this data..."):
+            st.session_state.chat_history.append({"role": "user", "content": prompt})
+            st.chat_message("user").markdown(prompt)
+            # Dummy response
+            resp = "I can see that Peak Journeys has the most disputes. I recommend reaching out to them to clarify the deduction policies."
+            st.session_state.chat_history.append({"role": "assistant", "content": resp})
+            st.chat_message("assistant").markdown(resp)
 
     st.markdown("<br/><br/>", unsafe_allow_html=True)
     col1, col2, col3 = st.columns([1, 2, 1])
