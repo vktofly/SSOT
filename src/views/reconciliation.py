@@ -1,4 +1,4 @@
-"""
+__doc__ = """
 Reconciliation Agent View Module (Human-in-the-loop HITL Workflow).
 Automated discrepancy detection, side-by-side ledger audits, carrier penalty rule lookups,
 and AI-assisted short-payment communication drafting.
@@ -185,7 +185,7 @@ def render_mismatch_studio(
 
         with c_mid:
             st.markdown("<br><br><h3 style='text-align: center; color: var(--google-text-secondary);'>VS</h3>", unsafe_allow_html=True)
-            st.caption(f"<div style='text-align:center;'><b>₹{m.get('deduction') or m.get('Deduction', '0')}</b><br>Deducted</div>", unsafe_allow_html=True)
+            st.markdown(f"<div style='text-align:center; font-size: 0.8rem; color: gray;'><b>₹{m.get('deduction') or m.get('Deduction', '0')}</b><br>Deducted</div>", unsafe_allow_html=True)
 
         with c_fin:
             with st.container(border=True):
